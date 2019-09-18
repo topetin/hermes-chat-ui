@@ -4,7 +4,7 @@ import { throwError as observableThrowError, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators'
 
 const headers = new HttpHeaders({'Content-Type':'application/json; charset=utf-8'})
-const apiUrl = "https://hermes-chat-api.herokuapp.com"
+const apiUrl = "http://localhost:3000"
 
 @Injectable({
   providedIn: 'root'
