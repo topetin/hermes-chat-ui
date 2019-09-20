@@ -1,9 +1,26 @@
-<div class="col-4 text-center m-auto">
+<div class="col col-md-4 text-center m-auto d-flex flex-column justify-content-center align-items-center" style="height: 100vh">
     <mat-card class="bg-light">
-        <div class="row">
+        <div class="row mb-4 mt-3">
             <img src="../../../assets/img/hermes-title.svg" class="m-auto">
         </div>
-        <button mat-flat-button>LOGIN</button>
-        <button mat-flat-button>COMPRAR</button>
+        <div>
+            <mat-form-field appearance="fill" class="w-75 mb-3">
+                    <mat-label>Ingrese usuario</mat-label>
+                <input matInput type="text" placeholder="usuario@hermes.com" [formControl]="email" required>
+                <mat-error *ngIf="email.invalid">Debe ingresar un username (email)</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-75 mb-4">
+                    <mat-label>Ingrese password</mat-label>
+                <input matInput type="text" placeholder="Password" [type]="hide ? 'password' : 'text'"
+                    [formControl]="password" required>
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                <mat-error *ngIf="password.invalid">Debe ingresar una contraseña</mat-error>
+            </mat-form-field>
+        </div>
+        <button mat-flat-button [disabled]="password.invalid || email.invalid">LOGIN</button>
     </mat-card>
+    <span>No dispones aun del servicio? Adquirir</span>
 </div>
