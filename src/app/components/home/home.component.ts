@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from 'src/app/services/home.service';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,13 +11,30 @@ import { FormControl, Validators } from '@angular/forms';
 export class HomeComponent implements OnInit {
 
   hide = true;
-  email = new FormControl('', [Validators.required]);
-  password = new FormControl('', [Validators.required]);
+  loginForm: FormGroup
 
-  constructor(private homeService: HomeService) { }
+  constructor(
+    private homeService: HomeService,
+    private fb: FormBuilder,
+    private router: Router
+    ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loginForm = this.fb.group({
+      email: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required])
+    })
+  }
 
+  validateForm() {
+    if (this.loginForm.valid) {
+      return console.log('login')
+    }
+    Object.keys(this.loginForm.controls).forEach(field => this.loginForm.get(field).markAsTouched({ onlySelf: true }));
+  }
 
+  goPurchase() {
+    // this.router.navigate(['/purchase']);
+  }
 
 }
