@@ -11,17 +11,23 @@ import {MatIconModule} from '@angular/material/icon';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
+import { PurchaseComponent } from './components/purchase/purchase.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    PurchaseComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
-      {path: '',  component: HomeComponent}
+      {path: '',  component: HomeComponent},
+      {path: 'contratar', component: PurchaseComponent},
+      { path: '**', component: PageNotFoundComponent }
     ]),
     HttpClientModule,
     BrowserAnimationsModule,

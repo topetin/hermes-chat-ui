@@ -7,3 +7,11 @@
 .cursor-pointer {
     cursor: pointer;
 }
+
+.height-100 {
+    height: 100vh;
+}
+
+.text-link:hover {
+    text-decoration: underline;
+}

@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
   }
 
   goPurchase() {
-    // this.router.navigate(['/purchase']);
+    this.router.navigate(['/contratar']);
   }
 
 }
