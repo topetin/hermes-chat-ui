@@ -1,1 +1,38 @@
-<p>purchase works!</p>
+<div class="text-center m-auto d-flex flex-column justify-content-center align-items-center height-100">
+        <img src="../../../assets/img/hermes-title-purchase.svg" class="mb-4">
+    <mat-card style="margin-right: 10%; margin-left: 10%">
+        <div class="d-flex flex-column flex-md-row col col-md-12">
+            <div class="d-flex flex-column align-items-center col col-md-4">
+                    <mat-icon class="icon-30 text-info mb-2 mt-1">forum</mat-icon>
+                <span class="font-weight-bold text-dark mb-1">Canales de chat</span>
+                <span class="text-subtitle font-weight-light text-muted mb-2">Crear, 
+                    buscar y administrar canales grupales y privados</span>
+            </div>
+            <mat-divider [vertical]="true"></mat-divider>
+            <div class="d-flex flex-column align-items-center col col-md-4">
+                <mat-icon class="icon-30 text-warning mb-2 mt-1">message</mat-icon>
+                <span class="font-weight-bold text-dark">Canal institucional</span>
+                <span class="text-subtitle font-weight-light text-muted mb-2">Noticias, eventos y avisos de tu organización.</span>
+            </div>
+            <mat-divider [vertical]="true"></mat-divider>
+            <div class="d-flex flex-column align-items-center col col-md-4">
+                <mat-icon class="icon-30 text-primary mb-2 mt-1">group</mat-icon>
+                <span class="font-weight-bold text-dark">Back office</span>
+                <span class="text-subtitle font-weight-light text-muted mb-2">Gestiona los miembros y el canal de tu organizacion.</span>
+            </div>
+        </div>
+    </mat-card>
+    <div class="d-flex flex-row mt-4 p-4">
+            <span class="h1 text-dark font-weight-bold mr-2 mb-0">$200</span>
+            <mat-divider [vertical]="true"></mat-divider>
+            <div class="ml-1 d-flex flex-column h6 text-muted justify-content-center align-items-center font-weight-normal mb-0">
+                    <span>por</span>
+                    <span>mes</span>
+            </div>
+    </div>
+    <button mat-raised-button class="puchase-button">Contratalo</button>
+    <div class="d-flex flex-row mt-5 bg-dark">
+            <button mat-icon-button (click)="goHome()"><mat-icon>chevron_left</mat-icon></button>
+    </div>
+</div>
+

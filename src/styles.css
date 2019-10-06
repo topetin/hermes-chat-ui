@@ -4,6 +4,10 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
+body {
+    background-color: #f8f9fa;
+}
+
 .cursor-pointer {
     cursor: pointer;
 }
@@ -14,4 +18,24 @@
 
 .text-link:hover {
     text-decoration: underline;
+}
+
+.bg-white-body {
+    background-color: #fff;
+}
+
+.text-subtitle {
+    font-size: 0.8em;
+}
+
+.icon-20 {
+    font-size: 20px;
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.icon-30 {
+    font-size: 30px;
+    width: 30px !important;
+    height: 30px !important;
 }

@@ -8,6 +8,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatListModule} from '@angular/material/list';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -24,9 +26,10 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
   imports: [
     BrowserModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot([
-      {path: '',  component: HomeComponent},
-      {path: 'contratar', component: PurchaseComponent},
+      {path: '',  component: HomeComponent, data: {animation: 'Home'}},
+      {path: 'contratar', component: PurchaseComponent, data: {animation: 'Purchase'}},
       { path: '**', component: PageNotFoundComponent }
     ]),
     HttpClientModule,
@@ -34,7 +37,9 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     MatButtonModule,
     MatCardModule,
     MatInputModule,
-    MatIconModule
+    MatIconModule,
+    MatDividerModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
