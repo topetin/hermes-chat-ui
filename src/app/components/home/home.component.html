@@ -1,4 +1,4 @@
-<div class="col col-md-4 text-center m-auto d-flex flex-column justify-content-center align-items-center height-100">
+<div class="text-center m-auto d-flex flex-column justify-content-center align-items-center height-100">
     <mat-card>
         <div class="row mb-4 mt-3">
             <img src="../../../assets/img/hermes-title.svg" class="m-auto">
@@ -22,5 +22,5 @@
         </div>
         <button mat-flat-button class="bg-dark text-light mb-2" (click)="validateForm()">LOGIN</button>
     </mat-card>
-    <span class="mt-3 text-secondary font-weight-light">Todavia no dispones del servicio? <span class="text-dark font-weight-normal cursor-pointer text-link" (click)="goPurchase()">Contratalo</span></span>
+    <span class="mt-3 text-secondary font-weight-light">Todavia no dispones del servicio? <button mat-icon-button class="text-dark font-weight-normal" (click)="goPurchase()">Contratalo<mat-icon class="icon-16">arrow_forward</mat-icon></button></span>
 </div>
