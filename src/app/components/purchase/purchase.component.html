@@ -31,7 +31,7 @@
             </div>
     </div>
     <mat-grid-list cols="1" rowHeight="50px">
-        <mat-grid-tile [colspan]="1" [rowspan]="1"><button mat-raised-button class="puchase-button">Contratalo</button></mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="1"><button mat-raised-button class="puchase-button" (click)="goPayment()">Contratalo</button></mat-grid-tile>
         <mat-grid-tile [colspan]="1" [rowspan]="2">
         <span class="mt-3 text-secondary font-weight-light">Ya contrataste el servicio? <button mat-icon-button class="text-dark font-weight-normal" (click)="goHome()">Accede<mat-icon class="icon-16">arrow_forward</mat-icon></button></span>
     </mat-grid-tile>

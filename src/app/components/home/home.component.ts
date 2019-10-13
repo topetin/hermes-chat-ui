@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HomeService } from 'src/app/services/home.service';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -14,7 +13,6 @@ export class HomeComponent implements OnInit {
   loginForm: FormGroup
 
   constructor(
-    private homeService: HomeService,
     private fb: FormBuilder,
     private router: Router
     ) { }

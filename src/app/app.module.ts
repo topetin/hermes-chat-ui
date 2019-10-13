@@ -11,18 +11,21 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { NgPaymentCardModule } from 'ng-payment-card';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { PaymentComponent } from './components/payment/payment.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     PurchaseComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +34,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     RouterModule.forRoot([
       {path: '',  component: HomeComponent, data: {animation: 'Home'}},
       {path: 'contratar', component: PurchaseComponent, data: {animation: 'Purchase'}},
+      { path: 'contratar/payment', component: PaymentComponent },
       { path: '**', component: PageNotFoundComponent }
     ]),
     HttpClientModule,
@@ -41,7 +45,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     MatIconModule,
     MatDividerModule,
     MatListModule,
-    MatGridListModule
+    MatGridListModule,
+    NgPaymentCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
