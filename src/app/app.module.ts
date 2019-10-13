@@ -18,6 +18,8 @@ import { HomeComponent } from './components/home/home.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { PaymentComponent } from './components/payment/payment.component';
+import { SuccessPayComponent } from './components/payment/success-pay/success-pay.component';
+import { InputPayComponent } from './components/payment/input-pay/input-pay.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { PaymentComponent } from './components/payment/payment.component';
     HomeComponent,
     PurchaseComponent,
     PageNotFoundComponent,
-    PaymentComponent
+    PaymentComponent,
+    SuccessPayComponent,
+    InputPayComponent
   ],
   imports: [
     BrowserModule,
