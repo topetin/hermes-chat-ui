@@ -1,0 +1,29 @@
+.payment-container {
+    position: relative;
+    background: #fff;
+    -webkit-filter: drop-shadow(rgba(0,0,0,0.2) 0px 1px 2px);
+}
+/* .payment-container:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -10px;
+    width: 100%;
+    height: 10px;
+    background:
+      linear-gradient(
+        45deg, transparent 33.333%,
+        #fff 33.333%, #fff 66.667%,
+        transparent 66.667%
+      ),
+      linear-gradient(
+        -45deg, transparent 33.333%,
+        #fff 33.333%, #fff 66.667%,
+        transparent 66.667%
+      );
+    background-size: 20px 40px;
+  } */
+
+  .dashed-border {
+    border-bottom: 3px dashed #1A85FD;
+}
