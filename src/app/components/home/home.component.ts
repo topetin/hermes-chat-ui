@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RegisterService } from 'src/app/services/register.service';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private registerService: RegisterService
     ) { }
 
   ngOnInit() {
@@ -26,7 +28,9 @@ export class HomeComponent implements OnInit {
 
   validateForm() {
     if (this.loginForm.valid) {
-      return console.log('login')
+      if (this.registerService.loginUser(this.loginForm.value.email, this.loginForm.value.password) !== null) {
+        this.console.log()
+      }
     }
     Object.keys(this.loginForm.controls).forEach(field => this.loginForm.get(field).markAsTouched({ onlySelf: true }));
   }

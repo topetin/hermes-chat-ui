@@ -11,7 +11,6 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import {MatGridListModule} from '@angular/material/grid-list';
-import { NgPaymentCardModule } from 'ng-payment-card';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -49,8 +48,7 @@ import { InputPayComponent } from './components/payment/input-pay/input-pay.comp
     MatIconModule,
     MatDividerModule,
     MatListModule,
-    MatGridListModule,
-    NgPaymentCardModule
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
