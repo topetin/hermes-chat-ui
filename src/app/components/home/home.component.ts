@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { RegisterService } from 'src/app/services/register.service';
+import { AuthService } from 'src/app/services/auth.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-home',
@@ -10,33 +11,12 @@ import { RegisterService } from 'src/app/services/register.service';
 })
 export class HomeComponent implements OnInit {
 
-  hide = true;
-  loginForm: FormGroup
-
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private registerService: RegisterService
-    ) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
-    this.loginForm = this.fb.group({
-      email: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required])
-    })
-  }
-
-  validateForm() {
-    if (this.loginForm.valid) {
-      if (this.registerService.loginUser(this.loginForm.value.email, this.loginForm.value.password) !== null) {
-        this.console.log()
-      }
+    if (localStorage.getItem('role') === 'OWNER') {
+      return this.router.navigate(['/back-office'])
     }
-    Object.keys(this.loginForm.controls).forEach(field => this.loginForm.get(field).markAsTouched({ onlySelf: true }));
+    //que vaya a la view del chat
   }
-
-  goPurchase() {
-    this.router.navigate(['/contratar']);
-  }
-
 }

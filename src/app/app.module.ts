@@ -11,6 +11,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -19,6 +20,15 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { PaymentComponent } from './components/payment/payment.component';
 import { SuccessPayComponent } from './components/payment/success-pay/success-pay.component';
 import { InputPayComponent } from './components/payment/input-pay/input-pay.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthGuardService } from './services/auth-guard.service';
+import { JwtModule } from '@auth0/angular-jwt';
+import { BoMainComponent } from './components/_company/bo-main/bo-main.component';
+import { RoleGuardService } from './services/role-guard.service';
+
+export function tokenGetter() {
+  return localStorage.getItem("access_token");
+}
 
 @NgModule({
   declarations: [
@@ -28,18 +38,29 @@ import { InputPayComponent } from './components/payment/input-pay/input-pay.comp
     PageNotFoundComponent,
     PaymentComponent,
     SuccessPayComponent,
-    InputPayComponent
+    InputPayComponent,
+    LoginComponent,
+    BoMainComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([
-      {path: '',  component: HomeComponent, data: {animation: 'Home'}},
-      {path: 'contratar', component: PurchaseComponent, data: {animation: 'Purchase'}},
+      { path: '',  component: HomeComponent, canActivate: [AuthGuardService], data: {animation: 'Home' }},
+      { path: 'login', component: LoginComponent },
+      { path: 'back-office', component: BoMainComponent, canActivate: [RoleGuardService], data: { expectedRole: 'OWNER'} },
+      { path: 'contratar', component: PurchaseComponent, data: {animation: 'Purchase' }},
       { path: 'contratar/payment', component: PaymentComponent },
       { path: '**', component: PageNotFoundComponent }
     ]),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: ["example.com"],
+        blacklistedRoutes: ["example.com/examplebadroute/"]
+      }
+    }),
     HttpClientModule,
     BrowserAnimationsModule,
     MatButtonModule,
@@ -48,7 +69,8 @@ import { InputPayComponent } from './components/payment/input-pay/input-pay.comp
     MatIconModule,
     MatDividerModule,
     MatListModule,
-    MatGridListModule
+    MatGridListModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
