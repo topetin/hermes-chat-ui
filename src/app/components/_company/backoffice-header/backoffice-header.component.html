@@ -1,1 +1,20 @@
-<p>backoffice-header works!</p>
+<mat-toolbar>
+    <div class="d-flex flex-row justify-content-between w-100 align-items-center">
+        <div>
+            <img src="../../../assets/img/hermes-title-purchase.svg" class="header-icon">
+        </div>
+        <div class="d-flex flex-row align-items-end">
+            <div class="mr-2">
+                <span class=" font-weight-normal text-dark">Empresa</span>
+            </div>
+            <div>
+                    <button mat-fab [matMenuTriggerFor]="menu" class="profile-button"><mat-icon class="icon-30 text-muted p-0">person_outline</mat-icon></button>
+                    <mat-menu #menu="matMenu">
+                            <button mat-menu-item>Log out</button>
+                          </mat-menu>
+            </div>
+
+        </div>
+
+    </div>
+</mat-toolbar>
