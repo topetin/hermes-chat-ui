@@ -28,6 +28,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { BackofficeMainComponent } from './components/_company/backoffice-main/backoffice-main.component';
 import { RoleGuardService } from './services/role-guard.service';
 import { ActivateAccountComponent } from './components/activate-account/activate-account.component';
+import { BackofficeHeaderComponent } from './components/_company/backoffice-header/backoffice-header.component';
 
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -44,7 +45,8 @@ export function tokenGetter() {
     InputPayComponent,
     LoginComponent,
     BackofficeMainComponent,
-    ActivateAccountComponent
+    ActivateAccountComponent,
+    BackofficeHeaderComponent
   ],
   imports: [
     BrowserModule,
