@@ -52,11 +52,11 @@ export function tokenGetter() {
     BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '',  component: HomeComponent, canActivate: [AuthGuardService], data: {animation: 'Home' }},
-      { path: 'login', component: LoginComponent },
+      { path: 'login', component: LoginComponent, data: {animation: 'Login' } },
       { path: 'back-office', component: BoMainComponent, canActivate: [RoleGuardService], data: { expectedRole: 'OWNER'} },
       { path: 'contratar', component: PurchaseComponent, data: {animation: 'Purchase' }},
       { path: 'contratar/payment', component: PaymentComponent },
-      { path: 'activar-cuenta/:username', component: ActivateAccountComponent, pathMatch: 'full' },
+      { path: 'activar-cuenta/:username', component: ActivateAccountComponent, pathMatch: 'full' , data: {animation: 'Activate' }},
       { path: '**', component: PageNotFoundComponent }
     ]),
     JwtModule.forRoot({

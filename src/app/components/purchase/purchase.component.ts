@@ -15,7 +15,7 @@ export class PurchaseComponent implements OnInit {
   }
 
   goHome() {
-    this.router.navigate(['']);
+    this.router.navigate(['login']);
   }
 
   goPayment() {
