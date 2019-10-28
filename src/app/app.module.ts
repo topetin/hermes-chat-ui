@@ -25,7 +25,7 @@ import { InputPayComponent } from './components/payment/input-pay/input-pay.comp
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { JwtModule } from '@auth0/angular-jwt';
-import { BoMainComponent } from './components/_company/bo-main/bo-main.component';
+import { BackofficeMainComponent } from './components/_company/backoffice-main/backoffice-main.component';
 import { RoleGuardService } from './services/role-guard.service';
 import { ActivateAccountComponent } from './components/activate-account/activate-account.component';
 
@@ -43,7 +43,7 @@ export function tokenGetter() {
     SuccessPayComponent,
     InputPayComponent,
     LoginComponent,
-    BoMainComponent,
+    BackofficeMainComponent,
     ActivateAccountComponent
   ],
   imports: [
@@ -53,7 +53,7 @@ export function tokenGetter() {
     RouterModule.forRoot([
       { path: '',  component: HomeComponent, canActivate: [AuthGuardService], data: {animation: 'Home' }},
       { path: 'login', component: LoginComponent, data: {animation: 'Login' } },
-      { path: 'back-office', component: BoMainComponent, canActivate: [RoleGuardService], data: { expectedRole: 'OWNER'} },
+      { path: 'back-office', component: BackofficeMainComponent, canActivate: [RoleGuardService], data: { expectedRole: 'OWNER'} },
       { path: 'contratar', component: PurchaseComponent, data: {animation: 'Purchase' }},
       { path: 'contratar/payment', component: PaymentComponent },
       { path: 'activar-cuenta/:username', component: ActivateAccountComponent, pathMatch: 'full' , data: {animation: 'Activate' }},
