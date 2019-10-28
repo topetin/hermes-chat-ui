@@ -19,10 +19,13 @@
                     <mat-error *ngIf="paymentForm.get('company').invalid">Debe ingresar el nombre de la empresa</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Email</mat-label>
-                    <mat-icon matSuffix>email</mat-icon>
-                    <input matInput formControlName="email">
+                    <mat-label>Email/Username</mat-label>
+                    <mat-progress-spinner *ngIf="requestingUsername" mode="indeterminate" diameter="20" class="form-spinner"></mat-progress-spinner>
+                    <mat-icon matSuffix *ngIf="!requestingUsername">email</mat-icon>
+                    <input matInput formControlName="email" (blur)="validateUsername()" (change)="updateInput()">
                     <mat-error *ngIf="paymentForm.get('email').invalid">Debe ingresar un email valido</mat-error>
+                    <span *ngIf="isUsernameAvailable === false && paymentForm.get('email').valid" class="pt-1 text-subtitle text-danger">El usuario ingresado ya existe.</span>
+                    <span *ngIf="isUsernameAvailable === true && paymentForm.get('email').valid" class="pt-1 text-subtitle text-success">Usuario disponible.</span>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Numero de tarjeta</mat-label>

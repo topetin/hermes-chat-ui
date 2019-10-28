@@ -1,2 +1,5 @@
-<app-input-pay *ngIf="showInput && !paymentProcessed" (onSuccessPay)="showSuccessPay($event)"></app-input-pay>
-<app-success-pay *ngIf="!showInput && paymentProcessed"></app-success-pay>
+<mat-progress-bar mode="indeterminate" *ngIf="requestingSubscription" class="position-absolute"></mat-progress-bar>
+<app-input-pay *ngIf="showInput && !paymentProcessed" 
+(onSuccessPay)="showSuccessPay($event)"
+(onRequestingSubscription)="showProgressBar($event)"></app-input-pay>
+<app-success-pay *ngIf="!showInput && paymentProcessed" [username]="username" ></app-success-pay>

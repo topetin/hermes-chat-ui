@@ -27,3 +27,8 @@
   .dashed-border {
     border-bottom: 3px dashed #1A85FD;
 }
+
+.form-spinner {
+  position: absolute;
+  right: 0;
+}

@@ -9,18 +9,25 @@ export class PaymentComponent implements OnInit {
 
   showInput: Boolean;
   paymentProcessed: Boolean;
+  requestingSubscription: Boolean;
+  username: string;
 
   constructor() { }
 
   ngOnInit() {
     this.showInput = true;
     this.paymentProcessed = false;
+    this.requestingSubscription = false;
   }
 
   showSuccessPay($event) {
+    this.username = $event;
     this.showInput = false;
     this.paymentProcessed = true;
-    console.log($event);
+  }
+
+  showProgressBar($event) {
+    this.requestingSubscription = $event;
   }
 
 }

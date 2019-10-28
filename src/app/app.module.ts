@@ -12,6 +12,8 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -25,6 +27,7 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { BoMainComponent } from './components/_company/bo-main/bo-main.component';
 import { RoleGuardService } from './services/role-guard.service';
+import { ActivateAccountComponent } from './components/activate-account/activate-account.component';
 
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -40,7 +43,8 @@ export function tokenGetter() {
     SuccessPayComponent,
     InputPayComponent,
     LoginComponent,
-    BoMainComponent
+    BoMainComponent,
+    ActivateAccountComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +56,7 @@ export function tokenGetter() {
       { path: 'back-office', component: BoMainComponent, canActivate: [RoleGuardService], data: { expectedRole: 'OWNER'} },
       { path: 'contratar', component: PurchaseComponent, data: {animation: 'Purchase' }},
       { path: 'contratar/payment', component: PaymentComponent },
+      { path: 'activar-cuenta/:username', component: ActivateAccountComponent, pathMatch: 'full' },
       { path: '**', component: PageNotFoundComponent }
     ]),
     JwtModule.forRoot({
@@ -70,7 +75,9 @@ export function tokenGetter() {
     MatDividerModule,
     MatListModule,
     MatGridListModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

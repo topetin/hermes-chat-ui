@@ -1,0 +1,30 @@
+<mat-progress-bar mode="indeterminate" *ngIf="requestingActivation" class="position-absolute"></mat-progress-bar>
+<div class="text-center m-auto d-flex flex-column justify-content-center align-items-center height-100">
+    <mat-card>
+        <div class="row mb-4 mt-3">
+            <img src="../../../assets/img/hermes-title.svg" class="m-auto">
+        </div>
+        <div>
+            <form [formGroup]="activationForm">
+                    <mat-form-field appearance="fill" class="w-75 mb-3">
+                        <mat-label>Ingrese password</mat-label>
+                        <input matInput type="text" placeholder="Password" [type]="hidePass1 ? 'password' : 'text'" formControlName="pass1" (change)="setPass2Validation()">
+                        <button mat-icon-button matSuffix (click)="hidePass1 = !hidePass1" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePass1">
+                            <mat-icon>{{hidePass1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                        <mat-error *ngIf="activationForm.get('pass1').invalid">Debe ingresar una contraseña alfanumerica de 8 caracteres como minimo</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="w-75 mb-4">
+                        <mat-label>Reingrese password</mat-label>
+                        <input matInput type="text" placeholder="Reingrese password" [type]="hidePass2 ? 'password' : 'text'" formControlName="pass2">
+                        <button mat-icon-button matSuffix (click)="hidePass2 = !hidePass2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePass2">
+                            <mat-icon>{{hidePass2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                        <mat-error *ngIf="activationForm.get('pass2').invalid">Las contraseñas debe coincidir</mat-error>
+                    </mat-form-field>
+            </form>
+        </div>
+        <button mat-flat-button class="bg-dark text-light mb-2" (click)="validateForm()">ACTIVAR</button>
+    </mat-card>
+    <span class="mt-3 text-secondary font-weight-light">Ya activaste tu cuenta? <button mat-icon-button class="text-dark font-weight-normal" (click)="goLogin()">Accede<mat-icon class="icon-16">arrow_forward</mat-icon></button></span>
+</div>

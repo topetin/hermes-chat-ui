@@ -6,7 +6,7 @@
         <div>
             <form [formGroup]="loginForm">
                     <mat-form-field appearance="fill" class="w-75 mb-3">
-                            <mat-label>Ingrese usuario</mat-label>
+                        <mat-label>Ingrese usuario</mat-label>
                         <input matInput type="text" placeholder="usuario@hermes.com" formControlName="email">
                         <mat-error *ngIf="loginForm.get('email').invalid">Debe ingresar un username (email)</mat-error>
                     </mat-form-field>
@@ -14,7 +14,7 @@
                             <mat-label>Ingrese password</mat-label>
                         <input matInput type="text" placeholder="Password" [type]="hide ? 'password' : 'text'" formControlName="password">
                         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
                         <mat-error *ngIf="loginForm.get('password').invalid">Debe ingresar una contraseña</mat-error>
                     </mat-form-field>

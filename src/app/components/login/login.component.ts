@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -11,7 +11,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LoginComponent implements OnInit {
 
+  hide = true;
   loginForm: FormGroup;
+  username: string;
 
   constructor(
     private fb: FormBuilder,
@@ -24,7 +26,11 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       email: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
-    })  
+    })
+    if (history.state.username) {
+      this.loginForm.removeControl('email');
+      this.loginForm.addControl('email', new FormControl(history.state.username, [Validators.required]))
+    }
   }
 
   validateForm() {
