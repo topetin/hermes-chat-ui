@@ -16,6 +16,10 @@ export class RoleGuardService implements CanActivate {
     const expectedRole = route.data.expectedRole;
     const token = localStorage.getItem('token');
     // decode the token to get its payload
+    if (!token) {
+      this.router.navigate(['login']);
+      return false;
+    }
     const tokenPayload = decode(token);
     if (
       !this.auth.isAuthenticated() || 
