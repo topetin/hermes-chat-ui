@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class ActivateAccountComponent implements OnInit {
 
-  username: string;
+  email: string;
   hidePass1 = true;
   hidePass2 = true;
   requestingActivation = false;
@@ -27,8 +27,8 @@ export class ActivateAccountComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.username = this.route.snapshot.paramMap.get('username');
-    if (!this.username) this.router.navigate(['**']);
+    this.email = this.route.snapshot.paramMap.get('email');
+    if (!this.email) this.router.navigate(['**']);
     this.activationForm = this.fb.group({
       pass1: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9]+$'), Validators.minLength(8)]),
       pass2: new FormControl('', [Validators.required])
@@ -41,7 +41,7 @@ export class ActivateAccountComponent implements OnInit {
 
   goLogin(data?) {
     if (data) {
-      return this.router.navigate(['login'], {state: {username: data}});
+      return this.router.navigate(['login'], {state: {email: data}});
     }
     this.router.navigate(['login']);
   }
@@ -49,9 +49,9 @@ export class ActivateAccountComponent implements OnInit {
   validateForm() {
     if (this.activationForm.valid) {
       this.requestingActivation = true;
-      this.registerService.activateAccount(this.username, this.activationForm.value.pass1)
+      this.registerService.activateAccount(this.email, this.activationForm.value.pass1)
       .subscribe(
-        res => this.goLogin(this.username),
+        res => this.goLogin(this.email),
         err => this.displayError(err)
       )
       .add(() => this.requestingActivation = false)

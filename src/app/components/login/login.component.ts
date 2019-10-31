@@ -27,9 +27,9 @@ export class LoginComponent implements OnInit {
       email: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
     })
-    if (history.state.username) {
+    if (history.state.email) {
       this.loginForm.removeControl('email');
-      this.loginForm.addControl('email', new FormControl(history.state.username, [Validators.required]))
+      this.loginForm.addControl('email', new FormControl(history.state.email, [Validators.required]))
     }
   }
 

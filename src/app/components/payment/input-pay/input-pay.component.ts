@@ -25,10 +25,10 @@ export class InputPayComponent implements OnInit {
 
   ngOnInit() {
     this.paymentForm = this.fb.group({
-      company: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       card: new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$')]),
-      name: new FormControl('', [Validators.required]),
+      cardName: new FormControl('', [Validators.required]),
       date: new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(4), Validators.maxLength(4)]),
       cvc: new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(3), Validators.maxLength(4)])
     })

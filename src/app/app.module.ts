@@ -60,7 +60,7 @@ export function tokenGetter() {
       { path: 'back-office', component: BackofficeMainComponent, canActivate: [RoleGuardService], data: { expectedRole: 'OWNER'} },
       { path: 'contratar', component: PurchaseComponent, data: {animation: 'Purchase' }},
       { path: 'contratar/payment', component: PaymentComponent },
-      { path: 'activar-cuenta/:username', component: ActivateAccountComponent, pathMatch: 'full' , data: {animation: 'Activate' }},
+      { path: 'activar-cuenta/:email', component: ActivateAccountComponent, pathMatch: 'full' , data: {animation: 'Activate' }},
       { path: '**', component: PageNotFoundComponent }
     ]),
     JwtModule.forRoot({

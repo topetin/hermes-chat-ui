@@ -17,9 +17,9 @@ export class AuthService {
   constructor(private http: HttpClient,
     public jwtHelper: JwtHelperService) { }
 
-  loginUser(username, password) {
+  loginUser(email, password) {
     return new Promise((resolve, reject) => {
-      const res = this.http.post<any>(apiUrl + '/login', { 'username': username, 'password': password }, { headers: headers })
+      const res = this.http.post<any>(apiUrl + '/login', { 'email': email, 'password': password }, { headers: headers })
         .pipe(catchError(this.handleError))
 
       if (res) {
@@ -38,8 +38,8 @@ export class AuthService {
 
   private setSession(res: any) {
     localStorage.setItem('token', res.token);
-    const role = decode(res.token).role;
-    localStorage.setItem('role', role);
+    // const role = decode(res.token).role;
+    localStorage.setItem('userRole', res.user.role);
   }
 
   private handleError(error: any): Observable<any> {

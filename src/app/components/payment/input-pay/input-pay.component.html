@@ -15,8 +15,8 @@
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Nombre de la empresa</mat-label>
                     <mat-icon matSuffix>business_center</mat-icon>
-                    <input matInput formControlName="company">
-                    <mat-error *ngIf="paymentForm.get('company').invalid">Debe ingresar el nombre de la empresa</mat-error>
+                    <input matInput formControlName="name">
+                    <mat-error *ngIf="paymentForm.get('name').invalid">Debe ingresar el nombre de la empresa</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Email/Username</mat-label>
@@ -37,8 +37,8 @@
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Nombre en la tarjeta</mat-label>
                     <mat-icon matSuffix>perm_identity</mat-icon>
-                    <input matInput formControlName="name">
-                    <mat-error *ngIf="paymentForm.get('name').invalid">Debe ingresar el nombre de la tarjeta de credito
+                    <input matInput formControlName="cardName">
+                    <mat-error *ngIf="paymentForm.get('cardName').invalid">Debe ingresar el nombre de la tarjeta de credito
                     </mat-error>
                 </mat-form-field>
                 <div class="w-100 m-auto">

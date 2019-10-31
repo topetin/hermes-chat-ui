@@ -15,19 +15,19 @@ export class RegisterService {
 
   constructor(private http: HttpClient) { }
 
-  isUsernameAvailable(username: string) {
-    let params = new HttpParams().set('username', username);
-    return this.http.get(apiUrl + '/available-username', {headers, params})
+  isUsernameAvailable(email: string) {
+    let params = new HttpParams().set('email', email);
+    return this.http.get(apiUrl + '/is-available-user', {headers, params})
     .pipe(this.extractData, catchError(this.handleError));
   }
 
-  subscribeUser(name: string, username: string, invoice: string) {
-    return this.http.post(apiUrl + '/subscribe', { 'name': name, 'username': username, 'invoice': invoice }, { headers: headers })
+  subscribeUser(name: string, email: string, invoice: string) {
+    return this.http.post(apiUrl + '/subscribe', { 'name': name, 'email': email, 'invoice': invoice }, { headers: headers })
     .pipe(catchError(this.handleError))
   }
 
-  activateAccount(username: string, password: string) {
-    return this.http.post(apiUrl + '/activate-account', { 'username': username, 'password': password }, { headers: headers })
+  activateAccount(email: string, password: string) {
+    return this.http.post(apiUrl + '/activate-account', { 'email': email, 'password': password }, { headers: headers })
     .pipe(catchError(this.handleError))
   }
 
