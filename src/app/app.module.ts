@@ -16,6 +16,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
+import { StorageServiceModule } from 'ngx-webstorage-service';
+import {MatTabsModule} from '@angular/material/tabs';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -31,6 +33,8 @@ import { BackofficeMainComponent } from './components/_company/backoffice-main/b
 import { RoleGuardService } from './services/role-guard.service';
 import { ActivateAccountComponent } from './components/activate-account/activate-account.component';
 import { BackofficeHeaderComponent } from './components/_company/backoffice-header/backoffice-header.component';
+import { AppStorageService } from './services/app-storage.service';
+import { BackofficeFeedComponent } from './components/_company/backoffice-feed/backoffice-feed.component';
 
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -48,7 +52,8 @@ export function tokenGetter() {
     LoginComponent,
     BackofficeMainComponent,
     ActivateAccountComponent,
-    BackofficeHeaderComponent
+    BackofficeHeaderComponent,
+    BackofficeFeedComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +62,7 @@ export function tokenGetter() {
     RouterModule.forRoot([
       { path: '',  component: HomeComponent, canActivate: [AuthGuardService], data: {animation: 'Home' }},
       { path: 'login', component: LoginComponent, data: {animation: 'Login' } },
-      { path: 'back-office', component: BackofficeMainComponent, canActivate: [RoleGuardService], data: { expectedRole: 'OWNER'} },
+      { path: 'back-office', component: BackofficeMainComponent, canActivate: [RoleGuardService], data: { expectedRole: '1'} },
       { path: 'contratar', component: PurchaseComponent, data: {animation: 'Purchase' }},
       { path: 'contratar/payment', component: PaymentComponent },
       { path: 'activar-cuenta/:email', component: ActivateAccountComponent, pathMatch: 'full' , data: {animation: 'Activate' }},
@@ -83,9 +88,11 @@ export function tokenGetter() {
     MatProgressSpinnerModule,
     MatProgressBarModule,
     MatToolbarModule,
-    MatMenuModule
+    MatMenuModule,
+    StorageServiceModule,
+    MatTabsModule
   ],
-  providers: [],
+  providers: [AppStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

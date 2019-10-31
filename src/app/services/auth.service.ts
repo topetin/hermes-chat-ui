@@ -5,6 +5,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { catchError } from 'rxjs/operators'
 import * as moment from 'moment';
 import decode from 'jwt-decode';
+import { AppStorageService } from './app-storage.service';
+import { User } from '../models/User.model';
 
 const headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' })
 const apiUrl = "http://localhost:3000"
@@ -15,11 +17,12 @@ const apiUrl = "http://localhost:3000"
 export class AuthService {
 
   constructor(private http: HttpClient,
-    public jwtHelper: JwtHelperService) { }
+    public jwtHelper: JwtHelperService,
+    private storage: AppStorageService) { }
 
   loginUser(email, password) {
     return new Promise((resolve, reject) => {
-      const res = this.http.post<any>(apiUrl + '/login', { 'email': email, 'password': password }, { headers: headers })
+      const res = this.http.post<User>(apiUrl + '/login', { 'email': email, 'password': password }, { headers: headers })
         .pipe(catchError(this.handleError))
 
       if (res) {
@@ -39,7 +42,7 @@ export class AuthService {
   private setSession(res: any) {
     localStorage.setItem('token', res.token);
     // const role = decode(res.token).role;
-    localStorage.setItem('userRole', res.user.role);
+    this.storage.storeUserOnLocalStorage(res.user as User);
   }
 
   private handleError(error: any): Observable<any> {

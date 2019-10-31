@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-backoffice-header',
@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BackofficeHeaderComponent implements OnInit {
 
+  @Input() name: string;
+  @Output() onTabChange = new EventEmitter();
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  changeContent($event) {
+    this.onTabChange.emit($event.index);
+  }
 }

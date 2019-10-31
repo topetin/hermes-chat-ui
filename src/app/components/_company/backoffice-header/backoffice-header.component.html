@@ -1,20 +1,26 @@
-<mat-toolbar>
+<mat-toolbar class="box-shadow">
     <div class="d-flex flex-row justify-content-between w-100 align-items-center">
         <div>
             <img src="../../../assets/img/hermes-title-purchase.svg" class="header-icon">
         </div>
-        <div class="d-flex flex-row align-items-end">
-            <div class="mr-2">
-                <span class=" font-weight-normal text-dark">Empresa</span>
+        <mat-tab-group (selectedTabChange)="changeContent($event)">
+                <mat-tab label="Feed"></mat-tab>
+                <mat-tab label="Miembros"></mat-tab>
+                <mat-tab label="Cuenta"></mat-tab>
+              </mat-tab-group>
+        <div class="d-flex flex-row align-items-center">
+            <div class="profile-button mr-2">
+                <mat-icon class="icon-30 text-muted p-0">person_outline</mat-icon>
             </div>
-            <div>
-                    <button mat-fab [matMenuTriggerFor]="menu" class="profile-button"><mat-icon class="icon-30 text-muted p-0">person_outline</mat-icon></button>
-                    <mat-menu #menu="matMenu">
-                            <button mat-menu-item>Log out</button>
-                          </mat-menu>
+            <div class="h6 m-0">
+                <span class="font-weight-light text-dark">{{name}}</span>
             </div>
-
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item>Salir</button>
+            </mat-menu>
         </div>
-
     </div>
 </mat-toolbar>

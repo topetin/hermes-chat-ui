@@ -1,0 +1,14 @@
+::ng-deep .contentTabs .mat-tab-label-container{
+    display: none !important;
+}
+
+.contentTabs {
+    position: absolute;
+    top: 64px;
+    bottom: 0;
+    width: 100%;
+}
+
+::ng-deep .mat-tab-body-wrapper {
+    height: 100%;
+}

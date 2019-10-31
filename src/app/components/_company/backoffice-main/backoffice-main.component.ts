@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AppStorageService } from 'src/app/services/app-storage.service';
+import { MatTabGroup } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-backoffice-main',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BackofficeMainComponent implements OnInit {
 
-  constructor() { }
+  userData: any;
+  
+  @ViewChild('tabs', {static: false}) tabs: MatTabGroup;
+
+  constructor(private storage: AppStorageService) { }
 
   ngOnInit() {
+    this.userData = this.storage.getStoredUser();
+  }
+
+  changeContent($event) {
+    this.tabs.selectedIndex = $event;
   }
 
 }

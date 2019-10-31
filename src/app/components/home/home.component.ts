@@ -3,6 +3,7 @@ import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { AppStorageService } from 'src/app/services/app-storage.service';
 
 @Component({
   selector: 'app-home',
@@ -11,10 +12,12 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(
+    private storage: AppStorageService,
+    private router: Router) { }
 
   ngOnInit() {
-    if (localStorage.getItem('role') === 'OWNER') {
+    if (this.storage.getStoredUser().role_id === 1) {
       return this.router.navigate(['/back-office'])
     }
     //que vaya a la view del chat
