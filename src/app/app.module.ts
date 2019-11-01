@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
@@ -18,6 +18,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import { StorageServiceModule } from 'ngx-webstorage-service';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatTableModule} from '@angular/material/table';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -35,6 +37,9 @@ import { ActivateAccountComponent } from './components/activate-account/activate
 import { BackofficeHeaderComponent } from './components/_company/backoffice-header/backoffice-header.component';
 import { AppStorageService } from './services/app-storage.service';
 import { BackofficeFeedComponent } from './components/_company/backoffice-feed/backoffice-feed.component';
+import { BackofficeMembersComponent } from './components/_company/backoffice-members/backoffice-members.component';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { BackofficeAccountComponent } from './components/backoffice-account/backoffice-account.component';
 
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -53,11 +58,14 @@ export function tokenGetter() {
     BackofficeMainComponent,
     ActivateAccountComponent,
     BackofficeHeaderComponent,
-    BackofficeFeedComponent
+    BackofficeFeedComponent,
+    BackofficeMembersComponent,
+    BackofficeAccountComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
+    FormsModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '',  component: HomeComponent, canActivate: [AuthGuardService], data: {animation: 'Home' }},
@@ -90,9 +98,16 @@ export function tokenGetter() {
     MatToolbarModule,
     MatMenuModule,
     StorageServiceModule,
-    MatTabsModule
+    MatTabsModule,
+    MatTableModule,
+    MatCheckboxModule
   ],
-  providers: [AppStorageService],
+  providers: [AppStorageService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
