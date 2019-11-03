@@ -38,6 +38,22 @@ export class UserService {
     .pipe(catchError(this.handleError))
   }
 
+  changeName(name: string) {
+    return new Promise((resolve, reject) => {
+      const res = this.http.post<User>(apiUrl + '/change-name', { 'name_new': name }, { headers: headers })
+      .pipe(catchError(this.handleError))
+
+      if (res) {
+        res.subscribe(
+          (result) => {
+            this.updateStorage(result);
+            resolve(true);
+          },
+          (error) => { reject(error) });
+      }
+    })
+  }
+
   private updateStorage(res: any) {
     this.storage.replaceUserOnLocalStorage(res.message as User);
   }

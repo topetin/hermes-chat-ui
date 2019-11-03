@@ -48,7 +48,6 @@ export class ProfileImageSelectorComponent implements OnInit {
   }
 
   changeProfilePicture() {
-    console.log(this.currentProfileImage.slice(2).split('.'))
     this.userService.changeProfileImg(Number(this.currentProfileImage.split('_')[1].split('.')[0]))
     .then(
       data => this.dialogRef.close('refresh')
