@@ -16,4 +16,13 @@ export class AppStorageService {
   public getStoredUser() {
     return this.storage.get('user-data')
   }
+
+  public replaceUserOnLocalStorage(user: User): void {
+    this.storage.remove('user-data');
+    this.storage.set('user-data', user);
+  }
+
+  public removeUserOnLocalStorage() {
+    this.storage.remove('user-data');
+  }
 }

@@ -4,39 +4,79 @@
             <div class="d-flex flex-column w-50 align-items-center">
                 <span class="h5 w-100 font-weight-bold mb-5">Usuario</span>
                 <div class="d-flex flex-row w-100 justify-content-between align-items-center">
-                    <div class="profile-button-edit mb-4">
-                        <mat-icon class="icon-30 text-muted p-0">person_outline<mat-icon>edit</mat-icon>
-                        </mat-icon>
+                    <div class="profile-button-edit mb-4" (click)="changeProfileImage()" matTooltip="modificar" matTooltipPosition="above">
+                            <img src="../../../assets/profile_imgs/pi_{{formUserData.profile_img}}.svg" class="profile-img">
                     </div>
                     <mat-form-field appearance="outline" class="w-75">
                         <mat-label>Nombre</mat-label>
-                        <input matInput placeholder="Nombre" >
+                        <input  matInput 
+                                placeholder="Nombre" 
+                                [(ngModel)]="formUserData.name" 
+                                (input)="markNameAsTouched($event)">
                         <mat-icon matSuffix>edit</mat-icon>
                     </mat-form-field>
                 </div>
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Email</mat-label>
-                    <input matInput placeholder="Email" [(ngModel)]="userData.email" readonly>
+                    <input matInput placeholder="Email" [(ngModel)]="formUserData.email" readonly>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="w-100">
+                <mat-form-field appearance="outline" class="w-100" *ngIf="!showPasswordChange">
                     <mat-label>Contraseña</mat-label>
-                    <input matInput placeholder="Email" [(ngModel)]="password" readonly>
-                    <button mat-icon-button matSuffix>
-                        <mat-icon>edit</mat-icon>
-                    </button>
+                    <input  matInput 
+                            placeholder="Contraseña" 
+                            [(ngModel)]="password"
+                            (click) = "togglePasswordChange()"
+                            readonly>
+                    <mat-icon matSuffix>edit</mat-icon>
                 </mat-form-field>
+                <div *ngIf="showPasswordChange">
+                        <form [formGroup]="changePasswordForm">
+                                <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>Contraseña actual</mat-label>
+                                        <input matInput type="text" placeholder="Contraseña actual" [type]="hidePassActual ? 'password' : 'text'" formControlName="passActual">
+                                        <button mat-icon-button matSuffix (click)="hidePassActual = !hidePassActual" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassActual">
+                                            <mat-icon>{{hidePassActual ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                        </button>
+                                        <mat-error *ngIf="changePasswordForm.get('passActual').invalid">Debe ingresar una contraseña alfanumerica de 8 caracteres como minimo</mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>Contraseña nueva</mat-label>
+                                        <input matInput type="text" placeholder="Contraseña nueva" [type]="hidePassNew1 ? 'password' : 'text'" formControlName="passNew1" (change)="setPassNew2Validation()">
+                                        <button mat-icon-button matSuffix (click)="hidePassNew1 = !hidePassNew1" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassNew1">
+                                            <mat-icon>{{hidePassNew1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                        </button>
+                                        <mat-error *ngIf="changePasswordForm.get('passNew1').invalid">Debe ingresar una contraseña alfanumerica de 8 caracteres como minimo</mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Repita contraseña nueva</mat-label>
+                                            <input matInput type="text" placeholder="Repita contraseña nueva" [type]="hidePassNew2 ? 'password' : 'text'" formControlName="passNew2">
+                                            <button mat-icon-button matSuffix (click)="hidePassNew2 = !hidePassNew2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassNew2">
+                                                <mat-icon>{{hidePassNew2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                            </button>
+                                            <mat-error *ngIf="changePasswordForm.get('passNew2').invalid">Las contraseñas deben coincidir</mat-error>
+                                        </mat-form-field>
+                                    </form>
+                </div>
                 <div class="d-flex flex-row mt-4">
-                        <button mat-flat-button class="mr-3" [ngClass]="isUserModified ? primary-btn : primary-btn-disabled" [disabled]="!isUserModified">MODIFICAR</button>
-                        <button mat-stroked-button [disabled]="!isUserModified">CANCELAR</button>
+                    <button mat-flat-button class="mr-3" 
+                            [ngClass]="{'primary-apply-btn ': isUserModified, 'primary-apply-btn-disabled': !isUserModified }" 
+                            [disabled]="!isUserModified"
+                            (click)="modifyUserData()">MODIFICAR</button>
+                        <button mat-stroked-button [disabled]="!isUserModified" (click)="resetData()">DESHACER</button>
                 </div>
             </div>
             <mat-divider [vertical]="true" class="mr-5 ml-5"></mat-divider>
-            <div *ngIf="subscriptionData" class="d-flex flex-column w-50 align-items-center">
+            <div *ngIf="subscriptionData" class="d-flex flex-column w-50 align-items-center justify-content-between">
+                <div class="d-flex flex-column w-100 align-items-center">
                 <span class="h5 w-100 font-weight-bold mb-5">Suscripcion</span>
                 <div class="d-flex flex-column w-100 mb-4">
                     <div class="d-flex flex-row justify-content-between">
                         <span>Estado</span>
-                        <span>{{decodeState()}}</span>
+                        <div class="d-flex flex-row align-items-center">
+                            <mat-icon *ngIf="subscriptionData.active === 1" class="green-icon icon-16">check_circle</mat-icon>
+                            <mat-icon *ngIf="subscriptionData.active === 0" class="text-danger icon-16">cancel</mat-icon>
+                            <span>{{decodeState()}}</span>
+                        </div>
                     </div>
                     <mat-divider class="position-relative"></mat-divider>
                 </div>
@@ -61,6 +101,8 @@
                     </div>
                     <mat-divider class="position-relative"></mat-divider>
                 </div>
+            </div>
+                <button mat-stroked-button class="text-danger mt-3" (click)="cancelSubscription()">CANCELAR</button>
             </div>
         </div>
 

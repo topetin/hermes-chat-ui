@@ -1,0 +1,53 @@
+.profile-img-container {
+    width: 70px;
+    height: 70px;
+    box-sizing: border-box;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #f5f5f5;
+    cursor: pointer;
+}
+.profile-img-container:hover {
+    border: 1.5px solid gainsboro;
+    background-color: #ffff;
+}
+
+.profile-img-container-selected {
+    width: 70px;
+    height: 70px;
+    box-sizing: border-box;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1.5px solid #20b2aa;
+    background-color: #ffff;
+    cursor: pointer;
+}
+
+.imgs-container {
+    flex-wrap: wrap;
+}
+
+.profile-img {
+    height: 50px;
+    width: 50px;
+}
+
+.apply-btn {
+    background-color: #20b2aa;
+}
+
+::ng-deep .mat-dialog-container {
+    padding-top: 0;
+    padding-right: 0;
+}
+
+::ng-deep .mat-dialog-content {
+    margin: 0;
+    padding: 0;
+}

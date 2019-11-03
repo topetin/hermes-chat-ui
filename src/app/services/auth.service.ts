@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import decode from 'jwt-decode';
 import { AppStorageService } from './app-storage.service';
 import { User } from '../models/User.model';
+import { Router } from '@angular/router';
 
 const headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' })
 const apiUrl = "http://localhost:3000"
@@ -18,7 +19,8 @@ export class AuthService {
 
   constructor(private http: HttpClient,
     public jwtHelper: JwtHelperService,
-    private storage: AppStorageService) { }
+    private storage: AppStorageService,
+    private router: Router) { }
 
   loginUser(email, password) {
     return new Promise((resolve, reject) => {
@@ -49,8 +51,10 @@ export class AuthService {
     return observableThrowError(error.error)
   }
 
-  logout() {
+  logout(email?) {
     localStorage.removeItem('token');
+    this.storage.removeUserOnLocalStorage();
+    email ? this.router.navigate(['login'], {state: {email: email}}) : this.router.navigate(['login']);
   }
 
   isAuthenticated(): boolean {

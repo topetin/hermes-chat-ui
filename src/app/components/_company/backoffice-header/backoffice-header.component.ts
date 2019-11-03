@@ -8,6 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class BackofficeHeaderComponent implements OnInit {
 
   @Input() name: string;
+  @Input() profile_img: number;
   @Output() onTabChange = new EventEmitter();
 
   constructor() { }

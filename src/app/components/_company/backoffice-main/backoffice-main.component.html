@@ -1,6 +1,10 @@
-<app-backoffice-header [name]="userData.name" (onTabChange)="changeContent($event)"></app-backoffice-header>
+<app-backoffice-header [name]="userData.name" [profile_img]="userData.profile_img" (onTabChange)="changeContent($event)"></app-backoffice-header>
 <mat-tab-group #tabs class="contentTabs">
     <mat-tab> <app-backoffice-feed></app-backoffice-feed> </mat-tab>
     <mat-tab> <app-backoffice-members></app-backoffice-members> </mat-tab>
-    <mat-tab> <app-backoffice-account [subscriptionData] = "subscriptionData" [userData] = "userData"></app-backoffice-account> </mat-tab>
+    <mat-tab> <app-backoffice-account   *ngIf="userData && subscriptionData" 
+                                        [subscriptionData] = "subscriptionData" 
+                                        [userData] = "userData"
+                                        (onProfileImgChange)="updateProfileImage($event)"
+                                        (onPasswordChange)="logout()"></app-backoffice-account> </mat-tab>
 </mat-tab-group>

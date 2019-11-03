@@ -1,0 +1,12 @@
+<div class="d-flex flex-row justify-content-between">
+    <h1 mat-dialog-title class="mt-4">Cambiar foto de perfil</h1>
+    <button mat-icon-button (click)="dialogRef.close()"><mat-icon>close</mat-icon></button>
+</div>
+<div mat-dialog-content class="d-flex flex-column">
+    <div class="d-flex imgs-container">
+            <div *ngFor="let p of pi" [ngClass]="currentProfileImage === p ? 'profile-img-container-selected' : 'profile-img-container'" (click) = "currentProfileImage = p">
+                    <img src="../../../assets/profile_imgs/{{p}}" class="profile-img">
+            </div>
+    </div>
+            <button mat-flat-button class="mt-4 mr-4 apply-btn text-white" (click)="changeProfilePicture()">APLICAR</button>
+</div>

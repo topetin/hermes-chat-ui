@@ -20,6 +20,9 @@ import { StorageServiceModule } from 'ngx-webstorage-service';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatTableModule} from '@angular/material/table';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -40,6 +43,7 @@ import { BackofficeFeedComponent } from './components/_company/backoffice-feed/b
 import { BackofficeMembersComponent } from './components/_company/backoffice-members/backoffice-members.component';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { BackofficeAccountComponent } from './components/backoffice-account/backoffice-account.component';
+import { ProfileImageSelectorComponent } from './components/profile-image-selector/profile-image-selector.component';
 
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -60,7 +64,8 @@ export function tokenGetter() {
     BackofficeHeaderComponent,
     BackofficeFeedComponent,
     BackofficeMembersComponent,
-    BackofficeAccountComponent
+    BackofficeAccountComponent,
+    ProfileImageSelectorComponent
   ],
   imports: [
     BrowserModule,
@@ -100,7 +105,12 @@ export function tokenGetter() {
     StorageServiceModule,
     MatTabsModule,
     MatTableModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule, 
+    MatTooltipModule
+  ],
+  entryComponents: [
+    ProfileImageSelectorComponent
   ],
   providers: [AppStorageService,
     {

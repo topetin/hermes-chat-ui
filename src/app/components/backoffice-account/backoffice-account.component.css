@@ -1,3 +1,19 @@
 .font-14 {
     font-size: 14px;
 }
+
+
+.primary-apply-btn {
+    color: #ffffff !important;
+    background-color: #16A086 !important;
+}
+
+.primary-apply-btn-disabled {
+    color: #ffffff !important;
+    background-color: #92CBC5 !important;
+}
+
+.profile-img {
+    height: 50px;
+    width: 50px;
+}

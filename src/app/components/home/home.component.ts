@@ -17,9 +17,10 @@ export class HomeComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    if (this.storage.getStoredUser().role_id === 1) {
+    if (this.storage.getStoredUser() && this.storage.getStoredUser().role_id === 1) {
       return this.router.navigate(['/back-office'])
     }
+    return this.router.navigate(['/login'])
     //que vaya a la view del chat
   }
 }
