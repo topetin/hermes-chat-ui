@@ -22,7 +22,7 @@
                     <mat-label>Email/Username</mat-label>
                     <mat-progress-spinner *ngIf="requestingUsername" mode="indeterminate" diameter="20" class="form-spinner"></mat-progress-spinner>
                     <mat-icon matSuffix *ngIf="!requestingUsername">email</mat-icon>
-                    <input matInput formControlName="email" (blur)="validateUsername()" (change)="updateInput()">
+                    <input matInput formControlName="email" (blur)="validateUsername()" (input)="updateInput()">
                     <mat-error *ngIf="paymentForm.get('email').invalid">Debe ingresar un email valido</mat-error>
                     <span *ngIf="isUsernameAvailable === false && paymentForm.get('email').valid" class="pt-1 text-subtitle text-danger">El usuario ingresado ya existe.</span>
                     <span *ngIf="isUsernameAvailable === true && paymentForm.get('email').valid" class="pt-1 text-subtitle text-success">Usuario disponible.</span>

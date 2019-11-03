@@ -57,8 +57,8 @@ export class InputPayComponent implements OnInit {
   }
 
   validateUsername() {
-    this.requestingUsername = true;
     if (this.paymentForm.value.email && this.paymentForm.get('email').valid) {
+      this.requestingUsername = true;
       this.registerService.isUsernameAvailable(this.paymentForm.value.email)
       .subscribe(
         res => this.isUsernameAvailable = true,

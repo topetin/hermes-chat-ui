@@ -5,6 +5,7 @@ import { Subscription } from 'src/app/models/Subscription.model';
 import { BackofficeService } from 'src/app/services/backoffice.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/models/User.model';
 
 @Component({
   selector: 'app-backoffice-main',
@@ -15,6 +16,7 @@ export class BackofficeMainComponent implements OnInit {
 
   userData: any;
   subscriptionData: Subscription;
+  membersData: User[];
   
   @ViewChild('tabs', {static: false}) tabs: MatTabGroup;
 
@@ -27,6 +29,7 @@ export class BackofficeMainComponent implements OnInit {
   ngOnInit() {
     this.userData = this.storage.getStoredUser();
     this.getSubscriptionData();
+    this.getMemberList();
   }
 
   changeContent($event) {
@@ -41,8 +44,16 @@ export class BackofficeMainComponent implements OnInit {
 
   private getSubscriptionData() {
     this.backofficeService.getSubscription().subscribe(
-      data => { this.subscriptionData =  data; },
-      error => { this.displayError(error); }
+      data =>  this.subscriptionData =  data,
+      error => this.displayError(error)
+    )
+  }
+
+  private getMemberList() {
+    this.backofficeService.getUsers()
+    .subscribe(
+      data => this.membersData = data,
+      error => this.displayError(error)
     )
   }
 

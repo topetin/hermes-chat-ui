@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { User } from 'src/app/models/User.model';
 import { SelectionModel } from '@angular/cdk/collections';
 import { BackofficeService } from 'src/app/services/backoffice.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddMemberComponent } from './add-member/add-member.component';
 
 @Component({
   selector: 'app-backoffice-members',
@@ -11,13 +13,17 @@ import { BackofficeService } from 'src/app/services/backoffice.service';
 })
 export class BackofficeMembersComponent implements OnInit {
 
+  @Input() membersData: User[];
   dataSource: MatTableDataSource<User>;
   selection = new SelectionModel<User>(true, []);
   displayedColumns: string[] = ['email', 'username', 'role_id', 'active', 'selection'];
 
-  constructor(private backofficeService: BackofficeService) { }
+  constructor(
+    private backofficeService: BackofficeService,
+    public dialog: MatDialog) { }
 
   ngOnInit() {
+    console.log(this.membersData)
   }
 
   applyFilter(filterValue: string) {
@@ -38,12 +44,11 @@ export class BackofficeMembersComponent implements OnInit {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  test() {
-    this.backofficeService.getSubscription()
-    .subscribe(
-      data => console.log(data),
-      error => console.log(error)
-    )
+  openAddMemberDialog() {
+    this.dialog.open(AddMemberComponent, {
+      width: '1000px',
+      autoFocus: false
+    })
   }
 
 }

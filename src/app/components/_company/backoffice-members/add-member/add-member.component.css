@@ -1,0 +1,14 @@
+::ng-deep .mat-dialog-container {
+    padding-top: 0;
+    padding-right: 0;
+}
+
+::ng-deep .mat-dialog-content {
+    margin: 0;
+    padding: 0;
+}
+
+.form-spinner {
+    position: absolute;
+    right: 0;
+  }

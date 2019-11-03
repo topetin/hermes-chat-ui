@@ -22,6 +22,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatSelectModule} from '@angular/material/select';
 
 
 import { AppComponent } from './app.component';
@@ -44,6 +45,7 @@ import { BackofficeMembersComponent } from './components/_company/backoffice-mem
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { BackofficeAccountComponent } from './components/backoffice-account/backoffice-account.component';
 import { ProfileImageSelectorComponent } from './components/profile-image-selector/profile-image-selector.component';
+import { AddMemberComponent } from './components/_company/backoffice-members/add-member/add-member.component';
 
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -65,7 +67,8 @@ export function tokenGetter() {
     BackofficeFeedComponent,
     BackofficeMembersComponent,
     BackofficeAccountComponent,
-    ProfileImageSelectorComponent
+    ProfileImageSelectorComponent,
+    AddMemberComponent
   ],
   imports: [
     BrowserModule,
@@ -107,10 +110,12 @@ export function tokenGetter() {
     MatTableModule,
     MatCheckboxModule,
     MatDialogModule, 
-    MatTooltipModule
+    MatTooltipModule,
+    MatSelectModule
   ],
   entryComponents: [
-    ProfileImageSelectorComponent
+    ProfileImageSelectorComponent,
+    AddMemberComponent
   ],
   providers: [AppStorageService,
     {

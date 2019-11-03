@@ -3,6 +3,7 @@ import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { throwError as observableThrowError, Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators'
 import { Subscription } from '../models/Subscription.model';
+import { User } from '../models/User.model';
 
 const headers = new HttpHeaders({'Content-Type':'application/json; charset=utf-8'})
 const apiUrl = "http://localhost:3000"
@@ -18,6 +19,14 @@ export class BackofficeService {
     return this.http.get<Subscription>(apiUrl + '/subscription', {headers})
     .pipe(
       map((data: any) => new Subscription().deserialize(data.message)),
+      catchError(() => this.handleError)
+    );
+  }
+
+  getUsers(): Observable<User[]> {
+    return this.http.get(apiUrl + '/list-users', {headers})
+    .pipe(
+      map((res: any) => res.message.map((user: User) => new User().deserialize(user))),
       catchError(() => this.handleError)
     );
   }
