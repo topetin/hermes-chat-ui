@@ -16,32 +16,25 @@ export class BackofficeMembersComponent implements OnInit {
   @Input() membersData: User[];
   dataSource: MatTableDataSource<User>;
   selection = new SelectionModel<User>(true, []);
-  displayedColumns: string[] = ['email', 'username', 'role_id', 'active', 'selection'];
+  displayedColumns: string[] = ['selection', 'email', 'username', 'name', 'role_id', 'active', 'actions'];
 
   constructor(
     private backofficeService: BackofficeService,
     public dialog: MatDialog) { }
 
   ngOnInit() {
-    console.log(this.membersData)
+    this.dataSource = new MatTableDataSource<User>(this.membersData)
   }
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
+  loadSelection($event, row) {
+    if ($event) {
+      this.selection.toggle(row);
+    }
+    return null;
   }
 
   openAddMemberDialog() {
@@ -49,6 +42,21 @@ export class BackofficeMembersComponent implements OnInit {
       width: '1000px',
       autoFocus: false
     })
+  }
+
+  decodeRole(role) {
+    switch(role) {
+      case 1:
+        return 'OWNER';
+      case 2:
+        return 'ADMINISTRATOR';
+      case 3:
+        return 'USER'
+    }
+  }
+
+  decodeActive(active) {
+    return active === 0 ? 'Pendiente' : 'Activa';
   }
 
 }

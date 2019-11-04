@@ -1,20 +1,19 @@
 <div class="d-flex flex-row justify-content-between">
-        <h1 mat-dialog-title class="mt-4">Agregar miembro</h1>
+        <h1 mat-dialog-title class="mt-4">Agregar miembros</h1>
         <button mat-icon-button (click)="dialogRef.close()"><mat-icon>close</mat-icon></button>
     </div>
-    <div mat-dialog-content class="d-flex flex-row pr-4 pt-3 pb-3 align-items-center justify-content-center">
-            <form [formGroup]="addMemeberForm" class="d-flex flex-row w-100">
+    <div mat-dialog-content class="d-flex flex-column pr-4 pt-3 pb-3 align-items-center justify-content-center w-100">
+            <form [formGroup]="addMemeberForm" class="d-flex flex-column w-100 align-items-center">
+                    <div formArrayName="items" *ngFor="let item of addMemeberForm.get('items').controls; let i = index;" class="d-flex flex-row w-100 align-items-center">
+                            <div [formGroupName]="i" class="d-flex flex-row w-100 align-items-center" [ngClass]="{'padding-right-80': i === 0, 'padding-right-40': i !== 0 && i+1 !== addMemeberForm.get('items').controls.length }">
                 <mat-form-field class="w-75 mr-3">
                     <input matInput placeholder="Name" formControlName="name">
-                    <mat-error *ngIf="addMemeberForm.get('name').invalid">Debe ingresar un nombre</mat-error>
+                    <mat-error *ngIf="item.get('name') && item.get('name').invalid">Debe ingresar un nombre</mat-error>
                 </mat-form-field>
                 <mat-form-field class="w-100 mr-3">
                         <mat-label>Email</mat-label>
-                        <mat-progress-spinner *ngIf="requestingEmail" mode="indeterminate" diameter="20" class="form-spinner"></mat-progress-spinner>
-                        <input matInput formControlName="email" (blur)="validateEmail()" (input)="updateInput()">
-                        <mat-error *ngIf="addMemeberForm.get('email').invalid">Debe ingresar un email valido</mat-error>
-                        <span *ngIf="isEmailAvailable === false && addMemeberForm.get('email').valid" class="pt-1 text-subtitle text-danger">El usuario ingresado ya existe.</span>
-                        <span *ngIf="isEmailAvailable === true && addMemeberForm.get('email').valid" class="pt-1 text-subtitle text-success">Usuario disponible.</span>
+                        <input matInput formControlName="email">
+                        <mat-error *ngIf="item.get('email') && item.get('email').invalid">Debe ingresar un email valido</mat-error>
                     </mat-form-field>
                     <mat-form-field class="w-50 mr-3">
                             <mat-label>Role</mat-label>
@@ -22,10 +21,12 @@
                               <mat-option value="2">ADMINISTRATOR</mat-option>
                               <mat-option value="3">USER</mat-option>
                             </mat-select>
-                            <mat-error *ngIf="addMemeberForm.get('role').invalid">Debe ingresar un rol</mat-error>
+                            <mat-error *ngIf="item.get('role') && item.get('role').invalid">Debe ingresar un rol</mat-error>
                     </mat-form-field>
+                    <button mat-icon-button id="{{i}}" *ngIf="i !== 0" (click)="removeItem($event)" class="text-danger"><mat-icon>remove_circle</mat-icon></button>
+                    </div>
+                    <button mat-icon-button [ngClass]="{'text-success': item.valid}" [disabled]="item.invalid" *ngIf="i+1 === addMemeberForm.get('items').controls.length" (click)="addItem()"><mat-icon>add_circle</mat-icon></button>
+                </div>
             </form>
-                <button mat-icon-button><mat-icon>add_circle</mat-icon></button>
-                <button mat-icon-button><mat-icon>remove_circle</mat-icon></button>
-
+            <button mat-raised-button class="mt-4" [disabled]="addMemeberForm.get('items').invalid" (click)="addMemebers()">ACEPTAR</button>
     </div>

@@ -2,6 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { RegisterService } from 'src/app/services/register.service';
+import { BackofficeService } from 'src/app/services/backoffice.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-member',
@@ -11,63 +13,68 @@ import { RegisterService } from 'src/app/services/register.service';
 export class AddMemberComponent implements OnInit {
 
   addMemeberForm: FormGroup;
-  arrayItems
-  requestingEmail = false;
-  isEmailAvailable = false;
+  items: FormArray;
 
   constructor(
     public dialogRef: MatDialogRef<AddMemberComponent>,
     private fb: FormBuilder,
-    private registerService : RegisterService
+    private registerService : RegisterService,
+    private backofficeService: BackofficeService,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
     this.addMemeberForm = this.fb.group({
-      times: this.fb.array([
-        this.initTimes()
-      ])
+      items: this.fb.array([ this.createItem() ])
     })
   }
 
-  validateEmail() {
-    if (this.addMemeberForm.value.email && this.addMemeberForm.get('email').valid) {
-      this.requestingEmail = true;
-      this.registerService.isUsernameAvailable(this.addMemeberForm.value.email)
-      .subscribe(
-        res => this.isEmailAvailable = true,
-        err => this.isEmailAvailable = false
-        )
-      .add(()=> this.requestingEmail = false)
-    }
-  }
-
-  updateInput() {
-    this.isEmailAvailable = null;
-  }
-
-  initTimes() {
+  createItem(): FormGroup {
     return this.fb.group({
       name: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
-      role: new FormControl('', [Validators.required]),
-      trackingId: this.generateUniqueId()
-    })
+      role: new FormControl('', [Validators.required])
+    });
   }
 
-  generateUniqueId() {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  addItem(): void {
+    this.items = this.addMemeberForm.get('items') as FormArray;
+    this.items.push(this.createItem());
   }
 
-  addGroup() {
-    // add address to the list
-    const control = <FormArray>this.addMemeberForm.controls['times'];
-    control.push(this.initTimes());
+  removeItem($event) {
+    const index = $event.srcElement.parentElement.parentElement.id
+    this.items = this.addMemeberForm.get('items') as FormArray;
+    this.items.removeAt(index);
   }
 
-  removeGroup(i: number) {
-    // remove address from the list
-    const control = <FormArray>this.addMemeberForm.controls['times'];
-    control.removeAt(i);
+  trackByFn(index: any, item: any) {
+    return index;
+  }
+
+  addMemebers() {
+    this.items = this.addMemeberForm.get('items') as FormArray;
+    if (this.addMemeberForm.valid) {
+      this.backofficeService.addUsers(this.items.getRawValue()).subscribe(
+        result => {
+          console.log(result)
+          if (result.message === true) {
+            window.location.reload()
+          }
+        },
+        error => this.displayError(error)
+      )
+    }
+  }
+
+  private displayError(err) {
+    if (err.message) {
+      if (err.message.length) {
+        return this._snackBar.open(err.message.join() + ' ya se ecuentra/n registrado/s', 'OK', { duration: 5000 });
+      }
+      return this._snackBar.open(err.message, 'OK', { duration: 2000 });
+    }
+    this._snackBar.open('There was a problem with your request.', 'OK', { duration: 2000 })
   }
 
 }

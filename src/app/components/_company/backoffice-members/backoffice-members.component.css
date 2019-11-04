@@ -1,0 +1,40 @@
+mat-table {
+    overflow: unset !important;
+    max-height: 50% !important;
+  }
+  
+  mat-header-cell {
+    background-color:  #708090;
+    color: #ffffff;
+  }
+.mat-column-selection {
+    flex: 0 0 60px !important;
+    padding-right: 10px;
+    padding-left:  10px;
+}
+.mat-column-actions {
+    flex: 0 0 150px !important;
+    padding-right: 10px;
+    padding-left:  10px;
+}
+
+.mat-column-active {
+    flex: 0 0 130px !important;
+    padding-right: 10px;
+    padding-left:  10px;
+}
+
+.mat-column-role_id {
+    flex: 0 0 160px !important;
+    padding-right: 10px;
+    padding-left:  10px;
+}
+
+
+.table-container {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    max-height: 65%;
+    background-color: #ffffff;
+  }

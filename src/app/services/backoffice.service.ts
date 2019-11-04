@@ -31,6 +31,11 @@ export class BackofficeService {
     );
   }
 
+  addUsers(users: any) {
+    return this.http.post(apiUrl + '/add-users', { 'users': users }, { headers: headers })
+    .pipe(catchError(this.handleError))
+  }
+
   private extractData(res: any) {
     let body = res.message;
     return body || {};
