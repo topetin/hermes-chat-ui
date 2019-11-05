@@ -6,12 +6,12 @@
         <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
             <ng-container matColumnDef="selection">
                 <mat-header-cell *matHeaderCellDef>
-                    <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="selection.selected.length === 0">
+                    <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="selection.selected.length === 0" (click)="verifyResendInvite()">
                         <mat-icon [ngClass]="{'text-white': selection.selected.length !== 0}">more_vert</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu">
                         <button mat-menu-item (click)="deleteUsers()">Eliminar</button>
-                        <button mat-menu-item (click)="resendInvitations()">Reenviar invitaciones</button>
+                        <button mat-menu-item (click)="resendInvitations()" [disabled]="!canResendInvite">Reenviar invitaciones</button>
                         <button mat-menu-item [matMenuTriggerFor]="roles" [disabled]="selection.selected.length === 0 || !canChangeRole">Cambiar Rol</button>
                     </mat-menu>
                     <mat-menu #roles>

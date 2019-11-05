@@ -21,6 +21,7 @@ export class BackofficeMembersComponent implements OnInit, OnChanges {
   @Output() onMemebersListChange = new EventEmitter();
   displayedColumns: string[] = ['selection', 'email', 'username', 'name', 'role_id', 'active', 'actions'];
   canChangeRole = false;
+  canResendInvite = false;
 
   constructor(
     private backofficeService: BackofficeService,
@@ -158,5 +159,15 @@ export class BackofficeMembersComponent implements OnInit, OnChanges {
       })
       return all.length === this.selection.selected.length;
     }
+    }
+
+    verifyResendInvite() {
+      let bool = null;
+        this.selection.selected.forEach(item => {
+          if (item.active === 1) {
+            bool = false;
+          }
+        })
+        this.canResendInvite = bool !== null ? bool : true;
     }
 }
