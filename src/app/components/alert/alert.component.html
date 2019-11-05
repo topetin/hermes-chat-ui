@@ -1,0 +1,11 @@
+<div class="d-flex flex-row justify-content-end">
+    <button mat-icon-button (click)="dialogRef.close()"><mat-icon>close</mat-icon></button>
+</div>
+<div mat-dialog-content class="d-flex flex-column align-items-center pr-4">
+    <mat-icon class="icon-30 mb-4" [ngClass]="{'text-warning': data.type === 'warning'}">{{data.type}}</mat-icon>
+    <span class="h5 mb-3">{{data.message}}</span>
+    <div class="d-flex flex-row align-items-center w-100">
+        <button mat-flat-button class="green-background mr-3 text-white w-50" (click)="dialogRef.close(true)">SI</button>
+        <button mat-stroked-button class="text-danger w-50" (click)="dialogRef.close(false)">CANCELAR</button>
+    </div>
+</div>

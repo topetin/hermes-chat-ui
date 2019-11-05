@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { RegisterService } from 'src/app/services/register.service';
@@ -57,9 +57,8 @@ export class AddMemberComponent implements OnInit {
     if (this.addMemeberForm.valid) {
       this.backofficeService.addUsers(this.items.getRawValue()).subscribe(
         result => {
-          console.log(result)
           if (result.message === true) {
-            window.location.reload()
+            this.dialogRef.close('updateMembers')
           }
         },
         error => this.displayError(error)

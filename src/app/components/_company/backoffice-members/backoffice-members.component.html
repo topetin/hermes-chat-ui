@@ -10,13 +10,13 @@
                         <mat-icon [ngClass]="{'text-white': selection.selected.length !== 0}">more_vert</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu">
-                        <button mat-menu-item>Eliminar</button>
+                        <button mat-menu-item (click)="deleteUsers()">Eliminar</button>
                         <button mat-menu-item>Reenviar invitaciones</button>
-                        <button mat-menu-item [matMenuTriggerFor]="roles">Cambiar Rol</button>
+                        <button mat-menu-item [matMenuTriggerFor]="roles" [disabled]="selection.selected.length === 0 || !canChangeRole">Cambiar Rol</button>
                     </mat-menu>
                     <mat-menu #roles>
-                        <button mat-menu-item>Administrador</button>
-                        <button mat-menu-item>Usuario</button>
+                        <button mat-menu-item *ngIf="selection.selected.length && selection.selected[0].role_id !== 2" (click)="changeRole(2)">Administrador</button>
+                        <button mat-menu-item *ngIf="selection.selected.length && selection.selected[0].role_id !== 3" (click)="changeRole(3)">Usuario</button>
                     </mat-menu>
                 </mat-header-cell>
                 <mat-cell *matCellDef="let element">
@@ -50,13 +50,20 @@
                 </mat-header-cell>
                 <mat-cell *matCellDef="let element">
                     <div class="d-flex flex-row align-items-center">
-                        <button mat-icon-button class="green-icon" matTooltip="Cambiar rol">
+                        <button mat-icon-button class="green-icon" matTooltip="Cambiar rol" [matMenuTriggerFor]="roleMenu">
                             <mat-icon>people</mat-icon>
                         </button>
+                        <mat-menu #roleMenu="matMenu">
+                                <button mat-menu-item [matMenuTriggerFor]="roles">Cambiar rol a</button>
+                            </mat-menu>
+                            <mat-menu #roles>
+                                    <button mat-menu-item *ngIf="element.role_id !== 2" (click)="changeRole(2, element)">Administrador</button>
+                                    <button mat-menu-item *ngIf="element.role_id !== 3" (click)="changeRole(3, element)">Usuario</button>
+                                </mat-menu>
                         <button mat-icon-button class="green-icon" matTooltip="Reenviar invitacion">
                             <mat-icon>mail</mat-icon>
                         </button>
-                        <button mat-icon-button class="green-icon" matTooltip="Eliminar">
+                        <button mat-icon-button class="green-icon" matTooltip="Eliminar" (click)="deleteUsers(element)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </div>

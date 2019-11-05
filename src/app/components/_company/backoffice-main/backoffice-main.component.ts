@@ -57,6 +57,10 @@ export class BackofficeMainComponent implements OnInit {
     )
   }
 
+  refetchMembers() {
+    this.getMemberList();
+  }
+
   private displayError(err) {
     if(err.message) {
       return this._snackBar.open(err.message, 'OK', { duration: 2000 });

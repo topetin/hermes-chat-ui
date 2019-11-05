@@ -36,6 +36,16 @@ export class BackofficeService {
     .pipe(catchError(this.handleError))
   }
 
+  deleteUsers(users: any) {
+    return this.http.post(apiUrl + '/delete-users', { 'users': users }, { headers: headers })
+    .pipe(catchError(this.handleError))
+  }
+
+  changeRole(users: any, role: number) {
+    return this.http.post(apiUrl + '/modify-role', { 'users': users, 'role': role }, { headers: headers })
+    .pipe(catchError(this.handleError))
+  }
+
   private extractData(res: any) {
     let body = res.message;
     return body || {};

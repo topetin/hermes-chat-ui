@@ -46,6 +46,7 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { BackofficeAccountComponent } from './components/backoffice-account/backoffice-account.component';
 import { ProfileImageSelectorComponent } from './components/profile-image-selector/profile-image-selector.component';
 import { AddMemberComponent } from './components/_company/backoffice-members/add-member/add-member.component';
+import { AlertComponent } from './components/alert/alert.component';
 
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -68,7 +69,8 @@ export function tokenGetter() {
     BackofficeMembersComponent,
     BackofficeAccountComponent,
     ProfileImageSelectorComponent,
-    AddMemberComponent
+    AddMemberComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -115,7 +117,8 @@ export function tokenGetter() {
   ],
   entryComponents: [
     ProfileImageSelectorComponent,
-    AddMemberComponent
+    AddMemberComponent,
+    AlertComponent
   ],
   providers: [AppStorageService,
     {
