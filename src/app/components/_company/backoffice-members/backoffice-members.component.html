@@ -60,7 +60,7 @@
                                     <button mat-menu-item *ngIf="element.role_id !== 2" (click)="changeRole(2, element)">Administrador</button>
                                     <button mat-menu-item *ngIf="element.role_id !== 3" (click)="changeRole(3, element)">Usuario</button>
                                 </mat-menu>
-                        <button mat-icon-button class="green-icon" matTooltip="Reenviar invitacion" (click)="resendInvitations(element)">
+                        <button mat-icon-button class="green-icon" matTooltip="Reenviar invitacion" (click)="resendInvitations(element)" [disabled]="element.active === 1">
                             <mat-icon>mail</mat-icon>
                         </button>
                         <button mat-icon-button class="green-icon" matTooltip="Eliminar" (click)="deleteUsers(element)">
