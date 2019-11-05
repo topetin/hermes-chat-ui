@@ -17,6 +17,7 @@ export class RoleGuardService implements CanActivate {
     const expectedRole = route.data.expectedRole;
     const token = localStorage.getItem('token');
     const role = this.storage.getStoredUser().role_id + '';
+    const roleToCompare = role === '1' ? role : '2';
     // decode the token to get its payload
     if (!token) {
       this.router.navigate(['login']);
@@ -25,7 +26,7 @@ export class RoleGuardService implements CanActivate {
     // const tokenPayload = decode(token);
     if (
       !this.auth.isAuthenticated() || 
-      role !== expectedRole
+      roleToCompare !== expectedRole
     ) {
       this.router.navigate(['login']);
       return false;

@@ -46,6 +46,11 @@ export class BackofficeService {
     .pipe(catchError(this.handleError))
   }
 
+  resendInvitations(users: any) {
+    return this.http.post(apiUrl + '/resend-invitations', { 'users': users, }, { headers: headers })
+    .pipe(catchError(this.handleError))
+  }
+
   private extractData(res: any) {
     let body = res.message;
     return body || {};

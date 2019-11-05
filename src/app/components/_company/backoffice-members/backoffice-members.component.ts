@@ -91,6 +91,24 @@ export class BackofficeMembersComponent implements OnInit, OnChanges {
     )
   }
 
+  resendInvitations(element?: User) {
+    let req = element ? [element] : this.selection.selected;
+    this.backofficeService.resendInvitations(req)
+    .subscribe(
+      data => {
+        this.dialog.open(AlertComponent, {
+          width: '400px',
+          autoFocus: false,
+          data: {
+            type: 'check_circle',
+            message: 'Invitaciones reenviadas exitosamente'
+          }
+        })
+      },
+      error => this.displayError(error)
+    )
+  }
+
   changeRole(role, element?: User) {
     let dialogRef = this.dialog.open(AlertComponent, {
       width: '400px',

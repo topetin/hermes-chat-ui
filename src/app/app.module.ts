@@ -47,6 +47,7 @@ import { BackofficeAccountComponent } from './components/backoffice-account/back
 import { ProfileImageSelectorComponent } from './components/profile-image-selector/profile-image-selector.component';
 import { AddMemberComponent } from './components/_company/backoffice-members/add-member/add-member.component';
 import { AlertComponent } from './components/alert/alert.component';
+import { ChatComponent } from './components/_user/chat/chat.component';
 
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -70,7 +71,8 @@ export function tokenGetter() {
     BackofficeAccountComponent,
     ProfileImageSelectorComponent,
     AddMemberComponent,
-    AlertComponent
+    AlertComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
@@ -81,6 +83,7 @@ export function tokenGetter() {
       { path: '',  component: HomeComponent, canActivate: [AuthGuardService], data: {animation: 'Home' }},
       { path: 'login', component: LoginComponent, data: {animation: 'Login' } },
       { path: 'back-office', component: BackofficeMainComponent, canActivate: [RoleGuardService], data: { expectedRole: '1'} },
+      { path: 'chat', component: ChatComponent, canActivate: [RoleGuardService], data: { expectedRole: '2'} },
       { path: 'contratar', component: PurchaseComponent, data: {animation: 'Purchase' }},
       { path: 'contratar/payment', component: PaymentComponent },
       { path: 'activar-cuenta/:email', component: ActivateAccountComponent, pathMatch: 'full' , data: {animation: 'Activate' }},
