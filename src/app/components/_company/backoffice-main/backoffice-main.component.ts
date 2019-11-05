@@ -38,7 +38,7 @@ export class BackofficeMainComponent implements OnInit {
 
   updateProfileImage($event) {
     if ($event === 'refresh') {
-      window.location.reload();
+      this.userData = this.storage.getStoredUser();
     }
   }
 

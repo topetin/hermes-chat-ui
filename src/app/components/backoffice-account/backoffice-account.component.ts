@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Subscription } from 'src/app/models/Subscription.model';
 import { User } from 'src/app/models/User.model';
 import * as moment from 'moment';
@@ -7,13 +7,14 @@ import { ProfileImageSelectorComponent } from '../profile-image-selector/profile
 import { MatDialog } from '@angular/material/dialog';
 import { UserService } from 'src/app/services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AlertComponent } from '../alert/alert.component';
 
 @Component({
   selector: 'app-backoffice-account',
   templateUrl: './backoffice-account.component.html',
   styleUrls: ['./backoffice-account.component.css']
 })
-export class BackofficeAccountComponent implements OnInit {
+export class BackofficeAccountComponent implements OnInit, OnChanges {
 
   @Input() subscriptionData: Subscription;
   @Input() userData: User;
@@ -43,6 +44,10 @@ export class BackofficeAccountComponent implements OnInit {
       passNew1: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9]+$'), Validators.minLength(8)]),
       passNew2: new FormControl('', [Validators.required])
     })
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.userData = changes.userData.currentValue;
   }
 
   decodeState() {
@@ -96,7 +101,7 @@ export class BackofficeAccountComponent implements OnInit {
         this.changePasswordForm.reset();
         this.userService.changeName(this.formUserData.name)
           .then(
-            data => window.location.reload()
+            data => this.confirmChanges()
           )
           .catch(
             error => this.displayError(error)
@@ -138,7 +143,7 @@ export class BackofficeAccountComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       data => {
         if (data) {
-          this.onProfileImgChange.emit(data);
+          this.confirmChanges()
         }
       }
     )
@@ -148,6 +153,18 @@ export class BackofficeAccountComponent implements OnInit {
       return this._snackBar.open(err.message, 'OK', { duration: 2000 });
     }
     this._snackBar.open('There was a problem with your request.', 'OK', { duration: 2000 })
+  }
+
+  private confirmChanges() {
+    this.onProfileImgChange.emit('refresh')
+    this.dialog.open(AlertComponent, {
+      width: '400px',
+      autoFocus: false,
+      data: {
+        type: 'check_circle',
+        message: 'Cambios efectuados exitosamente'
+      }
+    })
   }
 
 }
