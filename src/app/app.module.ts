@@ -43,7 +43,7 @@ import { AppStorageService } from './services/app-storage.service';
 import { BackofficeFeedComponent } from './components/_company/backoffice-feed/backoffice-feed.component';
 import { BackofficeMembersComponent } from './components/_company/backoffice-members/backoffice-members.component';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
-import { BackofficeAccountComponent } from './components/backoffice-account/backoffice-account.component';
+import { BackofficeAccountComponent } from './components/_company/backoffice-account/backoffice-account.component';
 import { ProfileImageSelectorComponent } from './components/profile-image-selector/profile-image-selector.component';
 import { AddMemberComponent } from './components/_company/backoffice-members/add-member/add-member.component';
 import { AlertComponent } from './components/alert/alert.component';
