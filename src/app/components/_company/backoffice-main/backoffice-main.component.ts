@@ -6,6 +6,8 @@ import { BackofficeService } from 'src/app/services/backoffice.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/models/User.model';
+import { FeedService } from 'src/app/services/feed.service';
+import { Feed } from 'src/app/models/Feed.model';
 
 @Component({
   selector: 'app-backoffice-main',
@@ -17,12 +19,14 @@ export class BackofficeMainComponent implements OnInit {
   userData: any;
   subscriptionData: Subscription;
   membersData: User[];
+  feedData: Feed[];
   
   @ViewChild('tabs', {static: false}) tabs: MatTabGroup;
 
   constructor(
     private storage: AppStorageService,
     private backofficeService: BackofficeService,
+    private feedService: FeedService,
     private _snackBar: MatSnackBar,
     private authService: AuthService) { }
 
@@ -30,6 +34,7 @@ export class BackofficeMainComponent implements OnInit {
     this.userData = this.storage.getStoredUser();
     this.getSubscriptionData();
     this.getMemberList();
+    this.getFeed();
   }
 
   changeContent($event) {
@@ -57,8 +62,20 @@ export class BackofficeMainComponent implements OnInit {
     )
   }
 
+  private getFeed() {
+    this.feedService.getFeed()
+    .subscribe(
+      data => this.feedData = data,
+      error => this.displayError(error)
+    )
+  }
+
   refetchMembers() {
     this.getMemberList();
+  }
+
+  refetchFeed() {
+    this.getFeed()
   }
 
   private displayError(err) {

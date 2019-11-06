@@ -3,7 +3,10 @@
                         (onTabChange)="changeContent($event)"
                         (onLogout)="logout(userData.email)"></app-backoffice-header>
 <mat-tab-group #tabs class="contentTabs">
-    <mat-tab> <app-backoffice-feed></app-backoffice-feed> </mat-tab>
+    <mat-tab> <app-backoffice-feed  [name]="userData.name" 
+                                    [profile_img]="userData.profile_img" 
+                                    [feedList]="feedData"
+                                    (onNewFeed)="refetchFeed()"></app-backoffice-feed> </mat-tab>
     <mat-tab> <app-backoffice-members *ngIf="membersData" [membersData] = "membersData" (onMemebersListChange)="refetchMembers()"></app-backoffice-members> </mat-tab>
     <mat-tab> <app-backoffice-account   *ngIf="userData && subscriptionData" 
                                         [subscriptionData] = "subscriptionData" 
