@@ -48,6 +48,10 @@ import { ProfileImageSelectorComponent } from './components/profile-image-select
 import { AddMemberComponent } from './components/_company/backoffice-members/add-member/add-member.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { ChatComponent } from './components/_user/chat/chat.component';
+import { UserMainComponent } from './components/_user/user-main/user-main.component';
+import { UserHeaderComponent } from './components/_user/user-header/user-header.component';
+import { UserAccountComponent } from './components/_user/user-account/user-account.component';
+import { UserSidenavComponent } from './components/_user/user-sidenav/user-sidenav.component';
 
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -72,7 +76,11 @@ export function tokenGetter() {
     ProfileImageSelectorComponent,
     AddMemberComponent,
     AlertComponent,
-    ChatComponent
+    ChatComponent,
+    UserMainComponent,
+    UserHeaderComponent,
+    UserAccountComponent,
+    UserSidenavComponent
   ],
   imports: [
     BrowserModule,
