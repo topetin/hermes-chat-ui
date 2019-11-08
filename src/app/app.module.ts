@@ -23,6 +23,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
+import {MatBadgeModule} from '@angular/material/badge';
 
 
 import { AppComponent } from './app.component';
@@ -124,7 +125,8 @@ export function tokenGetter() {
     MatCheckboxModule,
     MatDialogModule, 
     MatTooltipModule,
-    MatSelectModule
+    MatSelectModule,
+    MatBadgeModule
   ],
   entryComponents: [
     ProfileImageSelectorComponent,
