@@ -3,11 +3,11 @@ import { Subscription } from 'src/app/models/Subscription.model';
 import { User } from 'src/app/models/User.model';
 import * as moment from 'moment';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { ProfileImageSelectorComponent } from '../profile-image-selector/profile-image-selector.component';
+import { ProfileImageSelectorComponent } from '../../profile-image-selector/profile-image-selector.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UserService } from 'src/app/services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AlertComponent } from '../alert/alert.component';
+import { AlertComponent } from '../../alert/alert.component';
 
 @Component({
   selector: 'app-backoffice-account',

@@ -91,7 +91,7 @@ export function tokenGetter() {
       { path: '',  component: HomeComponent, canActivate: [AuthGuardService], data: {animation: 'Home' }},
       { path: 'login', component: LoginComponent, data: {animation: 'Login' } },
       { path: 'back-office', component: BackofficeMainComponent, canActivate: [RoleGuardService], data: { expectedRole: '1'} },
-      { path: 'chat', component: ChatComponent, canActivate: [RoleGuardService], data: { expectedRole: '2'} },
+      { path: 'app', component: UserMainComponent, canActivate: [RoleGuardService], data: { expectedRole: '2'} },
       { path: 'contratar', component: PurchaseComponent, data: {animation: 'Purchase' }},
       { path: 'contratar/payment', component: PaymentComponent },
       { path: 'activar-cuenta/:email', component: ActivateAccountComponent, pathMatch: 'full' , data: {animation: 'Activate' }},
@@ -129,7 +129,8 @@ export function tokenGetter() {
   entryComponents: [
     ProfileImageSelectorComponent,
     AddMemberComponent,
-    AlertComponent
+    AlertComponent,
+    UserAccountComponent
   ],
   providers: [AppStorageService,
     {

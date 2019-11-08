@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
     if (this.storage.getStoredUser() && this.storage.getStoredUser().role_id === 1) {
       return this.router.navigate(['/back-office'])
     }
-    return this.router.navigate(['/chat'])
+    return this.router.navigate(['/app'])
     //que vaya a la view del chat
   }
 }

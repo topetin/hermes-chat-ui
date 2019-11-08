@@ -1,1 +1,13 @@
-<p>user-main works!</p>
+<div class="height-100">
+    <app-user-header [name]="userData.name" [profile_img]="userData.profile_img" (onLogout)="logout(userData.email)"
+        (onGoAccount)="openAccount()"></app-user-header>
+    <div class="d-flex flex-row justify-content-end h-100" style="padding-top: 64px;">
+        <app-user-account *ngIf="showAccount" 
+        [userData]="userData" 
+        (onHideAccount)="showAccount = false" 
+        class="w-25" 
+        (onAccountChange)="refetchUserData()"
+        (onPasswordChange)="logout(userData.email)">
+        </app-user-account>
+    </div>
+</div>
