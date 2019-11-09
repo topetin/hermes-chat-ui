@@ -7,6 +7,7 @@ import { Feed } from 'src/app/models/Feed.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { UserAccountComponent } from '../user-account/user-account.component';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user-main',
@@ -17,15 +18,18 @@ export class UserMainComponent implements OnInit {
 
   userData: User;
   feedData: Feed[];
-  showAccount = false;
+  companyData: any;
+  showAccount: boolean;
+  mainview = true;
 
   constructor(private storage: AppStorageService,
-    private feedService: FeedService,
+    private userService: UserService,
     private authService: AuthService,
     private _snackBar: MatSnackBar,
     public dialog: MatDialog) { }
 
   ngOnInit() {
+    this.showAccount = false;
     this.userData = this.storage.getStoredUser();
     this.getFeed();
   }
@@ -35,9 +39,13 @@ export class UserMainComponent implements OnInit {
   }
   
   private getFeed() {
-    this.feedService.getFeed()
+    this.userService.getCompanyFeed()
     .subscribe(
-      data => this.feedData = data,
+      data => {
+        this.feedData = data.message.feeds.map((user: Feed) => new Feed().deserialize(user));
+        this.storage.storeUserCompanyOnLocalStorage(data.message.company)
+        this.companyData = this.storage.getStoredUserCompany();
+      },
       error => this.displayError(error)
     )
   }

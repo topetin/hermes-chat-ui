@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { throwError as observableThrowError, Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators'
+import { catchError, map } from 'rxjs/operators'
 import { User } from '../models/User.model';
 import { AppStorageService } from './app-storage.service';
+import { Feed } from '../models/Feed.model';
 
 const headers = new HttpHeaders({'Content-Type':'application/json; charset=utf-8'})
 const apiUrl = "http://localhost:3000"
@@ -52,6 +53,14 @@ export class UserService {
           (error) => { reject(error) });
       }
     })
+  }
+
+  getCompanyFeed(): Observable<any> {
+    return this.http.get(apiUrl + '/get-company-feed', {headers})
+    .pipe(
+      this.extractData,
+      catchError(() => this.handleError)
+    );
   }
 
   private updateStorage(res: any) {

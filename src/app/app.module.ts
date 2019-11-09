@@ -53,6 +53,7 @@ import { UserMainComponent } from './components/_user/user-main/user-main.compon
 import { UserHeaderComponent } from './components/_user/user-header/user-header.component';
 import { UserAccountComponent } from './components/_user/user-account/user-account.component';
 import { UserSidenavComponent } from './components/_user/user-sidenav/user-sidenav.component';
+import { UserFeedComponent } from './components/_user/user-feed/user-feed.component';
 
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -81,7 +82,8 @@ export function tokenGetter() {
     UserMainComponent,
     UserHeaderComponent,
     UserAccountComponent,
-    UserSidenavComponent
+    UserSidenavComponent,
+    UserFeedComponent
   ],
   imports: [
     BrowserModule,
