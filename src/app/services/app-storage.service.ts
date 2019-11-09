@@ -14,7 +14,7 @@ export class AppStorageService {
   }
 
   public storeUserCompanyOnLocalStorage(companyData: any): void {
-    this.storage.set('user-company-data', {id: companyData.id, profile_img: companyData.profile_img});
+    this.storage.set('user-company-data', {id: companyData.id, profileImg: companyData.profile_img, name: companyData.name});
   }
 
   public getStoredUser() {

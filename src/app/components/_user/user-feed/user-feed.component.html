@@ -1,14 +1,14 @@
 <div class="w-100 h-100 pr-3">
-    <div class="grey-background box-shadow-strong h-100 w-100">
-        <div class="h-100 w-100 d-flex align-items-center justify-content-center feed-container">
+    <div class="grey-background box-shadow-strong h-100 w-100 p-4" [class.feed-container]="feedData.length === 0">
+        <div class="h-100 w-100 pr-3" style="overflow: auto; max-height: 90%;" #feeds>
                 <div class="w-100 mb-4" *ngFor="let feed of feedData">
-                        <div class="d-flex flex-row justify-content-between bg-light" style="border-radius: 4px;">
+                        <div class="d-flex flex-row justify-content-between bg-white box-shadow p-1 pb-2" style="border-radius: 4px;">
                             <div class="d-flex flex-row">
-                                    <div class="profile-img-feed mt-1 ml-1" style="min-width: 60px;">
+                                    <div class="profile-company-feed mt-1 ml-1" style="min-width: 60px;">
                                             <img src="../../../assets/profile_imgs/pi_{{companyImage}}.svg" style="width: 45px; height: 45px;">
                                     </div>
                                     <div class="d-flex flex-column pt-2 ml-3 pr-3">
-                                        <span class="font-weight-bold">{{name}}</span>
+                                        <span class="font-weight-bold">{{companyName}}</span>
                                         <span class="font-14">{{feed.message}}</span>
                                     </div>
                             </div>

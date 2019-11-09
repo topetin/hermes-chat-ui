@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Feed } from 'src/app/models/Feed.model';
 import * as moment from 'moment';
 
@@ -9,13 +9,26 @@ import * as moment from 'moment';
 })
 export class UserFeedComponent implements OnInit {
 
+  @ViewChild('feeds', {static: false}) private chatScroll: ElementRef;
   @Input() feedData: Feed[];
   @Input() companyImage: any;
+  @Input() companyName: any;
 
   constructor() { }
 
   ngOnInit() {
+    this.scrollToBottom();
   }
+
+  ngAfterViewChecked () {         
+    this.scrollToBottom(); 
+  }
+
+  private scrollToBottom(): void {
+    try {
+        this.chatScroll.nativeElement.scrollTop = this.chatScroll.nativeElement.scrollHeight;
+    } catch(err) { }                 
+}
 
   getTime(date) {
     return moment(date).format('LT')
@@ -25,4 +38,8 @@ export class UserFeedComponent implements OnInit {
     return moment(date).format('DD/MM/YYYY')
   }
 
+
+  test($event) {
+    console.log($event)
+  }
 }

@@ -84,6 +84,16 @@ body {
     justify-content: center;
 }
 
+.profile-company-feed {
+    background-color: #f5f5f5 !important;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .box-shadow {
     -webkit-filter: drop-shadow(rgba(0,0,0,0.2) 0px 1px 2px);
 }
