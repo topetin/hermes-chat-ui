@@ -54,6 +54,7 @@ import { UserHeaderComponent } from './components/_user/user-header/user-header.
 import { UserAccountComponent } from './components/_user/user-account/user-account.component';
 import { UserSidenavComponent } from './components/_user/user-sidenav/user-sidenav.component';
 import { UserFeedComponent } from './components/_user/user-feed/user-feed.component';
+import { AddChannelComponent } from './components/_user/add-channel/add-channel.component';
 
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -83,7 +84,8 @@ export function tokenGetter() {
     UserHeaderComponent,
     UserAccountComponent,
     UserSidenavComponent,
-    UserFeedComponent
+    UserFeedComponent,
+    AddChannelComponent
   ],
   imports: [
     BrowserModule,
@@ -134,7 +136,8 @@ export function tokenGetter() {
     ProfileImageSelectorComponent,
     AddMemberComponent,
     AlertComponent,
-    UserAccountComponent
+    UserAccountComponent,
+    AddChannelComponent
   ],
   providers: [AppStorageService,
     {

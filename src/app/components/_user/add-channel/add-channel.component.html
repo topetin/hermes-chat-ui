@@ -1,0 +1,17 @@
+<div class="d-flex flex-row justify-content-between">
+    <h1 mat-dialog-title class="mt-4">Agregar nuevo canal</h1>
+    <button mat-icon-button (click)="dialogRef.close()"><mat-icon>close</mat-icon></button>
+</div>
+<div mat-dialog-content class="d-flex flex-column">
+    <form [formGroup]="addChannelForm">
+        <mat-form-field class="w-100" floatLabel="never">
+            <input matInput placeholder="nombreDelCanal" formControlName="channelName">
+            <span matPrefix>#</span>
+            <mat-error *ngIf="addChannelForm.controls.channelName.hasError('required')">Debe ingresar un nombre para identificar el nuevo canal</mat-error>
+            <mat-error *ngIf="addChannelForm.controls.channelName.hasError('pattern')">El nombre del canal no debe contener espacios</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Agregar integrante..." formControlName="member">
+        </mat-form-field>
+    </form>
+</div>

@@ -12,7 +12,8 @@
                         <input  matInput 
                                 placeholder="Nombre" 
                                 [(ngModel)]="formUserData.name" 
-                                (input)="markNameAsTouched($event)">
+                                (input)="markNameAsTouched($event)"
+                                (change)="formUserData.name === '' ? resetData() : null">
                         <mat-icon matSuffix>edit</mat-icon>
                     </mat-form-field>
                 </div>

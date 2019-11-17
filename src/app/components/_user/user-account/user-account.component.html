@@ -12,7 +12,7 @@
         </div>
         <mat-form-field appearance="outline" class="w-100 font-14">
             <mat-label>Nombre</mat-label>
-            <input matInput placeholder="Nombre" [(ngModel)]="formUserData.name" (input)="markNameAsTouched($event)">
+            <input matInput placeholder="Nombre" [(ngModel)]="formUserData.name" (input)="markNameAsTouched($event)" (change)="formUserData.name === '' ? resetData() : null">
             <mat-icon matSuffix>edit</mat-icon>
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-100 font-14">
@@ -26,7 +26,7 @@
         </mat-form-field>
         <div *ngIf="showPasswordChange">
             <form [formGroup]="changePasswordForm">
-                <mat-form-field appearance="outline" class="w-100 font-14">
+                <mat-form-field appearance="outline" class="w-100 font-14 mt-2">
                     <mat-label>Contraseña actual</mat-label>
                     <input matInput type="text" placeholder="Contraseña actual"
                         [type]="hidePassActual ? 'password' : 'text'" formControlName="passActual">
@@ -37,7 +37,7 @@
                     <mat-error *ngIf="changePasswordForm.get('passActual').invalid">Debe ingresar una contraseña
                         alfanumerica de 8 caracteres como minimo</mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="w-100 font-14">
+                <mat-form-field appearance="outline" class="w-100 font-14 mt-3">
                     <mat-label>Contraseña nueva</mat-label>
                     <input matInput type="text" placeholder="Contraseña nueva"
                         [type]="hidePassNew1 ? 'password' : 'text'" formControlName="passNew1"
@@ -49,7 +49,7 @@
                     <mat-error *ngIf="changePasswordForm.get('passNew1').invalid">Debe ingresar una contraseña
                         alfanumerica de 8 caracteres como minimo</mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="w-100 font-14">
+                <mat-form-field appearance="outline" class="w-100 font-14 mt-3">
                     <mat-label>Repita contraseña nueva</mat-label>
                     <input matInput type="text" placeholder="Repita contraseña nueva"
                         [type]="hidePassNew2 ? 'password' : 'text'" formControlName="passNew2">
