@@ -32,6 +32,9 @@ export class UserMainComponent implements OnInit {
     this.showAccount = false;
     this.userData = this.storage.getStoredUser();
     this.getFeed();
+    setInterval(()=> {
+      this.getFeed();
+    }, 40000)
   }
 
   logout() {

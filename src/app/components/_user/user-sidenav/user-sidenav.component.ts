@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-user-sidenav',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-sidenav.component.css']
 })
 export class UserSidenavComponent implements OnInit {
+
+  @Input() userRole: any;
 
   constructor() { }
 
