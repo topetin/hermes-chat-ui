@@ -63,6 +63,14 @@ export class UserService {
     );
   }
 
+  getCompanyUsers(): Observable<User[]> {
+    return this.http.get(apiUrl + '/get-company-users', {headers})
+    .pipe(
+      map((res: any) => res.message.map((user: User) => new User().deserialize(user))),
+      catchError(() => this.handleError)
+    );
+  }
+
   private updateStorage(res: any) {
     this.storage.replaceUserOnLocalStorage(res.message as User);
   }

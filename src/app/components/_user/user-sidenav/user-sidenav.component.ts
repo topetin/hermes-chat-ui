@@ -18,7 +18,7 @@ export class UserSidenavComponent implements OnInit {
 
   openAddChannelDialog() {
     this.dialog.open(AddChannelComponent, {
-      width: '500px',
+      width: '400px',
       disableClose: true,
       data: {}
     })

@@ -24,6 +24,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 
 import { AppComponent } from './app.component';
@@ -130,7 +131,8 @@ export function tokenGetter() {
     MatDialogModule, 
     MatTooltipModule,
     MatSelectModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatAutocompleteModule
   ],
   entryComponents: [
     ProfileImageSelectorComponent,
