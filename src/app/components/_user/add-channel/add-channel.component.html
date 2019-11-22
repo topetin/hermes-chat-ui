@@ -5,7 +5,7 @@
 <div mat-dialog-content class="d-flex flex-column mr-4">
     <form [formGroup]="addChannelForm">
         <mat-form-field class="w-100" floatLabel="never">
-            <input matInput placeholder="nombreDelCanal" formControlName="channelName">
+            <input matInput placeholder="nombreDelCanal" formControlName="channelName" [disabled]="creatingChannel">
             <span matPrefix class="font-weight-bold">#</span>
             <mat-error *ngIf="addChannelForm.controls.channelName.hasError('required')">Debe ingresar un nombre para identificar el nuevo canal</mat-error>
             <mat-error *ngIf="addChannelForm.controls.channelName.hasError('pattern')">El nombre del canal no debe contener espacios</mat-error>
@@ -15,6 +15,7 @@
                     </mat-progress-spinner>
             <input 
             [readonly]="!usersLoaded" 
+            [disabled]="creatingChannel"
             matInput placeholder="Agregar integrante..." 
             formControlName="user" [(ngModel)]="user" 
             [matAutocomplete]="autoUser"
@@ -31,5 +32,10 @@
             <button mat-icon-button id="{{i}}" *ngIf="i !== 0" (click)="removeItem($event)" class="text-danger"><mat-icon class="icon-16">remove_circle</mat-icon></button>
         <span>{{addedUser.name}}</span><span class="text-muted font-weight-light">&nbsp;&nbsp;@{{addedUser.username}}</span>
     </div>
-    <button mat-raised-button class="mt-4" [disabled]="addChannelForm.get('channelName').invalid || addedUsers.length === 0" (click)="addChannel()">CREAR</button>
+    <div class="d-flex flex-row align-items-center justify-content-center mt-4 mb-2 ml-4 mr-4">
+            <button *ngIf="!creatingChannel" class="w-100" mat-raised-button [disabled]="addChannelForm.get('channelName').invalid || addedUsers.length === 0 || creatingChannel" (click)="addChannel()">CREAR</button>
+            <mat-progress-spinner *ngIf="creatingChannel" mode="indeterminate" [diameter]="30">
+                </mat-progress-spinner>
+    </div>
+
 </div>

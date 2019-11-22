@@ -10,6 +10,7 @@ import { AddChannelComponent } from '../add-channel/add-channel.component';
 export class UserSidenavComponent implements OnInit {
 
   @Input() userRole: any;
+  @Input() userId: number;
 
   constructor(public dialog: MatDialog) { }
 
@@ -20,7 +21,9 @@ export class UserSidenavComponent implements OnInit {
     this.dialog.open(AddChannelComponent, {
       width: '400px',
       disableClose: true,
-      data: {}
+      data: {
+        currentUserId: this.userId
+      }
     })
   }
 

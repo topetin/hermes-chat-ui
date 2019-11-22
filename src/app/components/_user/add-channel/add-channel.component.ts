@@ -6,9 +6,10 @@ import { Observable } from 'rxjs';
 import { startWith, map } from "rxjs/operators";
 import { UserService } from 'src/app/services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ChannelService } from 'src/app/services/channel.service';
 
 export interface AddChannelData {
-  companyUsers: User[];
+  currentUserId: number;
 }
 
 @Component({
@@ -24,18 +25,21 @@ export class AddChannelComponent implements OnInit {
   filteredUsers: Observable<any>;
   addedUsers = [];
   usersLoaded = false;
+  creatingChannel = false;
   optionSelected: any;
+  currentUserId: number;
 
   constructor(
     public dialogRef: MatDialogRef<AddChannelComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddChannelData,
     private fb: FormBuilder,
     private userService: UserService,
+    private channelService: ChannelService,
     private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
-    this.companyUsers = this.data.companyUsers;
+    this.currentUserId = this.data.currentUserId;
     this.addChannelForm = this.fb.group({
       channelName: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$')]),
       user: new FormControl('')
@@ -95,12 +99,14 @@ export class AddChannelComponent implements OnInit {
 
   private isAnUser() {
     let user = null;
-    Object.keys(this.companyUsers).forEach((key) => {
-      if (this.companyUsers[key].name.toLowerCase() === this.addChannelForm.value.user.toLowerCase() || 
-      this.companyUsers[key].username.toLowerCase() === this.addChannelForm.value.user.toLowerCase() ) {
-        user = this.companyUsers[key];
-      }
-    })
+    if (this.addChannelForm.value.user) {
+      Object.keys(this.companyUsers).forEach((key) => {
+        if (this.companyUsers[key].name.toLowerCase() === this.addChannelForm.value.user.toLowerCase() || 
+        this.companyUsers[key].username.toLowerCase() === this.addChannelForm.value.user.toLowerCase() ) {
+          user = this.companyUsers[key];
+        }
+      })
+    }
     return user;
   }
 
@@ -133,6 +139,13 @@ export class AddChannelComponent implements OnInit {
   }
 
   addChannel() {
-    
+    this.creatingChannel = true;
+    let members = this.addedUsers.map(user => user.id);
+    this.channelService.createChannel(this.currentUserId, 'G', this.addChannelForm.value.channelName, members)
+    .subscribe(
+      data => this.dialogRef.close({fetchChannels: true, goChannel: data.message}),
+      error => this.displayError(error)
+    )
+    .add(() => this.creatingChannel = false)
   }
 }
