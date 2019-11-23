@@ -8,6 +8,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { UserAccountComponent } from '../user-account/user-account.component';
 import { UserService } from 'src/app/services/user.service';
+import { ChannelService } from 'src/app/services/channel.service';
+import { Channel } from 'src/app/models/Channel.model';
 
 @Component({
   selector: 'app-user-main',
@@ -18,20 +20,24 @@ export class UserMainComponent implements OnInit {
 
   userData: User;
   feedData: Feed[];
+  userChannels: Channel[];
   companyData: any;
   showAccount: boolean;
   mainview = true;
+  onChannel: Channel;
 
   constructor(private storage: AppStorageService,
     private userService: UserService,
     private authService: AuthService,
     private _snackBar: MatSnackBar,
+    private channelService: ChannelService,
     public dialog: MatDialog) { }
 
   ngOnInit() {
     this.showAccount = false;
     this.userData = this.storage.getStoredUser();
     this.getFeed();
+    this.getChannels();
     setInterval(()=> {
       this.getFeed();
     }, 40000)
@@ -51,6 +57,24 @@ export class UserMainComponent implements OnInit {
       },
       error => this.displayError(error)
     )
+  }
+
+  private getChannels() {
+    this.channelService.getChannels()
+    .subscribe(
+      data => this.userChannels = data,
+      error => this.displayError(error)
+    )
+  }
+  
+  refetchChannels($event) {
+    this.getChannels();
+    this.goChannel($event);
+  }
+
+  goChannel($event) {
+    this.mainview = false;
+    this.onChannel = $event;
   }
 
   refetchUserData() {

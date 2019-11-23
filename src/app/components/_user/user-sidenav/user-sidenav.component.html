@@ -1,11 +1,16 @@
 <div class="h-100 w-100 d-flex flex-column p-3 align-items-center justify-content-between" style="max-height: 90%; overflow: hidden;">
-    <div class="d-flex flex-row w-100 h-100 align-items-start">
+    <div class="d-flex flex-column w-100 h-100 align-items-start mb-2">
         <div class="d-flex flex-row w-100 align-items-center">
-            <span class="font-weight-bold text-muted">Canales grupales</span>
+            <span class="font-weight-light text-muted">Canales grupales</span>
             <button *ngIf="userRole === 2" mat-icon-button (click)="openAddChannelDialog()"><mat-icon class="icon-20 green-icon">add_circle</mat-icon></button>            
+        </div>
+        <div class="d-flex flex-column w-100" style="max-height: 99%; overflow: auto;">
+            <span class="w-100 cursor-pointer font-weight-bold" *ngFor="let gc of groupChannels" id={{gc.id}} (click)="goChannel.emit($event.srcElement.parentElement.parentElement.id)">
+                #{{gc.title}}
+            </span>
         </div>
     </div>
     <div class="d-flex flex-row w-100 h-100">
-        <span class="font-weight-bold text-muted">Canales privados</span>
+        <span class="font-weight-light text-muted">Canales privados</span>
     </div>
 </div>
