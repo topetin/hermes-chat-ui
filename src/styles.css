@@ -87,8 +87,8 @@ body {
 
 .profile-company-feed {
     background-color: #f5f5f5 !important;
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -128,6 +128,10 @@ body {
     font-size: 14px;
 }
 
+.font-10 {
+    font-size: 10px;
+}
+
 .status-indicator {
     border: 1.5px solid #38E25B;
     background-color: #fff !important;
@@ -148,4 +152,25 @@ body {
 
 .grey-background {
     background-color: #f5f5f5;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    border-radius: 20px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #B6B6BD; 
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #888888; 
 }

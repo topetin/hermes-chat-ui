@@ -20,6 +20,7 @@ export class UserSidenavComponent implements OnInit, OnChanges {
   displayChannel: Channel;
   @Output() onNewChannel = new EventEmitter();
   @Output() goChannel = new EventEmitter();
+  @Output() goFeed = new EventEmitter();
 
   constructor(public dialog: MatDialog) { }
 
@@ -58,6 +59,16 @@ export class UserSidenavComponent implements OnInit, OnChanges {
       }
     }
   )
+  }
+
+  goToChannel($event) {
+    this.displayChannel = $event;
+    this.goChannel.emit($event)
+  }
+
+  goToFeed() {
+    this.displayChannel = undefined;
+    this.goFeed.emit()
   }
 
 }

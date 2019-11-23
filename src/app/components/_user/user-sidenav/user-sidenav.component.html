@@ -1,16 +1,28 @@
-<div class="h-100 w-100 d-flex flex-column p-3 align-items-center justify-content-between" style="max-height: 90%; overflow: hidden;">
-    <div class="d-flex flex-column w-100 h-100 align-items-start mb-2">
+<div class="h-100 w-100 d-flex flex-column pt-0 pl-3 pr-3 pb-1 align-items-center justify-content-between" style="max-height: 90%; overflow: hidden;">
+    <div class="d-flex flex-column w-100 h-100 align-items-start mb-4">
         <div class="d-flex flex-row w-100 align-items-center">
-            <span class="font-weight-light text-muted">Canales grupales</span>
-            <button *ngIf="userRole === 2" mat-icon-button (click)="openAddChannelDialog()"><mat-icon class="icon-20 green-icon">add_circle</mat-icon></button>            
+            <span class="font-weight-light text-muted font-14">Canales grupales</span>
+            <button *ngIf="userRole === 2" mat-icon-button (click)="openAddChannelDialog()"><mat-icon class="icon-20 green-icon">add_circle_outline</mat-icon></button>            
         </div>
         <div class="d-flex flex-column w-100" style="max-height: 99%; overflow: auto;">
-            <span class="w-100 cursor-pointer font-weight-bold" *ngFor="let gc of groupChannels" id={{gc.id}} (click)="goChannel.emit($event.srcElement.parentElement.parentElement.id)">
+            <span 
+            class="w-100 cursor-pointer font-14" 
+            *ngFor="let gc of groupChannels" 
+            (click)="goToChannel(gc)"
+            [class.font-weight-bold]="displayChannel && gc.id === displayChannel.id">
                 #{{gc.title}}
             </span>
         </div>
     </div>
     <div class="d-flex flex-row w-100 h-100">
-        <span class="font-weight-light text-muted">Canales privados</span>
+        <span class="font-weight-light text-muted font-14">Canales privados</span>
     </div>
+    <button 
+    mat-flat-button class="p-0 pl-1 grey-background" 
+    style="min-width: 35px; width: 35px; height: 35px; right: 0;outline: none; border-radius: 50%;" 
+    (click) = "goToFeed()"
+    [class.mat-elevation-z2] = "displayChannel !== undefined"
+    [class.bg-white] = "displayChannel !== undefined">
+    <img src="../../../../assets/img/megaphoneHeader.svg" style="width: 25px; height: 25px;">
+</button>
 </div>

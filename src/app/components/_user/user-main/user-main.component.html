@@ -11,12 +11,13 @@
             [userId]="userData.id"
             [userChannels]="userChannels"
             (onNewChannel)="refetchChannels($event)"
-            (goChannel)="goChannel($event)"></app-user-sidenav>
+            (goChannel)="goChannel($event)"
+            (goFeed)="goFeed()"></app-user-sidenav>
             <div class="d-flex flex-row h-100 p-0" [ngClass]="showAccount ? 'col-7' : 'col-8' ">
                 <mat-divider [vertical]="true"></mat-divider>
                 <app-user-feed *ngIf="mainview && companyData" class="h-100 w-100" [feedData]="feedData" [companyImage]="companyData.profileImg"
                 [companyName]="companyData.name"></app-user-feed>    
-                <app-chat *ngIf="!mainview"></app-chat>    
+                <app-chat *ngIf="!mainview" [channelData]="onChannel"></app-chat>    
             </div>
             <app-user-account *ngIf="showAccount" 
             [userData]="userData" 

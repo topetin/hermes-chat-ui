@@ -73,8 +73,9 @@ export class UserMainComponent implements OnInit {
   }
 
   goChannel($event) {
-    this.mainview = false;
+    console.log($event)
     this.onChannel = $event;
+    this.mainview = false;
   }
 
   refetchUserData() {
@@ -90,6 +91,11 @@ export class UserMainComponent implements OnInit {
 
   openAccount() {
     this.showAccount = true;
+  }
+
+  goFeed() {
+    this.getFeed();
+    this.mainview = true;
   }
 
 }
