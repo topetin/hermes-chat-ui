@@ -24,6 +24,7 @@ export class UserMainComponent implements OnInit {
   companyData: any;
   showAccount: boolean;
   mainview = true;
+  onChannelInfo = false;
   onChannel: Channel;
 
   constructor(private storage: AppStorageService,

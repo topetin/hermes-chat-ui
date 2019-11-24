@@ -1,4 +1,57 @@
-<div class="text-center m-auto d-flex flex-column justify-content-center align-items-center height-100">
-        <div class="d-flex flex-column align-items-center justify-content-center text-muted">
-            <span>{{channelData.title}}</span></div>
-</div>
+<div class="w-100 h-100 d-flex flex-row">
+        <div class="grey-background box-shadow-strong h-100 w-100" [class.chat-container]="messageList.length === 0">
+            <div class="d-flex flex-row pt-3 pb-2 pl-3 align-items-center" [class.justify-content-between] ="channelData.type === 'G'">
+                <span class="font-weight-bold h5 mr-2">{{decodeTitle(channelData.title)}}</span>
+                <mat-icon *ngIf="channelData.type === 'S'" class="icon-10 status-icon-online">lens</mat-icon>
+                <mat-icon *ngIf="channelData.type === 'S'" class="icon-10 status-icon-offline">panorama_fish_eye</mat-icon>
+                <div 
+                class="mat-elevation-z1 cursor-pointer pl-1 bg-white people-icon d-flex flex-column align-items-center justify-content-center" 
+                *ngIf="!showChannelInfo && channelData.type === 'G'"
+                (click)="toggleChannelInfo()">
+                    <mat-icon 
+                    class="icon-18">group</mat-icon>
+                </div>
+            </div>
+            <mat-divider class="w-100"></mat-divider>
+            <div class="height-80 w-100 pr-3 p-4" style="overflow: auto; max-height: 90%;" #chat>
+                <div class="w-100 mb-4 d-flex flex-row" *ngFor="let message of messageList">
+                    <div class="profile-company-feed mt-1 ml-1" style="min-width: 40px;">
+                        <img src="../../../assets/profile_imgs/pi_{{users[message.user_id].img}}.svg" style="width: 25px; height: 25px;">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <div class="d-flex flex-row justify-content-between bg-white p-1 pb-2"
+                            style="border-radius: 4px;">
+                            <div class="d-flex flex-row">
+                                <div class="d-flex flex-column pt-1 ml-2 pr-3">
+                                    <span class="font-weight-bold font-14">{{users[message.user_id].name}}</span>
+                                    <span class="font-14">{{message.content}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row pt-2 text-muted pr-3 text-right">
+                            <span class="font-10">{{getTime(message.at)}}&nbsp;&nbsp;</span>
+                            <span class="font-10"> {{getDate(message.at)}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row w-100 bg-white p-2">
+                <input class="w-100" placeholder="Escriba un mensaje para enviar..." style="border: none;">
+                <mat-icon class="text-info cursor-pointer">send</mat-icon>
+            </div>
+        </div>
+        <div *ngIf="showChannelInfo && channelData.type === 'G'" class="d-flex flex-column h-100 bg-white width-40 inner-box-shadow">
+            <div class="w-100 d-flex flex-row pt-3 pb-2 align-items-center">
+                    <div 
+                    class="special-box-shadow cursor-pointer pr-1 mr-2 grey-background people-icon-inner d-flex flex-column align-items-center justify-content-center" 
+                    *ngIf="showChannelInfo && channelData.type === 'G'"
+                    (click)="toggleChannelInfo()"
+                    style="z-index: 1;">
+                        <mat-icon 
+                        class="icon-18"
+                        [class.text-muted]="showChannelInfo">group</mat-icon>
+                    </div>
+                    <span>Integrantes</span>
+            </div>
+        </div>
+    </div>

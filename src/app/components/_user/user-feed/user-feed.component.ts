@@ -37,9 +37,4 @@ export class UserFeedComponent implements OnInit {
   getDate(date) {
     return moment(date).format('DD/MM/YYYY')
   }
-
-
-  test($event) {
-    console.log($event)
-  }
 }

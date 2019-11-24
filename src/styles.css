@@ -48,6 +48,18 @@ body {
     height: 16px !important;  
     line-height: 16px !important;
 }
+.icon-18 {
+    font-size: 18px;
+    width: 18px !important;
+    height: 18px !important;  
+    line-height: 18px !important;
+}
+.icon-10 {
+    font-size: 10px;
+    width: 10px !important;
+    height: 10px !important;  
+    line-height: 10px !important;
+}
 
 .header-icon {
     height: 35px;
@@ -133,8 +145,16 @@ body {
 }
 
 .status-indicator {
-    border: 1.5px solid #38E25B;
+    border: 1.5px solid #54d38a;
     background-color: #fff !important;
+}
+
+.status-icon-online {
+    color: #54d38a;
+}
+
+.status-icon-offline {
+    color: #99a8b4;
 }
 
 .no-border {
@@ -173,4 +193,12 @@ body {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #888888; 
+}
+
+.special-box-shadow {
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 0px 0 rgba(0,0,0,.14), 0 0px 0px 0 rgba(0,0,0,.12);
+}
+
+.inner-box-shadow {
+    box-shadow: inset 5px 0 5px -5px rgba(0,0,0,.2);
 }

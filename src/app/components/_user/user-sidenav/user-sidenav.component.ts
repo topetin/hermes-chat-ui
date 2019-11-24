@@ -30,13 +30,13 @@ export class UserSidenavComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
-    if (changes.onChannel && changes.userChannels) {
+    if (changes.onChannel && changes.userChannels && changes.userChannels.currentValue.length) {
       this.processChannels(changes.userChannels.currentValue);
       this.displayChannel = changes.onChannel.currentValue;
       this.scrollToItem()
       return;
     }
-    if (changes.userChannels && changes.userChannels.currentValue) {
+    if (changes.userChannels && changes.userChannels.currentValue && changes.userChannels.currentValue.length) {
       this.processChannels(changes.userChannels.currentValue);
     }
     if (changes.onChannel && changes.onChannel.currentValue) {

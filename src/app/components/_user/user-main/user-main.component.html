@@ -20,7 +20,7 @@
             (goChannel)="goChannel($event)"
             (goFeed)="goFeed()"
             [onChannel]="onChannel"></app-user-sidenav>
-            <div class="d-flex flex-row h-100 p-0" [ngClass]="showAccount ? 'col-7' : 'col-8' ">
+            <div class="d-flex flex-row h-100 p-0" [ngClass]="showAccount ? 'col-7' : 'col-10'" [class.pr-3]="showAccount">
                 <mat-divider [vertical]="true"></mat-divider>
                 <app-user-feed 
                 *ngIf="mainview && companyData" 
@@ -30,7 +30,10 @@
                 [companyName]="companyData.name"></app-user-feed>    
                 <app-chat 
                 *ngIf="!mainview" 
-                [channelData]="onChannel"></app-chat>    
+                class="h-100 w-100"
+                [channelData]="onChannel"
+                [userData]="userData"
+                (onChannelInfo)="onChannelInfo = !onChannelInfo"></app-chat>    
             </div>
             <app-user-account 
             *ngIf="showAccount" 
