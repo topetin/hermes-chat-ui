@@ -1,8 +1,14 @@
 <div class="height-100" style="overflow: hidden;">
     <div class="d-flex flex-column h-100">
         <div class="row p-0 m-0">
-                <app-user-header [name]="userData.name" [profile_img]="userData.profile_img" (onLogout)="logout(userData.email)"
-                (onGoAccount)="openAccount()" style="z-index: 1;" class="w-100"></app-user-header>
+                <app-user-header 
+                [name]="userData.name" 
+                [profile_img]="userData.profile_img" 
+                (onLogout)="logout(userData.email)"
+                (onGoAccount)="openAccount()" 
+                style="z-index: 1;" 
+                class="w-100"
+                (onGoChannel)="goOrCreateChannel($event)"></app-user-header>
         </div>
         <div *ngIf="companyData && userData" class="row col-12 p-0 m-0 h-100">
             <app-user-sidenav 
@@ -12,14 +18,22 @@
             [userChannels]="userChannels"
             (onNewChannel)="refetchChannels($event)"
             (goChannel)="goChannel($event)"
-            (goFeed)="goFeed()"></app-user-sidenav>
+            (goFeed)="goFeed()"
+            [onChannel]="onChannel"></app-user-sidenav>
             <div class="d-flex flex-row h-100 p-0" [ngClass]="showAccount ? 'col-7' : 'col-8' ">
                 <mat-divider [vertical]="true"></mat-divider>
-                <app-user-feed *ngIf="mainview && companyData" class="h-100 w-100" [feedData]="feedData" [companyImage]="companyData.profileImg"
+                <app-user-feed 
+                *ngIf="mainview && companyData" 
+                class="h-100 w-100" 
+                [feedData]="feedData" 
+                [companyImage]="companyData.profileImg"
                 [companyName]="companyData.name"></app-user-feed>    
-                <app-chat *ngIf="!mainview" [channelData]="onChannel"></app-chat>    
+                <app-chat 
+                *ngIf="!mainview" 
+                [channelData]="onChannel"></app-chat>    
             </div>
-            <app-user-account *ngIf="showAccount" 
+            <app-user-account 
+            *ngIf="showAccount" 
             [userData]="userData" 
             (onHideAccount)="showAccount = false" 
             class="p-0 col-3"

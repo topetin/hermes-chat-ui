@@ -4,8 +4,9 @@
             <span class="font-weight-light text-muted font-14">Canales grupales</span>
             <button *ngIf="userRole === 2" mat-icon-button (click)="openAddChannelDialog()"><mat-icon class="icon-20 green-icon">add_circle_outline</mat-icon></button>            
         </div>
-        <div class="d-flex flex-column w-100" style="max-height: 99%; overflow: auto;">
+        <div class="d-flex flex-column w-100" style="max-height: 99%; overflow: auto;" #groupScroll>
             <span 
+            id="{{gc.id}}"
             class="w-100 cursor-pointer font-14" 
             *ngFor="let gc of groupChannels" 
             (click)="goToChannel(gc)"
@@ -14,8 +15,18 @@
             </span>
         </div>
     </div>
-    <div class="d-flex flex-row w-100 h-100">
-        <span class="font-weight-light text-muted font-14">Canales privados</span>
+    <div class="d-flex flex-column w-100 h-100 mb-4">
+        <span class="font-weight-light text-muted font-14 w-100">Canales privados</span>
+        <div class="d-flex flex-column w-100" style="max-height: 99%; overflow: auto;" #singleScroll>
+                <span 
+                id="{{sc.id}}"
+                class="w-100 cursor-pointer font-14" 
+                *ngFor="let sc of singleChannels" 
+                (click)="goToChannel(sc)"
+                [class.font-weight-bold]="displayChannel && check(sc)">
+                    @{{decodeTitle(sc)}}
+                </span>
+            </div>
     </div>
     <button 
     mat-flat-button class="p-0 pl-1 grey-background" 

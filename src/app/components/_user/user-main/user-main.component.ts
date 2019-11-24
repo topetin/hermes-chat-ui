@@ -60,7 +60,7 @@ export class UserMainComponent implements OnInit {
   }
 
   private getChannels() {
-    this.channelService.getChannels()
+    return this.channelService.getChannels()
     .subscribe(
       data => this.userChannels = data,
       error => this.displayError(error)
@@ -68,12 +68,10 @@ export class UserMainComponent implements OnInit {
   }
   
   refetchChannels($event) {
-    this.getChannels();
-    this.goChannel($event);
+    this.getChannels().add(() => this.goChannel($event));
   }
 
   goChannel($event) {
-    console.log($event)
     this.onChannel = $event;
     this.mainview = false;
   }
@@ -96,6 +94,40 @@ export class UserMainComponent implements OnInit {
   goFeed() {
     this.getFeed();
     this.mainview = true;
+  }
+
+  goOrCreateChannel($event) {
+    let found = this.findChannel($event);
+    found ? this.goChannel(found) : this.createChannel($event)
+  }
+
+  private findChannel($event) {
+    let found = undefined;
+    this.userChannels.map((value) => {
+      if ($event.hasOwnProperty('title') && value.title === $event.title) {
+        found = value;
+      }
+      if ($event.hasOwnProperty('name')) {
+        let readTitle = value.title.split('//')
+        if (readTitle.length === 2 && 
+            ((readTitle[0] === $event.username  && readTitle[1] === this.userData.username)
+            || (readTitle[1] === $event.username && readTitle[0] === this.userData.username))) {
+              found = value
+            }
+      }
+    })
+    return found;
+  }
+
+  private createChannel(member) {
+    this.channelService.createChannel(this.userData.id, 'S', this.generateChannelTitle(member), [member.id]).subscribe(
+      data => { this.refetchChannels(data.message); this.onChannel = data.message },
+      error => this.displayError(error)
+    )
+  }
+
+  generateChannelTitle(secondUser) {
+    return this.userData.username + '//' + secondUser.username;
   }
 
 }

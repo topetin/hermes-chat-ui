@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { throwError as observableThrowError, Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators'
 import { User } from '../models/User.model';
@@ -67,6 +67,15 @@ export class UserService {
     return this.http.get(apiUrl + '/get-company-users', {headers})
     .pipe(
       map((res: any) => res.message.map((user: User) => new User().deserialize(user))),
+      catchError(() => this.handleError)
+    );
+  }
+
+  search(searchString): Observable<any> {
+    let params = new HttpParams().set('searchString', searchString);
+    return this.http.get(apiUrl + '/search', {params, headers})
+    .pipe(
+      this.extractData,
       catchError(() => this.handleError)
     );
   }
