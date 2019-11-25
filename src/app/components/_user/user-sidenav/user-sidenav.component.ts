@@ -4,6 +4,7 @@ import { AddChannelComponent } from '../add-channel/add-channel.component';
 import { Channel } from 'src/app/models/Channel.model';
 import { BehaviorSubject } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
+import { ChannelInfo } from '../user-main/user-main.component';
 
 @Component({
   selector: 'app-user-sidenav',
@@ -98,5 +99,29 @@ export class UserSidenavComponent implements OnInit, OnChanges {
   check(sc) {
     return sc.id === this.displayChannel.id
   }
+
+  // isUserOnline(channel: Channel) {
+  //   var found = undefined;
+  //   this.allChannelsInfo.map((chan) => {
+  //     console.log(chan)
+  //     console.log(channel)
+  //     if (chan.id === channel.id) {
+  //       chan.members.map((member) => {
+  //         if (member.id !== this.userId) {
+  //           found = member.id;
+  //           console.log(found)
+  //         }
+  //       })
+  //     }
+  //   })
+  //   let flag = false;
+  //   this.appState.ids.map((id) => {
+  //     if (id === found) {
+  //       console.log(id)
+  //       flag = true;
+  //     }
+  //   })
+  //   return flag;
+  // }
 
 }

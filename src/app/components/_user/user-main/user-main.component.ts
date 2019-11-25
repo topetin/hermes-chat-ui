@@ -11,6 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 import { ChannelService } from 'src/app/services/channel.service';
 import { Channel } from 'src/app/models/Channel.model';
 import { ChannelMember } from 'src/app/models/ChannelMember.model';
+import { ChatService } from 'src/app/services/chat.service';
 
 export interface ChannelInfo {
   id: number,
@@ -34,22 +35,54 @@ export class UserMainComponent implements OnInit {
   onChannelInfo = false;
   onChannel: Channel;
   channelInfo: ChannelInfo;
+  appState: any;
 
   constructor(private storage: AppStorageService,
     private userService: UserService,
     private authService: AuthService,
     private _snackBar: MatSnackBar,
     private channelService: ChannelService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private chatService: ChatService) { }
 
   ngOnInit() {
     this.showAccount = false;
     this.userData = this.storage.getStoredUser();
+    this.getAppState()
+    this.initIoConnection();
     this.getFeed();
     this.getChannels();
     setInterval(()=> {
       this.getFeed();
     }, 40000)
+  }
+
+  getAppState() {
+    this.channelService.getAppState(this.userData.company_id)
+    .subscribe(
+      data => {
+        this.storage.storeAppState(data),
+        this.appState = this.storage.getAppState()
+      },
+      error => this.displayError(error)
+    )
+  }
+
+  private initIoConnection(): void {
+    this.chatService.initSocket();
+
+    this.chatService.emitOnline(this.userData.company_id, this.userData.id);
+
+    this.chatService.onOnline().subscribe((data: any) => {
+      this.storage.addToAppState(data.user)
+      this.appState = this.storage.getAppState()
+    })
+
+    this.chatService.onOffline().subscribe((data: any) => {
+      console.log(data)
+      this.storage.removeFromAppState(data.user)
+      this.appState = this.storage.getAppState()
+    })
   }
 
   logout() {

@@ -20,6 +20,7 @@ export class ChatComponent implements OnInit, OnChanges {
   @Input() userData: User;
   @Input() channelInfo: ChannelInfo;
   @Input() accountOpen: boolean;
+  @Input() appState: any;
 
   messageList = []
   users = {}
@@ -47,7 +48,6 @@ export class ChatComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.channelInfo && changes.channelInfo.currentValue) {
       this.channelDisplayInfo = undefined;
-      console.log(changes.channelInfo.currentValue)
       this.channelDisplayInfo = Object.assign({}, changes.channelInfo.currentValue);
       if (this.channelDisplayInfo.members[0].channel_type === 'S') {
         this.singleChannelInfo = this.getSingleChannelInfo()
@@ -147,13 +147,11 @@ export class ChatComponent implements OnInit, OnChanges {
 
   isAlreadyAdded(user) {
     let found = false;
-    console.log(user)
     this.channelInfo.members.map((member) => {
       if (member.id === user.id) {
         found = true;
       }
     })
-    console.log(found)
     return found;
   }
 
@@ -207,7 +205,6 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   removeSingleChannel() {
-    console.log('eee', this.singleChannelInfo)
     this.channelService.removeSingleChannel(
       this.channelData.id, 
       this.channelData.owner_id,
@@ -217,6 +214,26 @@ export class ChatComponent implements OnInit, OnChanges {
         data => this.onChannelDelete.emit(),
         error => this.displayError(error)
       )
+  }
+
+    isSingleOnline() {
+    let flag = false;
+    this.appState.ids.map((id) => {
+      if (id === this.singleChannelInfo.id) {
+        flag = true;
+      }
+    })
+    return flag;
+  }
+
+  isOnline(member) {
+    let flag = false;
+    this.appState.ids.map((id) => {
+      if (id === member.id) {
+        flag = true;
+      }
+    })
+    return flag;
   }
 
 }

@@ -3,8 +3,8 @@
         <div class="d-flex flex-row pt-3 pb-2 pl-3 align-items-center justify-content-between">
             <div class="d-flex flex-row align-items-center">
                 <span class="font-weight-bold h5 mr-2">{{decodeTitle(channelData.title)}}</span>
-                <mat-icon *ngIf="channelData.type === 'S'" class="icon-10 status-icon-online">lens</mat-icon>
-                <mat-icon *ngIf="channelData.type === 'S'" class="icon-10 status-icon-offline">panorama_fish_eye
+                <mat-icon *ngIf="channelData.type === 'S' && isSingleOnline()" class="icon-10 status-icon-online">lens</mat-icon>
+                <mat-icon *ngIf="channelData.type === 'S' && !isSingleOnline()" class="icon-10 status-icon-offline">panorama_fish_eye
                 </mat-icon>
             </div>
             <div class="mat-elevation-z1 cursor-pointer pl-1 bg-white people-icon d-flex flex-column align-items-center justify-content-center"
@@ -15,8 +15,6 @@
         </div>
         <mat-divider class="w-100"></mat-divider>
         <div class="d-flex flex-column">
-
-
             <div class="w-100 pr-3 p-4" style="overflow: auto; max-height: 100%;" #chat>
                 <div class="w-100 mb-4 d-flex flex-row" *ngFor="let message of messageList">
                     <div class="profile-company-feed mt-1 ml-1" style="min-width: 40px;">
@@ -83,8 +81,13 @@
                             style="width: 25px; height: 25px;">
                     </div>
                     <div class="d-flex flex-column">
-                        <span class="font-14">{{member.name}}<span *ngIf="member.id === userData.id"
-                                class="font-weight-light">&nbsp;(tu)</span></span>
+                            <div class="d-flex flex-row align-items-center">
+                                    <span class="font-14 mr-2">{{member.name}}<span *ngIf="member.id === userData.id"
+                                        class="font-weight-light">&nbsp;(tu)</span></span>
+                                    <mat-icon *ngIf="isOnline(member) && member.id !== userData.id" class="icon-10 status-icon-online">lens</mat-icon>
+                                <mat-icon *ngIf="!isOnline(member) && member.id !== userData.id" class="icon-10 status-icon-offline">panorama_fish_eye
+                                </mat-icon>
+                            </div>
                         <span class="font-12 font-weight-light">{{member.username}}</span>
                     </div>
                 </div>

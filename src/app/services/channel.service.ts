@@ -58,6 +58,15 @@ export class ChannelService {
     .pipe(catchError(this.handleError))
   }
 
+  getAppState(companyId): Observable<any[]> {
+    let params = new HttpParams().set('companyId', companyId);
+    return this.http.get(apiUrl + "/get-app-state", { params, headers })
+    .pipe(
+      map((res: any) => res.message.map((state) => state.userId)),
+      catchError(() => this.handleError)
+    )
+  }
+
   private handleError(error: any): Observable<any> {
     return observableThrowError(error.error)
   }

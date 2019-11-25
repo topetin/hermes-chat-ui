@@ -55,6 +55,7 @@ import { UserAccountComponent } from './components/_user/user-account/user-accou
 import { UserSidenavComponent } from './components/_user/user-sidenav/user-sidenav.component';
 import { UserFeedComponent } from './components/_user/user-feed/user-feed.component';
 import { AddChannelComponent } from './components/_user/add-channel/add-channel.component';
+import { ChatService } from './services/chat.service';
 
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -140,7 +141,7 @@ export function tokenGetter() {
     UserAccountComponent,
     AddChannelComponent
   ],
-  providers: [AppStorageService,
+  providers: [AppStorageService, ChatService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,

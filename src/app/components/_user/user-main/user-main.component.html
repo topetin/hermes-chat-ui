@@ -40,6 +40,7 @@
                 (onChannelInfo)="processChannelInfo()"
                 (onChannelChange)="updateChannel($event)"
                 (onChannelDelete)="updateChannelsAndGoToFeeds()"
+                [appState]="appState"
                 ></app-chat>    
             </div>
             <app-user-account 
