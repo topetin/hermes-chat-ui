@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators'
 import { throwError as observableThrowError, Observable } from 'rxjs';
 import { Channel } from '../models/Channel.model';
+import { ChannelMember } from '../models/ChannelMember.model';
 
 const headers = new HttpHeaders({'Content-Type':'application/json; charset=utf-8'})
 const apiUrl = "http://localhost:3000"
@@ -23,8 +24,38 @@ export class ChannelService {
     return this.http.get(apiUrl + "/get-channels", { headers })
     .pipe(
       map((res: any) => res.message.map((user: Channel) => new Channel().deserialize(user))),
-
+      catchError(() => this.handleError)
     )
+  }
+
+  getChannelInfo(channelId): Observable<ChannelMember[]> {
+    let params = new HttpParams().set('channelId', channelId);
+    return this.http.get(apiUrl + "/get-channel-info", { params, headers })
+    .pipe(
+      map((res: any) => res.message.map((cm: ChannelMember) => new ChannelMember().deserialize(cm))),
+      catchError(() => this.handleError)
+    )
+  }
+
+  removeUser(channelId, userId) {
+    return this.http.post(apiUrl + '/remove-member', { 'channelId': channelId, 'userId': userId }, { headers: headers })
+    .pipe(catchError(this.handleError))
+  }
+
+  removeChannel(channelId) {
+    return this.http.post(apiUrl + '/remove-channel', { 'channelId': channelId }, { headers: headers })
+    .pipe(catchError(this.handleError))
+  }
+
+  addUser(channelId, userId) {
+    return this.http.post(apiUrl + '/add-member', { 'channelId': channelId, 'userId': userId }, { headers: headers })
+    .pipe(catchError(this.handleError))
+  }
+
+  removeSingleChannel(channelId, channelOwner, channelMember, userId) {
+    return this.http.post(apiUrl + '/remove-single-channel', 
+    { 'channelId': channelId, 'channelOwner': channelOwner, 'channelMember': channelMember, 'userId': userId }, { headers: headers })
+    .pipe(catchError(this.handleError))
   }
 
   private handleError(error: any): Observable<any> {

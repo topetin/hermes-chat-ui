@@ -44,3 +44,13 @@
     background-color: #ffff;
     border: none;
 }
+
+.narrow {
+    right: 20%;
+    width: 80%;
+}
+
+.form-spinner {
+    position: absolute;
+    right: 0;
+  }

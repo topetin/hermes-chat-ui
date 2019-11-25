@@ -30,7 +30,7 @@ export class UserSidenavComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
-    if (changes.onChannel && changes.userChannels && changes.userChannels.currentValue.length) {
+    if (changes.onChannel && changes.userChannels && changes.userChannels.currentValue && changes.userChannels.currentValue.length) {
       this.processChannels(changes.userChannels.currentValue);
       this.displayChannel = changes.onChannel.currentValue;
       this.scrollToItem()
@@ -71,6 +71,7 @@ export class UserSidenavComponent implements OnInit, OnChanges {
     data => {
       if (data) {
         this.displayChannel = data.goChannel;
+        this.scrollToItem();
         if (data.fetchChannels) {
           this.onNewChannel.emit(this.displayChannel);
         }

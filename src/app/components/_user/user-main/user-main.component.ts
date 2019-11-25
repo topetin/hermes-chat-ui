@@ -10,6 +10,12 @@ import { UserAccountComponent } from '../user-account/user-account.component';
 import { UserService } from 'src/app/services/user.service';
 import { ChannelService } from 'src/app/services/channel.service';
 import { Channel } from 'src/app/models/Channel.model';
+import { ChannelMember } from 'src/app/models/ChannelMember.model';
+
+export interface ChannelInfo {
+  id: number,
+  members: ChannelMember[]
+}
 
 @Component({
   selector: 'app-user-main',
@@ -21,11 +27,13 @@ export class UserMainComponent implements OnInit {
   userData: User;
   feedData: Feed[];
   userChannels: Channel[];
+  allChannelsInfo = new Array<ChannelInfo>();
   companyData: any;
   showAccount: boolean;
   mainview = true;
   onChannelInfo = false;
   onChannel: Channel;
+  channelInfo: ChannelInfo;
 
   constructor(private storage: AppStorageService,
     private userService: UserService,
@@ -72,13 +80,60 @@ export class UserMainComponent implements OnInit {
     this.getChannels().add(() => this.goChannel($event));
   }
 
+  updateChannel($event) {
+    this.removeChannelFromList($event);
+    this.getChannels();
+    this.getChannelInfo($event);
+  }
+
   goChannel($event) {
+    this.getChannelInfo($event);
     this.onChannel = $event;
     this.mainview = false;
   }
 
   refetchUserData() {
     this.userData = this.storage.getStoredUser();
+  }
+
+  getChannelInfo(channel: Channel) {
+    let found = this.findChannelInfo(channel);
+    if (found) {
+      this.channelInfo = found;
+      return ;
+    }
+    this.channelService.getChannelInfo(channel.id)
+    .subscribe(
+      data => { 
+        this.channelInfo = {id: channel.id, members: data };
+        this.allChannelsInfo.push(this.channelInfo);
+       }
+    )
+  }
+
+  removeChannelFromList(channel: Channel) {
+    let found = this.allChannelsInfo.findIndex(element => element.id === channel.id)
+    this.allChannelsInfo.splice(found, 1)
+  }
+
+  findChannelInfo(channel: Channel) {
+    let found = undefined;
+    this.allChannelsInfo.map((cn) => {
+      if (cn.id === channel.id) {
+        found = cn;
+      }
+    })
+    return found;
+  }
+
+  updateChannelsAndGoToFeeds() {
+    this.getChannels();
+    this.goFeed();
+  }
+
+  processChannelInfo() {
+    this.onChannelInfo = !this.onChannelInfo;
+    this.showAccount = false;
   }
 
   private displayError(err) {
@@ -121,10 +176,22 @@ export class UserMainComponent implements OnInit {
   }
 
   private createChannel(member) {
-    this.channelService.createChannel(this.userData.id, 'S', this.generateChannelTitle(member), [member.id]).subscribe(
-      data => { this.refetchChannels(data.message); this.onChannel = data.message },
-      error => this.displayError(error)
-    )
+    let c = new Channel();
+    c.id = 0;
+    c.owner_id = member.id;
+    c.title = this.generateChannelTitle(member);
+    c.type = 'S';
+    let ci: ChannelInfo = {id: c.id, members: []};
+    member.channel_type = 'S';
+    ci.members.push(member)
+    this.onChannel = c;
+    this.mainview = false;
+    this.channelInfo = ci;
+
+    // this.channelService.createChannel(this.userData.id, 'S', this.generateChannelTitle(member), [member.id]).subscribe(
+    //   data => { this.refetchChannels(data.message); this.onChannel = data.message },
+    //   error => this.displayError(error)
+    // )
   }
 
   generateChannelTitle(secondUser) {

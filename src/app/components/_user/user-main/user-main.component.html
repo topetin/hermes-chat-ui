@@ -1,16 +1,18 @@
-<div class="height-100" style="overflow: hidden;">
-    <div class="d-flex flex-column h-100">
+
+    <div class="d-block height-100" style="box-sizing: content-box;max-height: 100vh;overflow: hidden;">
         <div class="row p-0 m-0">
                 <app-user-header 
                 [name]="userData.name" 
                 [profile_img]="userData.profile_img" 
                 (onLogout)="logout(userData.email)"
                 (onGoAccount)="openAccount()" 
-                style="z-index: 1;" 
+                style="z-index: 1;height: 8vh; min-height: 8vh;
+                max-height: 8vh;" 
                 class="w-100"
                 (onGoChannel)="goOrCreateChannel($event)"></app-user-header>
         </div>
-        <div *ngIf="companyData && userData" class="row col-12 p-0 m-0 h-100">
+        <div *ngIf="companyData && userData" class="row col-12 p-0 m-0" style="height: 92vh;margin-top: 8vh; min-height: 92vh;
+        max-height: 92vh;">
             <app-user-sidenav 
             class="col-2 h-100 bg-white p-0" 
             [userRole]="userData.role_id" 
@@ -29,20 +31,24 @@
                 [companyImage]="companyData.profileImg"
                 [companyName]="companyData.name"></app-user-feed>    
                 <app-chat 
-                *ngIf="!mainview" 
+                *ngIf="!mainview && channelInfo" 
                 class="h-100 w-100"
                 [channelData]="onChannel"
                 [userData]="userData"
-                (onChannelInfo)="onChannelInfo = !onChannelInfo"></app-chat>    
+                [accountOpen]="showAccount"
+                [channelInfo]="channelInfo"
+                (onChannelInfo)="processChannelInfo()"
+                (onChannelChange)="updateChannel($event)"
+                (onChannelDelete)="updateChannelsAndGoToFeeds()"
+                ></app-chat>    
             </div>
             <app-user-account 
             *ngIf="showAccount" 
-            [userData]="userData" 
-            (onHideAccount)="showAccount = false" 
+            [userData]="userData"
+            (onHideAccount)="showAccount = false; " 
             class="p-0 col-3"
             (onAccountChange)="refetchUserData()"
             (onPasswordChange)="logout(userData.email)">
             </app-user-account>
         </div>
     </div>
-</div>

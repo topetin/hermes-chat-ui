@@ -1,22 +1,27 @@
-<div class="w-100 h-100 d-flex flex-row">
-        <div class="grey-background box-shadow-strong h-100 w-100" [class.chat-container]="messageList.length === 0">
-            <div class="d-flex flex-row pt-3 pb-2 pl-3 align-items-center" [class.justify-content-between] ="channelData.type === 'G'">
+<div class="w-100 d-flex flex-row" style="height: 92vh;" [class.w-75]="showChannelInfo">
+    <div class="grey-background box-shadow-strong h-100 w-100" [class.chat-container]="messageList.length === 0">
+        <div class="d-flex flex-row pt-3 pb-2 pl-3 align-items-center justify-content-between">
+            <div class="d-flex flex-row align-items-center">
                 <span class="font-weight-bold h5 mr-2">{{decodeTitle(channelData.title)}}</span>
                 <mat-icon *ngIf="channelData.type === 'S'" class="icon-10 status-icon-online">lens</mat-icon>
-                <mat-icon *ngIf="channelData.type === 'S'" class="icon-10 status-icon-offline">panorama_fish_eye</mat-icon>
-                <div 
-                class="mat-elevation-z1 cursor-pointer pl-1 bg-white people-icon d-flex flex-column align-items-center justify-content-center" 
-                *ngIf="!showChannelInfo && channelData.type === 'G'"
-                (click)="toggleChannelInfo()">
-                    <mat-icon 
-                    class="icon-18">group</mat-icon>
-                </div>
+                <mat-icon *ngIf="channelData.type === 'S'" class="icon-10 status-icon-offline">panorama_fish_eye
+                </mat-icon>
             </div>
-            <mat-divider class="w-100"></mat-divider>
-            <div class="height-80 w-100 pr-3 p-4" style="overflow: auto; max-height: 90%;" #chat>
+            <div class="mat-elevation-z1 cursor-pointer pl-1 bg-white people-icon d-flex flex-column align-items-center justify-content-center"
+                *ngIf="!showChannelInfo" (click)="toggleChannelInfo()">
+                <mat-icon *ngIf="channelData.type === 'G'" class="icon-18 text-info">group</mat-icon>
+                <mat-icon *ngIf="channelData.type === 'S'" class="icon-18 text-info">info</mat-icon>
+            </div>
+        </div>
+        <mat-divider class="w-100"></mat-divider>
+        <div class="d-flex flex-column">
+
+
+            <div class="w-100 pr-3 p-4" style="overflow: auto; max-height: 100%;" #chat>
                 <div class="w-100 mb-4 d-flex flex-row" *ngFor="let message of messageList">
                     <div class="profile-company-feed mt-1 ml-1" style="min-width: 40px;">
-                        <img src="../../../assets/profile_imgs/pi_{{users[message.user_id].img}}.svg" style="width: 25px; height: 25px;">
+                        <img src="../../../assets/profile_imgs/pi_{{users[message.user_id].img}}.svg"
+                            style="width: 25px; height: 25px;">
                     </div>
                     <div class="d-flex flex-column">
                         <div class="d-flex flex-row justify-content-between bg-white p-1 pb-2"
@@ -35,23 +40,78 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex flex-row w-100 bg-white p-2">
+            <div class="d-flex flex-row bg-white p-2 position-absolute" style="bottom: 0;overflow: hidden;"
+                [class.w-100]="!showChannelInfo" [class.narrow]="showChannelInfo">
                 <input class="w-100" placeholder="Escriba un mensaje para enviar..." style="border: none;">
                 <mat-icon class="text-info cursor-pointer">send</mat-icon>
             </div>
         </div>
-        <div *ngIf="showChannelInfo && channelData.type === 'G'" class="d-flex flex-column h-100 bg-white width-40 inner-box-shadow">
-            <div class="w-100 d-flex flex-row pt-3 pb-2 align-items-center">
-                    <div 
-                    class="special-box-shadow cursor-pointer pr-1 mr-2 grey-background people-icon-inner d-flex flex-column align-items-center justify-content-center" 
-                    *ngIf="showChannelInfo && channelData.type === 'G'"
-                    (click)="toggleChannelInfo()"
-                    style="z-index: 1;">
-                        <mat-icon 
-                        class="icon-18"
-                        [class.text-muted]="showChannelInfo">group</mat-icon>
-                    </div>
-                    <span>Integrantes</span>
+    </div>
+    <div *ngIf="showChannelInfo && channelData.type === 'G'"
+        class="d-flex flex-column h-100 bg-white w-25 inner-box-shadow pr-2">
+        <div class="w-100 d-flex flex-row pt-3 pb-2 align-items-center">
+            <div class="special-box-shadow cursor-pointer pr-1 mr-2 grey-background people-icon-inner d-flex flex-column align-items-center justify-content-center"
+                *ngIf="showChannelInfo && channelData.type === 'G'" (click)="toggleChannelInfo()" style="z-index: 1;">
+                <mat-icon class="icon-18" [class.text-muted]="showChannelInfo">group</mat-icon>
             </div>
+            <span>Integrantes</span>
+        </div>
+        <div class="d-flex flex-row justify-content-center w-100">
+            <mat-form-field class="w-75 overflow-hidden" appearance="outline">
+                <mat-progress-spinner class="form-spinner" [hidden]="usersLoaded" mode="indeterminate" [diameter]="20">
+                </mat-progress-spinner>
+                <input [readonly]="!usersLoaded" [disabled]="creatingChannel" matInput
+                    placeholder="Agregar integrante..." [formControl]="user" [matAutocomplete]="autoUser"
+                    (keydown.tab)="addUser()" (keydown.enter)="addUser()">
+                <mat-autocomplete #autoUser="matAutocomplete" [displayWith]="displayFn"
+                    (optionSelected)="loadOptionSelected($event)">
+                    <mat-option *ngFor="let element of filteredUsers | async" [value]="element">
+                        <span>{{element.name}}</span><span class="text-muted font-weight-light">
+                            @{{element.username}}</span>
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+        <div *ngIf="channelDisplayInfo" class="d-flex flex-column p-3" style="max-height: 60vh; overflow: auto;">
+            <div *ngFor="let member of channelDisplayInfo.members" class="d-flex flex-column mb-1">
+                <div class="d-flex flex-row align-items-center">
+                    <mat-icon (click)="removeMemberFromChannel(member)"
+                        *ngIf="userData.role_id === 2 && member.id !== userData.id" class="cursor-pointer text-danger">
+                        remove_circle_outline</mat-icon>
+                    <div class="profile-company-feed mt-1 mr-1 ml-1" style="min-width: 40px;">
+                        <img src="../../../assets/profile_imgs/pi_{{member.profile_img}}.svg"
+                            style="width: 25px; height: 25px;">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <span class="font-14">{{member.name}}<span *ngIf="member.id === userData.id"
+                                class="font-weight-light">&nbsp;(tu)</span></span>
+                        <span class="font-12 font-weight-light">{{member.username}}</span>
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="userData.role_id === 2" (click)="removeChannel()" mat-stroked-button color="warn"
+                class="position-absolute mb-2 mr-5" style="bottom: 0; right: 0;">ELIMINAR CANAL</button>
         </div>
     </div>
+    <div *ngIf="showChannelInfo && channelData.type === 'S' "
+        class="d-flex flex-column h-100 bg-white w-25 inner-box-shadow pr-2">
+        <div class="w-100 d-flex flex-row pt-3 pb-2 align-items-center">
+            <div class="special-box-shadow cursor-pointer pr-1 mr-2 grey-background people-icon-inner d-flex flex-column align-items-center justify-content-center"
+                *ngIf="showChannelInfo && channelData.type === 'S'" (click)="toggleChannelInfo()" style="z-index: 1;">
+                <mat-icon class="icon-18" [class.text-muted]="showChannelInfo">info</mat-icon>
+            </div>
+        </div>
+        <div class="d-flex flex-column align-items-center">
+            <div class="d-flex flex-row w-100 justify-content-center">
+                    <div class="profile-img-info mb-4">
+                            <img src="../../../assets/profile_imgs/pi_{{singleChannelInfo.profile_img}}.svg" style="width: 70px; height: 70px;">
+                    </div>
+            </div>
+            <span class="h5 font-weight-bold">{{singleChannelInfo.name}}</span>
+            <span class="font-italic">@{{singleChannelInfo.username}}</span>
+            <span class="mt-4">{{singleChannelInfo.email}}</span>
+            <button *ngIf="userData.role_id === 2 && channelData.id !== 0" (click)="removeSingleChannel()" mat-stroked-button color="warn"
+            class="position-absolute mb-2 mr-5" style="bottom: 0; right: 0;">ELIMINAR CHAT</button>
+        </div>
+    </div>
+</div>
