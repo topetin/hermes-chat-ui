@@ -12,6 +12,8 @@ import { ChannelService } from 'src/app/services/channel.service';
 import { Channel } from 'src/app/models/Channel.model';
 import { ChannelMember } from 'src/app/models/ChannelMember.model';
 import { ChatService } from 'src/app/services/chat.service';
+import { ChannelMessage } from 'src/app/models/ChannelMessage.mode';
+import * as moment from 'moment';
 
 export interface ChannelInfo {
   id: number,
@@ -36,6 +38,9 @@ export class UserMainComponent implements OnInit {
   onChannel: Channel;
   channelInfo: ChannelInfo;
   appState: any;
+  unreadChannels = new Array<Channel>();
+  channelMessages = new Array<ChannelMessage>();
+  currentChannelMessages: ChannelMessage[];
 
   constructor(private storage: AppStorageService,
     private userService: UserService,
@@ -48,10 +53,9 @@ export class UserMainComponent implements OnInit {
   ngOnInit() {
     this.showAccount = false;
     this.userData = this.storage.getStoredUser();
-    this.getAppState()
+    this.getAppState();
     this.initIoConnection();
     this.getFeed();
-    this.getChannels();
     setInterval(()=> {
       this.getFeed();
     }, 40000)
@@ -74,15 +78,40 @@ export class UserMainComponent implements OnInit {
     this.chatService.emitOnline(this.userData.company_id, this.userData.id);
 
     this.chatService.onOnline().subscribe((data: any) => {
-      this.storage.addToAppState(data.user)
+      this.storage.addToAppState(data)
       this.appState = this.storage.getAppState()
+
+      this.getChannels()
     })
 
     this.chatService.onOffline().subscribe((data: any) => {
-      console.log(data)
       this.storage.removeFromAppState(data.user)
       this.appState = this.storage.getAppState()
     })
+
+    this.chatService.onJoin().subscribe((data: any) => {
+    })
+
+    this.chatService.onMessageFromNewChannel().subscribe((data: any) => {
+      this.getChannels()
+      this.storage.addUnreadChannelToAppState(data)
+      this.appState = this.storage.getAppState()
+    })
+
+    this.chatService.onMessage().subscribe((data: any) => {
+      if (data.senderId !== this.userData.id) {
+        this.storage.addUnreadChannelToAppState(data.channel);
+        this.appState = this.storage.getAppState()
+      }
+      this.addToChannelMessages(data.message)
+      if (this.onChannel && data.message.channel_id === this.onChannel.id) {
+        this.currentChannelMessages.push(data.message);
+      }
+    })
+  }
+
+  formatUserChannels() {
+    return this.userChannels.map((chan) => chan.id)
   }
 
   logout() {
@@ -104,7 +133,10 @@ export class UserMainComponent implements OnInit {
   private getChannels() {
     return this.channelService.getChannels()
     .subscribe(
-      data => this.userChannels = data,
+      data => {
+        this.userChannels = data
+        this.chatService.emitJoin(this.formatUserChannels())
+      },
       error => this.displayError(error)
     )
   }
@@ -121,8 +153,18 @@ export class UserMainComponent implements OnInit {
 
   goChannel($event) {
     this.getChannelInfo($event);
+    this.getChannelMessages($event);
     this.onChannel = $event;
     this.mainview = false;
+  }
+
+  getChannelMessages(channel) {
+    this.channelService.listMessages(channel.id).subscribe(
+      data => {
+        this.currentChannelMessages = data
+      },
+      error => this.displayError(error)
+    )
   }
 
   refetchUserData() {
@@ -220,15 +262,23 @@ export class UserMainComponent implements OnInit {
     this.onChannel = c;
     this.mainview = false;
     this.channelInfo = ci;
-
-    // this.channelService.createChannel(this.userData.id, 'S', this.generateChannelTitle(member), [member.id]).subscribe(
-    //   data => { this.refetchChannels(data.message); this.onChannel = data.message },
-    //   error => this.displayError(error)
-    // )
   }
 
   generateChannelTitle(secondUser) {
     return this.userData.username + '//' + secondUser.username;
+  }
+
+  markChannelAsRead($event) {
+    this.storage.removeUnreadChannelFromAppState($event);
+    this.appState = this.storage.getAppState()
+  }
+
+  addToChannelMessages(message) {
+    this.channelMessages.push(message)
+  }
+
+  getCurrentChannelMessage() {
+    return this.channelMessages.filter(cm => cm.channel_id === this.onChannel.id)
   }
 
 }

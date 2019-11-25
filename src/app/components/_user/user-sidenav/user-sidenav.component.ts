@@ -17,6 +17,7 @@ export class UserSidenavComponent implements OnInit, OnChanges {
   @Input() userId: number;
   @Input() userChannels: Channel[];
   @Input() onChannel: Channel;
+  @Input() appState: any;
 
   groupChannels = new Array<Channel>();
   singleChannels = new Array<Channel>();
@@ -24,6 +25,7 @@ export class UserSidenavComponent implements OnInit, OnChanges {
   @Output() onNewChannel = new EventEmitter();
   @Output() goChannel = new EventEmitter();
   @Output() goFeed = new EventEmitter();
+  @Output() onReadChannel = new EventEmitter();
 
   constructor(public dialog: MatDialog, @Inject(DOCUMENT) document) { }
 
@@ -82,6 +84,9 @@ export class UserSidenavComponent implements OnInit, OnChanges {
   }
 
   goToChannel($event) {
+    if (this.isUnreadChannel($event)) {
+      this.onReadChannel.emit($event)
+    }
     this.displayChannel = $event;
     this.goChannel.emit($event)
   }
@@ -99,6 +104,16 @@ export class UserSidenavComponent implements OnInit, OnChanges {
   check(sc) {
     return sc.id === this.displayChannel.id
   }
+
+  isUnreadChannel(channel) {
+    let flag = false;
+    this.appState.unreadChannels.map((chan) => {
+      if (chan.id === channel.id) {
+        flag = true;
+      }
+    })
+    return flag;
+  } 
 
   // isUserOnline(channel: Channel) {
   //   var found = undefined;

@@ -8,6 +8,9 @@ import { Observable } from 'rxjs';
 import { startWith, map } from "rxjs/operators";
 import { UserService } from 'src/app/services/user.service';
 import { FormControl } from '@angular/forms';
+import { ChatService } from 'src/app/services/chat.service';
+import { ChannelMessage } from 'src/app/models/ChannelMessage.mode';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-chat',
@@ -21,8 +24,9 @@ export class ChatComponent implements OnInit, OnChanges {
   @Input() channelInfo: ChannelInfo;
   @Input() accountOpen: boolean;
   @Input() appState: any;
+  @Input() messageList: any;
 
-  messageList = []
+  displayMessageList = []
   users = {}
   message: string;
   showChannelInfo = false;
@@ -38,8 +42,13 @@ export class ChatComponent implements OnInit, OnChanges {
   @Output() onChannelInfo = new EventEmitter();
   @Output() onChannelChange = new EventEmitter();
   @Output() onChannelDelete = new EventEmitter();
+  @Output() onNewChannel = new EventEmitter();
 
-  constructor(private channelService: ChannelService, private _snackBar: MatSnackBar, private userService: UserService) { }
+  constructor(
+    private channelService: ChannelService, 
+    private _snackBar: MatSnackBar, 
+    private userService: UserService,
+    private chatService: ChatService) { }
 
   ngOnInit() {
     this.getCompanyUsers();
@@ -57,6 +66,10 @@ export class ChatComponent implements OnInit, OnChanges {
       if (this.showChannelInfo === true && changes.accountOpen.currentValue === true) {
         this.showChannelInfo = false;
       }
+    }
+
+    if (changes.messageList && changes.messageList.currentValue && changes.messageList.currentValue !== undefined) {
+      this.displayMessageList =  changes.messageList.currentValue
     }
   }
 
@@ -160,20 +173,8 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   decodeTitle() {
-    return this.channelData.type === 'G' ? '#' + this.channelData.title : this.decodeSingleChannelTitle()
+    return this.channelData.type === 'G' ? '#' + this.channelData.title : this.singleChannelInfo.name
   }
-
-  decodeSingleChannelTitle() {
-    let sc;
-    this.channelInfo.members.map((member) => {
-      if (member.id !== this.userData.id) {
-        sc = member;
-      }
-    })
-    return sc.name;
-  }
-
-  sendMessage() {}
 
   toggleChannelInfo() {
     this.showChannelInfo = !this.showChannelInfo;
@@ -209,7 +210,7 @@ export class ChatComponent implements OnInit, OnChanges {
       this.channelData.id, 
       this.channelData.owner_id,
       this.singleChannelInfo.id,
-      this.userData.id)
+      this.channelData.title)
       .subscribe(
         data => this.onChannelDelete.emit(),
         error => this.displayError(error)
@@ -218,8 +219,8 @@ export class ChatComponent implements OnInit, OnChanges {
 
     isSingleOnline() {
     let flag = false;
-    this.appState.ids.map((id) => {
-      if (id === this.singleChannelInfo.id) {
+    this.appState.state.map((s) => {
+      if (this.singleChannelInfo && s.userId === this.singleChannelInfo.id) {
         flag = true;
       }
     })
@@ -228,12 +229,103 @@ export class ChatComponent implements OnInit, OnChanges {
 
   isOnline(member) {
     let flag = false;
-    this.appState.ids.map((id) => {
-      if (id === member.id) {
+    this.appState.state.map((s) => {
+      if (s.userId === member.id) {
         flag = true;
       }
     })
     return flag;
+  }
+
+  sendMessage() {
+    if (this.message !== '' && this.message !== undefined && this.message !== null) {
+      let msg = this.initalizeMessage();
+      if (this.channelData.id === 0) {
+          this.channelService.createChannel(this.userData.id, 'S', this.generateChannelTitle(this.channelInfo.members[0]), [this.channelInfo.members[0].id]).subscribe(
+            data => {
+              this.chatService.emitMessageFromNewChannel(this.findSocketIdOnAppState(this.channelInfo.members[0].id), data.message)
+              this.onNewChannel.emit(data.message)
+              this.chatService.emitMessage(this.channelData.id, msg, this.userData.id)
+              this.channelService.postMessage(this.userData.company_id, this.channelData.id, this.message, this.userData.id)
+              .subscribe(
+                (data) => console.log(data),
+                (error) => this.displayError(error))
+            },
+            error => this.displayError(error))
+      }
+      else {
+        this.chatService.emitMessage(this.channelData, msg, this.userData.id)
+        this.channelService.postMessage(this.userData.company_id, this.channelData.id, this.message, this.userData.id)
+        .subscribe(
+          (data) => console.log(data),
+          (error) => this.displayError(error))
+        
+      }
+      this.message = undefined;
+    }
+  }
+
+  generateChannelTitle(secondUser) {
+    return this.userData.username + '//' + secondUser.username;
+  }
+
+  findSocketIdOnAppState(id){
+    let found;
+    this.appState.state.map((s) => {
+      if (s.userId === id) {
+        found = s.socketId
+      }
+    })
+    return found;
+  }
+
+  initalizeMessage() {
+    let msg = new ChannelMessage();
+    msg.channel_id = this.channelData.id;
+    msg.company_id = this.userData.company_id;
+    msg.at = moment().format();
+    msg.id = 0;
+    msg.message = this.message;
+    msg.user_from_id = this.userData.id;
+    return msg;
+  }
+
+  getUserImg(message) {
+    let found;
+    if (message.user_from_id === this.userData.id) {
+      console.log('msg del current', message.message)
+      found = this.userData.profile_img;
+    } else {
+      this.channelDisplayInfo.members.map((member) => {
+        if (member.id === message.user_from_id) {
+          found = member.profile_img;
+        }
+      })
+    }
+    return found;
+  }
+
+  getUserName(message) {
+    let found;
+    if (message.user_from_id === this.userData.id) {
+      found = 'Tu';
+    } else {
+      this.channelDisplayInfo.members.map((member) => {
+        if (member.id === message.user_from_id) {
+          found = member.name;
+        }
+      })
+    }
+
+    return found;
+  }
+
+  getTime(date) {
+    return moment(date).format('LT')
+  }
+  
+  getDate(date) {
+    return moment(date).format('DD/MM/YYYY')
   }
 
 }

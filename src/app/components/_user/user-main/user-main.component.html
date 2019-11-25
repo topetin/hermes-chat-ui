@@ -1,5 +1,5 @@
 
-    <div class="d-block height-100" style="box-sizing: content-box;max-height: 100vh;overflow: hidden;">
+    <div class="d-block height-100" style="box-sizing: content-box;max-height: 100vh;overflow: hidden;" *ngIf="appState">
         <div class="row p-0 m-0">
                 <app-user-header 
                 [name]="userData.name" 
@@ -21,7 +21,9 @@
             (onNewChannel)="refetchChannels($event)"
             (goChannel)="goChannel($event)"
             (goFeed)="goFeed()"
-            [onChannel]="onChannel"></app-user-sidenav>
+            [onChannel]="onChannel"
+            [appState]="appState"
+            (onReadChannel)="markChannelAsRead($event)"></app-user-sidenav>
             <div class="d-flex flex-row h-100 p-0" [ngClass]="showAccount ? 'col-7' : 'col-10'" [class.pr-3]="showAccount">
                 <mat-divider [vertical]="true"></mat-divider>
                 <app-user-feed 
@@ -31,7 +33,7 @@
                 [companyImage]="companyData.profileImg"
                 [companyName]="companyData.name"></app-user-feed>    
                 <app-chat 
-                *ngIf="!mainview && channelInfo" 
+                *ngIf="!mainview && channelInfo && onChannel" 
                 class="h-100 w-100"
                 [channelData]="onChannel"
                 [userData]="userData"
@@ -40,7 +42,9 @@
                 (onChannelInfo)="processChannelInfo()"
                 (onChannelChange)="updateChannel($event)"
                 (onChannelDelete)="updateChannelsAndGoToFeeds()"
+                (onNewChannel)="refetchChannels($event)"
                 [appState]="appState"
+                [messageList]="currentChannelMessages"
                 ></app-chat>    
             </div>
             <app-user-account 

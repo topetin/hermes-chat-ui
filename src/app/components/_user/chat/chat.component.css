@@ -54,3 +54,10 @@
     position: absolute;
     right: 0;
   }
+
+  .span-max { 
+    display:block;
+    width: 80%;
+    max-width: 80%;
+    word-wrap:break-word;
+}

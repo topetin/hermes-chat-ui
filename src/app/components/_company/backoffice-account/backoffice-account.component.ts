@@ -40,8 +40,8 @@ export class BackofficeAccountComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.formUserData = Object.assign({}, this.userData);
     this.changePasswordForm = this.fb.group({
-      passActual: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9]+$'), Validators.minLength(8)]),
-      passNew1: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9]+$'), Validators.minLength(8)]),
+      passActual: new FormControl('', [Validators.required, Validators.pattern('^(?=.*\d)(?=.*[a-zA-Z]).{8,20}$'), Validators.minLength(8)]),
+      passNew1: new FormControl('', [Validators.required, Validators.pattern('^(?=.*\d)(?=.*[a-zA-Z]).{8,20}$'), Validators.minLength(8)]),
       passNew2: new FormControl('', [Validators.required])
     })
   }

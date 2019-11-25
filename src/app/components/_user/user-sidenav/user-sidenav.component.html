@@ -1,4 +1,4 @@
-<div class="h-100 w-100 d-flex flex-column pt-0 pl-3 pr-3 pb-2 align-items-center justify-content-between" style="max-height: 100%; overflow: hidden;">
+<div class="h-100 w-100 d-flex flex-column pt-3 pl-3 pr-3 pb-2 align-items-center justify-content-between" style="max-height: 100%; overflow: hidden;">
     <div class="d-flex flex-column w-100 h-100 align-items-start mb-4">
         <div class="d-flex flex-row w-100 align-items-center">
             <span class="font-weight-light text-muted font-14">Canales grupales</span>
@@ -6,6 +6,8 @@
         </div>
         <div class="d-flex flex-column w-100" style="max-height: 99%; overflow: auto;" #groupScroll>
             <span 
+            [class.text-success]="(isUnreadChannel(gc) && onChannel === undefined) 
+            || (isUnreadChannel(gc) && onChannel !== undefined && onChannel.id !== gc.id)"
             id="{{gc.id}}"
             class="w-100 cursor-pointer font-14" 
             *ngFor="let gc of groupChannels" 
@@ -23,6 +25,8 @@
                 class="w-100 cursor-pointer font-14" 
                 *ngFor="let sc of singleChannels" 
                 (click)="goToChannel(sc)"
+                [class.text-success]="(isUnreadChannel(sc) && onChannel === undefined) 
+                || (isUnreadChannel(sc) && onChannel !== undefined && onChannel.id !== sc.id)"
                 [class.font-weight-bold]="displayChannel && check(sc)">
                     @{{decodeTitle(sc)}}
                 </span>

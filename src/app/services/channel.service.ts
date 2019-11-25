@@ -4,6 +4,7 @@ import { catchError, map } from 'rxjs/operators'
 import { throwError as observableThrowError, Observable } from 'rxjs';
 import { Channel } from '../models/Channel.model';
 import { ChannelMember } from '../models/ChannelMember.model';
+import { ChannelMessage } from '../models/ChannelMessage.mode';
 
 const headers = new HttpHeaders({'Content-Type':'application/json; charset=utf-8'})
 const apiUrl = "http://localhost:3000"
@@ -52,9 +53,9 @@ export class ChannelService {
     .pipe(catchError(this.handleError))
   }
 
-  removeSingleChannel(channelId, channelOwner, channelMember, userId) {
+  removeSingleChannel(channelId, channelOwner, channelMember, channelName) {
     return this.http.post(apiUrl + '/remove-single-channel', 
-    { 'channelId': channelId, 'channelOwner': channelOwner, 'channelMember': channelMember, 'userId': userId }, { headers: headers })
+    { 'channelId': channelId, 'channelOwner': channelOwner, 'channelMember': channelMember, 'channelName': channelName }, { headers: headers })
     .pipe(catchError(this.handleError))
   }
 
@@ -62,7 +63,22 @@ export class ChannelService {
     let params = new HttpParams().set('companyId', companyId);
     return this.http.get(apiUrl + "/get-app-state", { params, headers })
     .pipe(
-      map((res: any) => res.message.map((state) => state.userId)),
+      map((res: any) => res.message),
+      catchError(() => this.handleError)
+    )
+  }
+
+  postMessage(companyId, channelId, message, userFromId) {
+    return this.http.post(apiUrl + '/post-message', 
+    { 'companyId': companyId, 'channelId': channelId, 'message': message, 'userFromId': userFromId }, { headers: headers })
+    .pipe(catchError(this.handleError))
+  }
+
+  listMessages(channelId): Observable<ChannelMessage[]> {
+    let params = new HttpParams().set('channelId', channelId);
+    return this.http.get(apiUrl + "/get-channel-messages", { params, headers })
+    .pipe(
+      map((res: any) => res.message),
       catchError(() => this.handleError)
     )
   }

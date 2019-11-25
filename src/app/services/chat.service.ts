@@ -23,6 +23,30 @@ export class ChatService {
         this.socket.emit('emit-online', {companyId, userId})
     }
 
+    public emitJoin(channels): void {
+        this.socket.emit('emit-join', {channels})
+    }
+
+    public emitMessageFromNewChannel(socketId, channel): void {
+        this.socket.emit('emit-message-from-new-channel', {socketId, channel})
+    }
+
+    public emitMessage(channel, message, senderId): void {
+        this.socket.emit('emit-message', {channel, message, senderId})
+    }
+
+    public onMessage(): Observable<any> {
+        return new Observable<any>(observer => {
+            this.socket.on('on-message', (data: any) => observer.next(data));
+        });
+    }
+
+    public onMessageFromNewChannel(): Observable<any> {
+        return new Observable<any>(observer => {
+            this.socket.on('on-message-from-new-channel', (data: any) => observer.next(data));
+        });
+    }
+
     public onOnline(): Observable<any> {
         return new Observable<any>(observer => {
             this.socket.on('on-online', (data: any) => observer.next(data));
@@ -33,6 +57,12 @@ export class ChatService {
         return new Observable<any>(observer => {
             this.socket.on('on-offline', (data: any) => observer.next(data));
         })
+    }
+
+    public onJoin(): Observable<any> {
+        return new Observable<any>(observer => {
+            this.socket.on('on-join', (data: any) => observer.next(data));
+        });
     }
 
     //
@@ -47,18 +77,6 @@ export class ChatService {
 
     public notifyTyping(room, user) {
         this.socket.emit('typing', {room, user});
-    }
-
-    public onMessage(): Observable<any> {
-        return new Observable<any>(observer => {
-            this.socket.on('new-message', (data: any) => observer.next(data));
-        });
-    }
-
-    public onJoin() {
-        return new Observable<any>(observer => {
-            this.socket.on('new-member', (data: any) => observer.next(data));
-        })
     }
     
     public onEvent(event: any): Observable<any> {

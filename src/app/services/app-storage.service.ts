@@ -18,7 +18,7 @@ export class AppStorageService {
   }
 
   public storeAppState(state: any): void {
-    this.storage.set('app-state', {ids: state});
+    this.storage.set('app-state', {state : state, unreadChannels: []});
   }
 
   public getStoredUser() {
@@ -33,20 +33,38 @@ export class AppStorageService {
     return this.storage.get('user-company-data')
   }
 
-  public addToAppState(id) {
+  public addToAppState(state) {
     let currentState = Object.assign({}, this.storage.get('app-state'));
-    currentState.ids.push(id)
+    currentState.state.push(state)
     this.storage.remove('app-state');
     this.storage.set('app-state', currentState);
   }
 
-  public removeFromAppState(id) {
+  public addUnreadChannelToAppState(channel) {
     let currentState = Object.assign({}, this.storage.get('app-state'));
-    console.log(currentState)
-    let newState = currentState.ids.map((i) => i !== id)
-    console.log(newState)
+    currentState.unreadChannels.push(channel)
     this.storage.remove('app-state');
-    this.storage.set('app-state', newState);
+    this.storage.set('app-state', currentState);
+  }
+
+  public removeUnreadChannelFromAppState(channel) {
+    let currentState = Object.assign({}, this.storage.get('app-state'));
+    let index = currentState.unreadChannels.findIndex(s => s.id === channel.id );
+    if (index > -1) {
+      currentState.unreadChannels.splice(index, 1);
+  }
+    this.storage.remove('app-state');
+    this.storage.set('app-state', currentState);
+  }
+
+  public removeFromAppState(state) {
+    let currentState = Object.assign({}, this.storage.get('app-state'));
+    let index = currentState.state.findIndex(s => s.socketId === state.socketId );
+    if (index > -1) {
+      currentState.state.splice(index, 1);
+  }
+    this.storage.remove('app-state');
+    this.storage.set('app-state', currentState);
   }
 
   public replaceUserOnLocalStorage(user: User): void {
