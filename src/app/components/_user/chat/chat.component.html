@@ -16,8 +16,8 @@
             </div>
         </div>
         <mat-divider class="w-100"></mat-divider>
-        <div class="d-flex flex-column p4 h-100" style="overflow: scroll; max-height: 95%;" >
-            <div class="w-100 pr-3 p-4" #chat *ngIf="displayMessageList.length > 0">
+        <div class="d-flex flex-column p4 h-100" style="overflow: scroll; max-height: 90%;" #chatScroll>
+            <div class="w-100 pr-3 p-4" *ngIf="displayMessageList.length > 0">
                 <div class="w-100 mb-4 d-flex flex-row" *ngFor="let message of displayMessageList">
                     <div class="profile-company-feed mt-1 ml-1" style="min-width: 40px;">
                         <img src="../../../assets/profile_imgs/pi_{{getUserImg(message)}}.svg"

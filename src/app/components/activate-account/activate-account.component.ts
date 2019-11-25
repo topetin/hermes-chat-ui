@@ -30,7 +30,7 @@ export class ActivateAccountComponent implements OnInit {
     this.email = this.route.snapshot.paramMap.get('email');
     if (!this.email) this.router.navigate(['**']);
     this.activationForm = this.fb.group({
-      pass1: new FormControl('', [Validators.required, Validators.pattern('^(?=.*\d)(?=.*[a-zA-Z]).{8,20}$'), Validators.minLength(8)]),
+      pass1: new FormControl('', [Validators.required, Validators.pattern('^(?=.*\\d)(?=.*[a-zA-Z]).{8,20}$'), Validators.minLength(8)]),
       pass2: new FormControl('', [Validators.required])
     })
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { Channel } from 'src/app/models/Channel.model';
 import { User } from 'src/app/models/User.model';
 import { ChannelInfo } from '../user-main/user-main.component';
@@ -19,6 +19,7 @@ import * as moment from 'moment';
 })
 export class ChatComponent implements OnInit, OnChanges {
 
+  @ViewChild('chatScroll', {static: false}) private chat: ElementRef;
   @Input() channelData: Channel;
   @Input() userData: User;
   @Input() channelInfo: ChannelInfo;
@@ -52,7 +53,19 @@ export class ChatComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.getCompanyUsers();
+    this.scrollToBottom();
   }
+
+  ngAfterViewInit() {
+    this.scrollToBottom();
+}
+
+  private scrollToBottom(): void {
+    try {
+
+        this.chat.nativeElement.scrollTop = this.chat.nativeElement.scrollHeight;
+    } catch(err) { }                 
+}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.channelInfo && changes.channelInfo.currentValue) {
@@ -293,7 +306,6 @@ export class ChatComponent implements OnInit, OnChanges {
   getUserImg(message) {
     let found;
     if (message.user_from_id === this.userData.id) {
-      console.log('msg del current', message.message)
       found = this.userData.profile_img;
     } else {
       this.channelDisplayInfo.members.map((member) => {
