@@ -1932,6 +1932,7 @@ var ChatComponent = /** @class */ (function () {
             }
         }
         if (changes.messageList && changes.messageList.currentValue && changes.messageList.currentValue !== undefined) {
+            this.scrollToBottom();
             this.displayMessageList = changes.messageList.currentValue;
         }
         if (changes.currentChannelTyping && changes.currentChannelTyping.currentValue) {
@@ -2132,6 +2133,7 @@ var ChatComponent = /** @class */ (function () {
             }
             this.message = undefined;
             this.onNotTyping();
+            this.scrollToBottom();
         }
     };
     ChatComponent.prototype.generateChannelTitle = function (secondUser) {

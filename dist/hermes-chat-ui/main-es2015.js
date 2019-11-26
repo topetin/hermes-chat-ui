@@ -1907,6 +1907,7 @@ let ChatComponent = class ChatComponent {
             }
         }
         if (changes.messageList && changes.messageList.currentValue && changes.messageList.currentValue !== undefined) {
+            this.scrollToBottom();
             this.displayMessageList = changes.messageList.currentValue;
         }
         if (changes.currentChannelTyping && changes.currentChannelTyping.currentValue) {
@@ -2098,6 +2099,7 @@ let ChatComponent = class ChatComponent {
             }
             this.message = undefined;
             this.onNotTyping();
+            this.scrollToBottom();
         }
     }
     generateChannelTitle(secondUser) {
