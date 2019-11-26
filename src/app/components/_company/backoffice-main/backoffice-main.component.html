@@ -1,7 +1,7 @@
 <app-backoffice-header  [name]="userData.name" 
                         [profile_img]="userData.profile_img" 
                         (onTabChange)="changeContent($event)"
-                        (onLogout)="logout(userData.email)"></app-backoffice-header>
+                        (onLogout)="logout()"></app-backoffice-header>
 <mat-tab-group #tabs class="contentTabs">
     <mat-tab> <app-backoffice-feed  [name]="userData.name" 
                                     [profile_img]="userData.profile_img" 
