@@ -12,7 +12,7 @@ const connectionOptions =  {
 @Injectable()
 export class ChatService {
 
-    private url = 'http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com/app';
+    private url = 'http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com:3000/app';
     private socket;    
 
     public initSocket(): void {

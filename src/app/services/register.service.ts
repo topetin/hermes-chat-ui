@@ -5,7 +5,7 @@ import { catchError, finalize } from 'rxjs/operators'
 import * as moment from 'moment';
 
 const headers = new HttpHeaders({'Content-Type':'application/json; charset=utf-8'})
-const apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com"
+const apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com:3000"
 
 @Injectable({
   providedIn: 'root'

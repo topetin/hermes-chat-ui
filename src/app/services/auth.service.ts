@@ -10,7 +10,7 @@ import { User } from '../models/User.model';
 import { Router } from '@angular/router';
 
 const headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' })
-const apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com"
+const apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com:3000"
 
 @Injectable({
   providedIn: 'root'

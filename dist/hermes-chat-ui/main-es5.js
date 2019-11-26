@@ -371,7 +371,7 @@ module.exports = "<app-backoffice-header  [name]=\"userData.name\" \r\n         
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"d-flex flex-row justify-content-between\">\r\n        <h1 mat-dialog-title class=\"mt-4\">Agregar miembros</h1>\r\n        <button mat-icon-button (click)=\"dialogRef.close()\"><mat-icon>close</mat-icon></button>\r\n    </div>\r\n    <div mat-dialog-content class=\"d-flex flex-column pr-4 pt-3 pb-3 align-items-center justify-content-center w-100\">\r\n            <form [formGroup]=\"addMemeberForm\" class=\"d-flex flex-column w-100 align-items-center\">\r\n                    <div formArrayName=\"items\" *ngFor=\"let item of formData.get('items').controls; let i = index;\" class=\"d-flex flex-row w-100 align-items-center\">\r\n                            <div [formGroupName]=\"i\" class=\"d-flex flex-row w-100 align-items-center\" [ngClass]=\"{'padding-right-80': i === 0, 'padding-right-40': i !== 0 && i+1 !== addMemeberForm.get('items').controls.length }\">\r\n                <mat-form-field class=\"w-75 mr-3\">\r\n                    <input matInput placeholder=\"Name\" formControlName=\"name\">\r\n                    <mat-error *ngIf=\"item.get('name') && item.get('name').invalid\">Debe ingresar un nombre</mat-error>\r\n                </mat-form-field>\r\n                <mat-form-field class=\"w-100 mr-3\">\r\n                        <mat-label>Email</mat-label>\r\n                        <input matInput formControlName=\"email\">\r\n                        <mat-error *ngIf=\"item.get('email') && item.get('email').invalid\">Debe ingresar un email valido</mat-error>\r\n                    </mat-form-field>\r\n                    <mat-form-field class=\"w-50 mr-3\">\r\n                            <mat-label>Role</mat-label>\r\n                            <mat-select formControlName=\"role\">\r\n                              <mat-option value=\"2\">ADMINISTRATOR</mat-option>\r\n                              <mat-option value=\"3\">USER</mat-option>\r\n                            </mat-select>\r\n                            <mat-error *ngIf=\"item.get('role') && item.get('role').invalid\">Debe ingresar un rol</mat-error>\r\n                    </mat-form-field>\r\n                    <button mat-icon-button id=\"{{i}}\" *ngIf=\"i !== 0\" (click)=\"removeItem($event)\" class=\"text-danger\"><mat-icon>remove_circle</mat-icon></button>\r\n                    </div>\r\n                    <button mat-icon-button [ngClass]=\"{'text-success': item.valid}\" [disabled]=\"item.invalid\" *ngIf=\"i+1 === addMemeberForm.get('items').controls.length\" (click)=\"addItem()\"><mat-icon>add_circle</mat-icon></button>\r\n                </div>\r\n            </form>\r\n            <button mat-raised-button class=\"mt-4\" [disabled]=\"addMemeberForm.get('items').invalid\" (click)=\"addMemebers()\">ACEPTAR</button>\r\n    </div>\r\n"
+module.exports = "<div class=\"d-flex flex-row justify-content-between\">\r\n        <h1 mat-dialog-title class=\"mt-4\">Agregar miembros</h1>\r\n        <button mat-icon-button (click)=\"dialogRef.close()\"><mat-icon>close</mat-icon></button>\r\n    </div>\r\n    <div mat-dialog-content class=\"d-flex flex-column pr-4 pt-3 pb-3 align-items-center justify-content-center w-100\">\r\n            <form [formGroup]=\"addMemeberForm\" class=\"d-flex flex-column w-100 align-items-center\">\r\n                    <div formArrayName=\"items\" *ngFor=\"let item of addMemeberForm.get('items')['controls']; let i = index;\" class=\"d-flex flex-row w-100 align-items-center\">\r\n                            <div [formGroupName]=\"i\" class=\"d-flex flex-row w-100 align-items-center\" [ngClass]=\"{'padding-right-80': i === 0, 'padding-right-40': i !== 0 && i+1 !== addMemeberForm.get('items').controls.length }\">\r\n                <mat-form-field class=\"w-75 mr-3\">\r\n                    <input matInput placeholder=\"Name\" formControlName=\"name\">\r\n                    <mat-error *ngIf=\"item.get('name') && item.get('name').invalid\">Debe ingresar un nombre</mat-error>\r\n                </mat-form-field>\r\n                <mat-form-field class=\"w-100 mr-3\">\r\n                        <mat-label>Email</mat-label>\r\n                        <input matInput formControlName=\"email\">\r\n                        <mat-error *ngIf=\"item.get('email') && item.get('email').invalid\">Debe ingresar un email valido</mat-error>\r\n                    </mat-form-field>\r\n                    <mat-form-field class=\"w-50 mr-3\">\r\n                            <mat-label>Role</mat-label>\r\n                            <mat-select formControlName=\"role\">\r\n                              <mat-option value=\"2\">ADMINISTRATOR</mat-option>\r\n                              <mat-option value=\"3\">USER</mat-option>\r\n                            </mat-select>\r\n                            <mat-error *ngIf=\"item.get('role') && item.get('role').invalid\">Debe ingresar un rol</mat-error>\r\n                    </mat-form-field>\r\n                    <button mat-icon-button id=\"{{i}}\" *ngIf=\"i !== 0\" (click)=\"removeItem($event)\" class=\"text-danger\"><mat-icon>remove_circle</mat-icon></button>\r\n                    </div>\r\n                    <button mat-icon-button [ngClass]=\"{'text-success': item.valid}\" [disabled]=\"item.invalid\" *ngIf=\"i+1 === addMemeberForm.get('items').controls.length\" (click)=\"addItem()\"><mat-icon>add_circle</mat-icon></button>\r\n                </div>\r\n            </form>\r\n            <button mat-raised-button class=\"mt-4\" [disabled]=\"addMemeberForm.get('items').invalid\" (click)=\"addMemebers()\">ACEPTAR</button>\r\n    </div>\r\n"
 
 /***/ }),
 
@@ -1395,11 +1395,6 @@ var AddMemberComponent = /** @class */ (function () {
         this.backofficeService = backofficeService;
         this._snackBar = _snackBar;
     }
-    Object.defineProperty(AddMemberComponent.prototype, "formData", {
-        get: function () { return this.addMemeberForm.get('items'); },
-        enumerable: true,
-        configurable: true
-    });
     AddMemberComponent.prototype.ngOnInit = function () {
         this.addMemeberForm = this.fb.group({
             items: this.fb.array([this.createItem()])
@@ -4481,7 +4476,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({ 'Content-Type': 'application/json; charset=utf-8' });
-var apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com";
+var apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com:3000";
 var AuthService = /** @class */ (function () {
     function AuthService(http, jwtHelper, storage, router) {
         this.http = http;
@@ -4575,7 +4570,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({ 'Content-Type': 'application/json; charset=utf-8' });
-var apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com";
+var apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com:3000";
 var BackofficeService = /** @class */ (function () {
     function BackofficeService(http) {
         this.http = http;
@@ -4654,7 +4649,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({ 'Content-Type': 'application/json; charset=utf-8' });
-var apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com";
+var apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com:3000";
 var ChannelService = /** @class */ (function () {
     function ChannelService(http) {
         this.http = http;
@@ -4752,7 +4747,7 @@ var connectionOptions = {
 };
 var ChatService = /** @class */ (function () {
     function ChatService() {
-        this.url = 'http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com/app';
+        this.url = 'http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com:3000/app';
     }
     ChatService.prototype.initSocket = function () {
         this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_1__(this.url, connectionOptions);
@@ -4863,7 +4858,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({ 'Content-Type': 'application/json; charset=utf-8' });
-var apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com";
+var apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com:3000";
 var FeedService = /** @class */ (function () {
     function FeedService(http) {
         this.http = http;
@@ -4923,7 +4918,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({ 'Content-Type': 'application/json; charset=utf-8' });
-var apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com";
+var apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com:3000";
 var NotificationService = /** @class */ (function () {
     function NotificationService(http) {
         this.http = http;
@@ -4981,7 +4976,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({ 'Content-Type': 'application/json; charset=utf-8' });
-var apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com";
+var apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com:3000";
 var RegisterService = /** @class */ (function () {
     function RegisterService(http) {
         this.http = http;
@@ -5111,7 +5106,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({ 'Content-Type': 'application/json; charset=utf-8' });
-var apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com";
+var apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com:3000";
 var UserService = /** @class */ (function () {
     function UserService(http, storage) {
         this.http = http;
