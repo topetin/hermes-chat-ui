@@ -44,11 +44,13 @@
             </div>
             <div class="d-flex flex-row bg-white p-2 position-absolute" style="bottom: 0;overflow: hidden;"
                 [class.w-100]="!showChannelInfo" [class.narrow]="showChannelInfo">
+                <span *ngIf="currentUserTyping !== undefined">{{currentUserTyping}} esta escribiendo...</span>
                 <input [hidden]="channelData.type === 'S' && !isSingleOnline()" class="w-100" 
                 placeholder="Escriba un mensaje para enviar..." 
                 style="border: none;" 
                 (keyup.enter)="sendMessage()"
-                [(ngModel)]="message">
+                [(ngModel)]="message"
+                (keyup.backspace)="onNotTyping()" (input)="onTyping()">
                 <mat-icon [hidden]="channelData.type === 'S' && !isSingleOnline()" class="text-info cursor-pointer" (click)="sendMessage()">send</mat-icon>
                 <span *ngIf="singleChannelInfo && channelData.type === 'S' && !isSingleOnline()" class="font-italic">{{singleChannelInfo.name}} no esta disponible para chatear</span>
             </div>

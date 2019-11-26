@@ -41,6 +41,8 @@ export class UserMainComponent implements OnInit {
   unreadChannels = new Array<Channel>();
   channelMessages = new Array<ChannelMessage>();
   currentChannelMessages: ChannelMessage[];
+  currentChannelTyping: number;
+  currentChannelNotTyping = true;
 
   constructor(private storage: AppStorageService,
     private userService: UserService,
@@ -106,6 +108,12 @@ export class UserMainComponent implements OnInit {
       this.addToChannelMessages(data.message)
       if (this.onChannel && data.message.channel_id === this.onChannel.id) {
         this.currentChannelMessages.push(data.message);
+      }
+    })
+
+    this.chatService.onTyping().subscribe((data: any) => {
+      if (this.onChannel && data.channelId === this.onChannel.id) {
+          this.currentChannelTyping = data.user;
       }
     })
   }
@@ -260,6 +268,7 @@ export class UserMainComponent implements OnInit {
     member.channel_type = 'S';
     ci.members.push(member)
     this.onChannel = c;
+    this.currentChannelMessages = [];
     this.mainview = false;
     this.channelInfo = ci;
   }

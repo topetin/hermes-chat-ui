@@ -26,6 +26,8 @@ export class ChatComponent implements OnInit, OnChanges {
   @Input() accountOpen: boolean;
   @Input() appState: any;
   @Input() messageList: any;
+  @Input() currentChannelTyping: number;
+  @Input() currentChannelNotTyping:boolean;
 
   displayMessageList = []
   users = {}
@@ -39,6 +41,7 @@ export class ChatComponent implements OnInit, OnChanges {
   usersLoaded = false;
   optionSelected: any;
   singleChannelInfo: any;
+  currentUserTyping: any;
 
   @Output() onChannelInfo = new EventEmitter();
   @Output() onChannelChange = new EventEmitter();
@@ -84,6 +87,23 @@ export class ChatComponent implements OnInit, OnChanges {
     if (changes.messageList && changes.messageList.currentValue && changes.messageList.currentValue !== undefined) {
       this.displayMessageList =  changes.messageList.currentValue
     }
+
+    if (changes.currentChannelTyping && changes.currentChannelTyping.currentValue) {
+        this.currentUserTyping = this.findUserById(changes.currentChannelTyping.currentValue)
+    }
+  }
+
+  findUserById(id) {
+    let name = undefined;
+    this.channelDisplayInfo.members.map((member) => {
+      if (member.id === id) {
+        name = member.name;
+      }
+    })
+    if (name === undefined) {
+      this.currentUserTyping = undefined;
+    }
+    return name;
   }
 
   getSingleChannelInfo() {
@@ -259,7 +279,7 @@ export class ChatComponent implements OnInit, OnChanges {
               this.chatService.emitMessageFromNewChannel(this.findSocketIdOnAppState(this.channelInfo.members[0].id), data.message)
               this.onNewChannel.emit(data.message)
               this.chatService.emitMessage(this.channelData.id, msg, this.userData.id)
-              this.channelService.postMessage(this.userData.company_id, this.channelData.id, this.message, this.userData.id)
+              this.channelService.postMessage(this.userData.company_id, data.message.id, msg.message, this.userData.id)
               .subscribe(
                 (data) => console.log(data),
                 (error) => this.displayError(error))
@@ -268,7 +288,7 @@ export class ChatComponent implements OnInit, OnChanges {
       }
       else {
         this.chatService.emitMessage(this.channelData, msg, this.userData.id)
-        this.channelService.postMessage(this.userData.company_id, this.channelData.id, this.message, this.userData.id)
+        this.channelService.postMessage(this.userData.company_id, this.channelData.id, msg.message, this.userData.id)
         .subscribe(
           (data) => console.log(data),
           (error) => this.displayError(error))
@@ -338,6 +358,16 @@ export class ChatComponent implements OnInit, OnChanges {
   
   getDate(date) {
     return moment(date).format('DD/MM/YYYY')
+  }
+
+  public onTyping() {
+    this.chatService.emitTyping(this.channelData.id, this.userData.id);
+  }
+
+  public onNotTyping() {
+    if (this.message === '' || this.message === undefined) {
+      this.chatService.emitTyping(this.channelData.id, -1);
+    }
   }
 
 }

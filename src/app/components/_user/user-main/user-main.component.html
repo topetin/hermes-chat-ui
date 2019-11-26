@@ -45,6 +45,8 @@
                 (onNewChannel)="refetchChannels($event)"
                 [appState]="appState"
                 [messageList]="currentChannelMessages"
+                [currentChannelTyping]="currentChannelTyping"
+                [currentChannelNotTyping]="currentChannelNotTyping"
                 ></app-chat>    
             </div>
             <app-user-account 

@@ -35,6 +35,16 @@ export class ChatService {
         this.socket.emit('emit-message', {channel, message, senderId})
     }
 
+    public emitTyping(channelId, userId): void {
+        this.socket.emit('emit-typing', {channelId, userId})
+    }
+
+    public onTyping(): Observable<any> {
+        return new Observable<any>(observer => {
+            this.socket.on('on-typing', (data: any) => observer.next(data));
+        });
+    }
+
     public onMessage(): Observable<any> {
         return new Observable<any>(observer => {
             this.socket.on('on-message', (data: any) => observer.next(data));
@@ -75,21 +85,11 @@ export class ChatService {
         this.socket.emit('join', {room, user});
     }
 
-    public notifyTyping(room, user) {
-        this.socket.emit('typing', {room, user});
-    }
     
     public onEvent(event: any): Observable<any> {
         return new Observable<any>(observer => {
             this.socket.on(event, () => observer.next());
         });
     }
-
-    public onTyping() {
-        return new Observable<any>(observer => {
-            this.socket.on('typing', (data: any) => observer.next(data));
-        })
-    }
-
 
 } 
