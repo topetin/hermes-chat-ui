@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { Channel } from 'src/app/models/Channel.model';
 import { User } from 'src/app/models/User.model';
 import { ChannelInfo } from '../user-main/user-main.component';
@@ -19,7 +19,7 @@ import { Notification } from 'src/app/models/Notification.model';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit, OnChanges {
+export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
 
   @ViewChild('chatScroll', {static: false}) private chat: ElementRef;
   @Input() channelData: Channel;
@@ -66,9 +66,12 @@ export class ChatComponent implements OnInit, OnChanges {
     this.scrollToBottom();
 }
 
+ngAfterViewChecked() {
+  this.scrollToBottom()
+}
+
   private scrollToBottom(): void {
     try {
-
         this.chat.nativeElement.scrollTop = this.chat.nativeElement.scrollHeight;
     } catch(err) { }                 
 }

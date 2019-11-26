@@ -1912,6 +1912,9 @@ var ChatComponent = /** @class */ (function () {
     ChatComponent.prototype.ngAfterViewInit = function () {
         this.scrollToBottom();
     };
+    ChatComponent.prototype.ngAfterViewChecked = function () {
+        this.scrollToBottom();
+    };
     ChatComponent.prototype.scrollToBottom = function () {
         try {
             this.chat.nativeElement.scrollTop = this.chat.nativeElement.scrollHeight;

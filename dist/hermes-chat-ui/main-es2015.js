@@ -1887,6 +1887,9 @@ let ChatComponent = class ChatComponent {
     ngAfterViewInit() {
         this.scrollToBottom();
     }
+    ngAfterViewChecked() {
+        this.scrollToBottom();
+    }
     scrollToBottom() {
         try {
             this.chat.nativeElement.scrollTop = this.chat.nativeElement.scrollHeight;
