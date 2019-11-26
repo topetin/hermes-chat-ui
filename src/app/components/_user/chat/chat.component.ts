@@ -88,8 +88,8 @@ export class ChatComponent implements OnInit, OnChanges {
     }
 
     if (changes.messageList && changes.messageList.currentValue && changes.messageList.currentValue !== undefined) {
-      this.scrollToBottom()
       this.displayMessageList =  changes.messageList.currentValue
+      this.scrollToBottom()
     }
 
     if (changes.currentChannelTyping && changes.currentChannelTyping.currentValue) {
