@@ -12,7 +12,7 @@ const connectionOptions =  {
 @Injectable()
 export class ChatService {
 
-    private url = 'http://localhost:3000/app';
+    private url = 'http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com/app';
     private socket;    
 
     public initSocket(): void {
@@ -39,8 +39,8 @@ export class ChatService {
         this.socket.emit('emit-typing', {channelId, userId})
     }
 
-    public emitMemberRemoved(socketId): void {
-        this.socket.emit('emit-member-removed', {socketId})
+    public emitMemberRemoved(socketId, notification): void {
+        this.socket.emit('emit-member-removed', {socketId, notification})
     }
 
     public onMemberRemoved(): Observable<any> {

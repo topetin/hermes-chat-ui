@@ -124,7 +124,8 @@ export class UserMainComponent implements OnInit {
     })
 
     this.chatService.onMemberRemoved().subscribe((data: any) => {
-      this.getNotifications();
+      this.hasNotificationsNotViewed = true;
+      this.notifications.unshift(data)
       this.getChannels();
     })
   }
@@ -134,12 +135,14 @@ export class UserMainComponent implements OnInit {
     .subscribe(
       data => {
         this.notifications = data
-        data.map((n) => {
-          if (n.viewed === 0) {
-            this.hasNotificationsNotViewed = true;
-            return;
-          }
-        })
+        if (this.hasNotificationsNotViewed === false || this.hasNotificationsNotViewed === undefined) {
+          data.map((n) => {
+            if (n.viewed === 0) {
+              this.hasNotificationsNotViewed = true;
+              return;
+            }
+          })
+        }
       },
       error => this.displayError(error)
     )

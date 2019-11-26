@@ -59,6 +59,7 @@ export class UserSidenavComponent implements OnInit, OnChanges {
   }
 
   updateNotifications() {
+    console.log(this.notifications)
     this.notiNotViewed = false;
     if (this.notifications.length > 0) {
       let arr = [];
@@ -101,9 +102,9 @@ export class UserSidenavComponent implements OnInit, OnChanges {
     data => {
       if (data) {
         data.addedUsers.map((member) => {
-          this.chatService.emitMemberRemoved(this.findSocketIdOnAppState(member))
-          this.notificationService.postNotification(this.companyId, data.goChannel.id,
-            `Te han agregado al canal #${data.goChannel.title}`, member)
+          let n = this.generateNotification(`Te han agregado al canal #${data.goChannel.title}`, data.goChannel.id, member)
+          this.chatService.emitMemberRemoved(this.findSocketIdOnAppState(member), n)
+          this.notificationService.postNotification(n.company_id, n.channel_id, n.message, n.user_id)
             .subscribe(
               data => console.log(data),
               error => console.log(error)
@@ -160,6 +161,15 @@ export class UserSidenavComponent implements OnInit, OnChanges {
     })
     return flag;
   } 
+
+  generateNotification(message, channelId, member) {
+    let n = new Notification()
+    n.company_id = this.companyId;
+    n.channel_id = channelId;
+    n.message = message;
+    n.user_id = member;
+    return n;
+  }
 
   // isUserOnline(channel: Channel) {
   //   var found = undefined;

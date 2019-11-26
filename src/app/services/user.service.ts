@@ -7,7 +7,7 @@ import { AppStorageService } from './app-storage.service';
 import { Feed } from '../models/Feed.model';
 
 const headers = new HttpHeaders({'Content-Type':'application/json; charset=utf-8'})
-const apiUrl = "http://localhost:3000"
+const apiUrl = "http://ec2-18-222-176-250.us-east-2.compute.amazonaws.com"
 
 @Injectable({
   providedIn: 'root'

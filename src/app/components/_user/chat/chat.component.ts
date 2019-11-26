@@ -12,6 +12,7 @@ import { ChatService } from 'src/app/services/chat.service';
 import { ChannelMessage } from 'src/app/models/ChannelMessage.mode';
 import * as moment from 'moment';
 import { NotificationService } from 'src/app/services/notification.service';
+import { Notification } from 'src/app/models/Notification.model';
 
 @Component({
   selector: 'app-chat',
@@ -188,7 +189,11 @@ export class ChatComponent implements OnInit, OnChanges {
 
   addMember(userId) {
     this.channelService.addUser(this.channelData.id, userId).subscribe(
-      data => this.onChannelChange.emit(this.channelData),
+    data => {
+      let n = this.generateNotification(`Te han agregado al canal #${this.channelData.title}`, this.channelData.id, userId.id)
+      this.chatService.emitMemberRemoved(this.findSocketIdOnAppState(userId), n)
+      this.onChannelChange.emit(this.channelData)
+    },
       error => this.displayError(error)
     )
   }
@@ -221,11 +226,11 @@ export class ChatComponent implements OnInit, OnChanges {
     this.channelService.removeUser(this.channelInfo.id, userId.id)
     .subscribe(
       data => {
+        let n = this.generateNotification(`Te han eliminado del canal #${this.channelData.title}`, this.channelData.id, userId.id)
         if (this.isOnline(userId)) {
-          this.chatService.emitMemberRemoved(this.findSocketIdOnAppState(userId.id))
+          this.chatService.emitMemberRemoved(this.findSocketIdOnAppState(userId.id), n)
         } 
-        this.notificationService.postNotification(
-          this.userData.company_id, this.channelData.id, `Te han eliminado del canal #${this.channelData.title}`, userId.id)
+        this.notificationService.postNotification(n.company_id, n.channel_id, n.message, n.user_id)
           .subscribe(
             data => console.log(data),
             error => this.displayError(error)
@@ -235,6 +240,15 @@ export class ChatComponent implements OnInit, OnChanges {
       error => this.displayError(error)
     )
     .add(() => this.removingUser = false)
+  }
+
+  generateNotification(message, channelId, member) {
+    let n = new Notification()
+    n.company_id = this.channelData.id;
+    n.channel_id = channelId;
+    n.message = message;
+    n.user_id = member;
+    return n;
   }
 
   private displayError(err) {
@@ -248,11 +262,12 @@ export class ChatComponent implements OnInit, OnChanges {
     this.channelService.removeChannel(this.channelInfo.id).subscribe(
       data => {
         this.channelInfo.members.map((member) => {
+          let n = this.generateNotification(`Se ha eliminado el canal #${this.channelData.title}`, this.channelData.id, member.id)
           if (this.isOnline(member)) {
-            this.chatService.emitMemberRemoved(this.findSocketIdOnAppState(member.id))
+            this.chatService.emitMemberRemoved(this.findSocketIdOnAppState(member.id), n)
           } 
           this.notificationService.postNotification(
-            this.userData.company_id, this.channelData.id, `Se ha eliminado del canal #${this.channelData.title}`, member.id)
+            this.userData.company_id, this.channelData.id, `Se ha eliminado el canal #${this.channelData.title}`, member.id)
             .subscribe(
               data => console.log(data),
               error => this.displayError(error)
