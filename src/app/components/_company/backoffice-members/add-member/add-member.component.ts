@@ -15,8 +15,6 @@ export class AddMemberComponent implements OnInit {
   addMemeberForm: FormGroup;
   items: FormArray;
 
-  get formData() { return <FormArray>this.addMemeberForm.get('items'); }
-
 
   constructor(
     public dialogRef: MatDialogRef<AddMemberComponent>,
