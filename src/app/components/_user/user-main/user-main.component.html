@@ -16,6 +16,7 @@
             <app-user-sidenav 
             class="col-2 h-100 bg-white p-0" 
             [userRole]="userData.role_id" 
+            [companyId]="userData.company_id"
             [userId]="userData.id"
             [userChannels]="userChannels"
             (onNewChannel)="refetchChannels($event)"
@@ -23,7 +24,9 @@
             (goFeed)="goFeed()"
             [onChannel]="onChannel"
             [appState]="appState"
-            (onReadChannel)="markChannelAsRead($event)"></app-user-sidenav>
+            (onReadChannel)="markChannelAsRead($event)"
+            [notifications]="notifications"
+            [notiNotViewed]="hasNotificationsNotViewed"></app-user-sidenav>
             <div class="d-flex flex-row h-100 p-0" [ngClass]="showAccount ? 'col-7' : 'col-10'" [class.pr-3]="showAccount">
                 <mat-divider [vertical]="true"></mat-divider>
                 <app-user-feed 

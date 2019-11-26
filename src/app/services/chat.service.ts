@@ -39,6 +39,16 @@ export class ChatService {
         this.socket.emit('emit-typing', {channelId, userId})
     }
 
+    public emitMemberRemoved(socketId): void {
+        this.socket.emit('emit-member-removed', {socketId})
+    }
+
+    public onMemberRemoved(): Observable<any> {
+        return new Observable<any>(observer => {
+            this.socket.on('on-member-removed', (data: any) => observer.next(data));
+        });
+    }
+
     public onTyping(): Observable<any> {
         return new Observable<any>(observer => {
             this.socket.on('on-typing', (data: any) => observer.next(data));

@@ -11,6 +11,7 @@ import { FormControl } from '@angular/forms';
 import { ChatService } from 'src/app/services/chat.service';
 import { ChannelMessage } from 'src/app/models/ChannelMessage.mode';
 import * as moment from 'moment';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-chat',
@@ -52,7 +53,8 @@ export class ChatComponent implements OnInit, OnChanges {
     private channelService: ChannelService, 
     private _snackBar: MatSnackBar, 
     private userService: UserService,
-    private chatService: ChatService) { }
+    private chatService: ChatService,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.getCompanyUsers();
@@ -89,7 +91,7 @@ export class ChatComponent implements OnInit, OnChanges {
     }
 
     if (changes.currentChannelTyping && changes.currentChannelTyping.currentValue) {
-        this.currentUserTyping = this.findUserById(changes.currentChannelTyping.currentValue)
+        this.currentUserTyping = this.findUserById(changes.currentChannelTyping.currentValue.user)
     }
   }
 
@@ -218,7 +220,18 @@ export class ChatComponent implements OnInit, OnChanges {
     this.removingUser = true;
     this.channelService.removeUser(this.channelInfo.id, userId.id)
     .subscribe(
-      data => this.onChannelChange.emit(this.channelData),
+      data => {
+        if (this.isOnline(userId)) {
+          this.chatService.emitMemberRemoved(this.findSocketIdOnAppState(userId.id))
+        } 
+        this.notificationService.postNotification(
+          this.userData.company_id, this.channelData.id, `Te han eliminado del canal #${this.channelData.title}`, userId.id)
+          .subscribe(
+            data => console.log(data),
+            error => this.displayError(error)
+          )
+          this.onChannelChange.emit(this.channelData)
+      },
       error => this.displayError(error)
     )
     .add(() => this.removingUser = false)
@@ -233,7 +246,20 @@ export class ChatComponent implements OnInit, OnChanges {
 
   removeChannel() {
     this.channelService.removeChannel(this.channelInfo.id).subscribe(
-      data => this.onChannelDelete.emit(),
+      data => {
+        this.channelInfo.members.map((member) => {
+          if (this.isOnline(member)) {
+            this.chatService.emitMemberRemoved(this.findSocketIdOnAppState(member.id))
+          } 
+          this.notificationService.postNotification(
+            this.userData.company_id, this.channelData.id, `Se ha eliminado del canal #${this.channelData.title}`, member.id)
+            .subscribe(
+              data => console.log(data),
+              error => this.displayError(error)
+            )
+        })
+        this.onChannelDelete.emit();
+      },
       error => this.displayError(error)
     )
   }
@@ -295,6 +321,7 @@ export class ChatComponent implements OnInit, OnChanges {
         
       }
       this.message = undefined;
+      this.onNotTyping()
     }
   }
 

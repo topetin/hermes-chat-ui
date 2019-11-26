@@ -32,12 +32,30 @@
                 </span>
             </div>
     </div>
-    <button 
-    mat-flat-button class="p-0 pl-1 grey-background" 
-    style="min-width: 35px; width: 35px; height: 35px; right: 0;outline: none; border-radius: 50%;" 
-    (click) = "goToFeed()"
-    [class.mat-elevation-z2] = "displayChannel !== undefined"
-    [class.bg-white] = "displayChannel !== undefined">
-    <img src="../../../../assets/img/megaphoneHeader.svg" style="width: 25px; height: 25px;">
-</button>
+    <div class="d-flex flex-row align-items-center w-100 justify-content-center">
+            <button 
+            mat-flat-button class="p-0 pl-1 grey-background" 
+            style="min-width: 35px; width: 35px; height: 35px; right: 0;outline: none; border-radius: 50%;" 
+            (click) = "goToFeed()"
+            [class.mat-elevation-z2] = "displayChannel !== undefined"
+            [class.bg-white] = "displayChannel !== undefined">
+            <img src="../../../../assets/img/megaphoneHeader.svg" style="width: 25px; height: 25px;">
+        </button>
+        <button 
+        mat-flat-button class="ml-3 p-0 grey-background mat-elevation-z2" 
+        style="min-width: 35px; width: 35px; height: 35px; right: 0;outline: none; border-radius: 50%;" 
+        [matMenuTriggerFor]="menu"
+        [class.bg-info]="notiNotViewed"
+        [class.bg-white]="!notiNotViewed"
+        (click)="updateNotifications()">
+        <mat-icon>notifications</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <div *ngIf="notifications && notifications.length > 0">
+                    <button mat-menu-item *ngFor="let n of notifications">{{n.message}}</button>
+            </div>
+        
+          </mat-menu>
+    </div>
+
 </div>

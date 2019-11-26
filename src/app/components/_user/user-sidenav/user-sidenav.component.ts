@@ -5,6 +5,9 @@ import { Channel } from 'src/app/models/Channel.model';
 import { BehaviorSubject } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { ChannelInfo } from '../user-main/user-main.component';
+import { Notification } from 'src/app/models/Notification.model';
+import { NotificationService } from 'src/app/services/notification.service';
+import { ChatService } from 'src/app/services/chat.service';
 
 @Component({
   selector: 'app-user-sidenav',
@@ -18,16 +21,23 @@ export class UserSidenavComponent implements OnInit, OnChanges {
   @Input() userChannels: Channel[];
   @Input() onChannel: Channel;
   @Input() appState: any;
+  @Input() companyId: any;
+  @Input() notifications: Notification[];
+  @Input() notiNotViewed: boolean;
 
   groupChannels = new Array<Channel>();
   singleChannels = new Array<Channel>();
   displayChannel: Channel;
+  displayNotifications = new Array<Notification>();
+
   @Output() onNewChannel = new EventEmitter();
   @Output() goChannel = new EventEmitter();
   @Output() goFeed = new EventEmitter();
   @Output() onReadChannel = new EventEmitter();
 
-  constructor(public dialog: MatDialog, @Inject(DOCUMENT) document) { }
+  constructor(public dialog: MatDialog, @Inject(DOCUMENT) document,
+  private notificationService: NotificationService,
+  private chatService: ChatService) { }
 
   ngOnInit() {
   }
@@ -46,6 +56,23 @@ export class UserSidenavComponent implements OnInit, OnChanges {
       this.displayChannel = changes.onChannel.currentValue;
       this.scrollToItem()
     }
+  }
+
+  updateNotifications() {
+    this.notiNotViewed = false;
+    if (this.notifications.length > 0) {
+      let arr = [];
+      this.notifications.map((n) => {
+        arr.push(n.id)
+      })
+
+      this.notificationService.updateNotifications()
+      .subscribe(
+        data => console.log(data),
+        error => console.log(error)
+      )
+    }
+
   }
 
   private scrollToItem(): void {
@@ -73,6 +100,15 @@ export class UserSidenavComponent implements OnInit, OnChanges {
   dialogRef.afterClosed().subscribe(
     data => {
       if (data) {
+        data.addedUsers.map((member) => {
+          this.chatService.emitMemberRemoved(this.findSocketIdOnAppState(member))
+          this.notificationService.postNotification(this.companyId, data.goChannel.id,
+            `Te han agregado al canal #${data.goChannel.title}`, member)
+            .subscribe(
+              data => console.log(data),
+              error => console.log(error)
+            )
+        })
         this.displayChannel = data.goChannel;
         this.scrollToItem();
         if (data.fetchChannels) {
@@ -81,6 +117,16 @@ export class UserSidenavComponent implements OnInit, OnChanges {
       }
     }
   )
+  }
+
+  findSocketIdOnAppState(id){
+    let found;
+    this.appState.state.map((s) => {
+      if (s.userId === id) {
+        found = s.socketId
+      }
+    })
+    return found;
   }
 
   goToChannel($event) {

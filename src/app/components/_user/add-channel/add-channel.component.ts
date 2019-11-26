@@ -143,7 +143,7 @@ export class AddChannelComponent implements OnInit {
     let members = this.addedUsers.map(user => user.id);
     this.channelService.createChannel(this.currentUserId, 'G', this.addChannelForm.value.channelName, members)
     .subscribe(
-      data => this.dialogRef.close({fetchChannels: true, goChannel: data.message}),
+      data => this.dialogRef.close({fetchChannels: true, goChannel: data.message, addedUsers: members}),
       error => this.displayError(error)
     )
     .add(() => this.creatingChannel = false)

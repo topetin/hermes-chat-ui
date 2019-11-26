@@ -14,6 +14,8 @@ import { ChannelMember } from 'src/app/models/ChannelMember.model';
 import { ChatService } from 'src/app/services/chat.service';
 import { ChannelMessage } from 'src/app/models/ChannelMessage.mode';
 import * as moment from 'moment';
+import { NotificationService } from 'src/app/services/notification.service';
+import { Notification } from 'src/app/models/Notification.model';
 
 export interface ChannelInfo {
   id: number,
@@ -41,8 +43,10 @@ export class UserMainComponent implements OnInit {
   unreadChannels = new Array<Channel>();
   channelMessages = new Array<ChannelMessage>();
   currentChannelMessages: ChannelMessage[];
-  currentChannelTyping: number;
+  currentChannelTyping: any;
   currentChannelNotTyping = true;
+  notifications = new Array<Notification>();
+  hasNotificationsNotViewed: boolean;
 
   constructor(private storage: AppStorageService,
     private userService: UserService,
@@ -50,7 +54,8 @@ export class UserMainComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private channelService: ChannelService,
     public dialog: MatDialog,
-    private chatService: ChatService) { }
+    private chatService: ChatService,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.showAccount = false;
@@ -58,6 +63,7 @@ export class UserMainComponent implements OnInit {
     this.getAppState();
     this.initIoConnection();
     this.getFeed();
+    this.getNotifications();
     setInterval(()=> {
       this.getFeed();
     }, 40000)
@@ -113,9 +119,30 @@ export class UserMainComponent implements OnInit {
 
     this.chatService.onTyping().subscribe((data: any) => {
       if (this.onChannel && data.channelId === this.onChannel.id) {
-          this.currentChannelTyping = data.user;
+          this.currentChannelTyping = {user: data.user, channel: data.channelId};
       }
     })
+
+    this.chatService.onMemberRemoved().subscribe((data: any) => {
+      this.getNotifications();
+      this.getChannels();
+    })
+  }
+
+  getNotifications() {
+    this.notificationService.getNotifications()
+    .subscribe(
+      data => {
+        this.notifications = data
+        data.map((n) => {
+          if (n.viewed === 0) {
+            this.hasNotificationsNotViewed = true;
+            return;
+          }
+        })
+      },
+      error => this.displayError(error)
+    )
   }
 
   formatUserChannels() {
