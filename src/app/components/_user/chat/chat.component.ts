@@ -88,6 +88,7 @@ export class ChatComponent implements OnInit, OnChanges {
     }
 
     if (changes.messageList && changes.messageList.currentValue && changes.messageList.currentValue !== undefined) {
+      this.scrollToBottom()
       this.displayMessageList =  changes.messageList.currentValue
     }
 
@@ -337,6 +338,7 @@ export class ChatComponent implements OnInit, OnChanges {
       }
       this.message = undefined;
       this.onNotTyping()
+      this.scrollToBottom()
     }
   }
 
